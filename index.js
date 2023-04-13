@@ -5,7 +5,7 @@ canvas.width =16 * 90
 canvas.height = 9 *90
 
 
-let scrollOffset = -3645
+let scrollOffset =-2400
 
 const player = new Player()
 
@@ -28,8 +28,9 @@ const interactions = [
     new Interaction({x:4010, y:177, w:375, h:262, name:'hoard'}),
 ]
 const dynamics = [
+    
 ]
-
+const bus = new Bus({x:200, y:461, w:2660/2.8, h:837/2.8, image:createImage('./images/bus.png')})
 const supermarket = new Room({image:createImage('./images/supermarket.png')});
 
 //occupy
@@ -57,28 +58,41 @@ const keys = {
         pressed:false
     }
 }
+let busRun = false;
 let openAnim = null
+let busSpeed = 10
 openAnim = setInterval(()=>{
-    scrollOffset += player.speed
-    backgruond.position.x -= player.speed *0.66
-    player.position.x -= player.speed *0.66
+    if(backgruond.position.x <= -1300){
+        if(busSpeed > 1 ){
+            busSpeed = busSpeed - 0.05
+        }
+    }
+    scrollOffset += busSpeed
+    backgruond.position.x -= busSpeed
+    
+    player.position.x -= busSpeed
     interactions.forEach(item=>{
-        item.position.x -= player.speed *0.66
+        item.position.x -= busSpeed
     })
     if(backgruond.position.x <= -2400){
-        console.log(scrollOffset);
         clearInterval(openAnim)
+        scrollOffset = 0
+        console.log(scrollOffset);
     }
+    if(scrollOffset > -1500){
+        busRun = true
+    }
+    console.log(scrollOffset);
 }, 20)
 
-
+let busPos = 1.5
 function animate(){
     window.requestAnimationFrame(animate)
     backgruond.draw()
 
     player.velocity.x = 0
     if((keys.right.pressed && player.position.x < 600) || (keys.right.pressed && scrollOffset>= 15400)){
-        if(player.position.x < 1300){
+        if(player.position.x < 2500){
             player.velocity.x = player.speed
         }
     }else if(keys.left.pressed && player.position.x >50){
@@ -110,6 +124,14 @@ function animate(){
     dynamics.forEach(dynamic=>{
         dynamic.draw()
     })
+
+    bus.draw()
+    if(busRun){
+       if(bus.position.x > -600){
+        bus.position.x -= 1.6
+       }
+        
+    }
     player.draw()
     player.update()
 

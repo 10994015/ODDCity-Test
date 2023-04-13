@@ -71,6 +71,25 @@ class Dynamic{
     }
 }
 
+class Bus{
+    constructor({x, y, w, h, image}){
+        this.width = w
+        this.height = h
+        this.position = {
+           x,y
+        }
+        this.image = image
+        this.loaded = false
+        this.image.onload = ()=>{
+            this.loaded = true
+        }
+    }
+    draw(){
+        if(!this.loaded) return
+        c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
+    }
+}
+
 class Shared{
     constructor({x, y, w, h, image}){
        
