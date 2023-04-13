@@ -2,7 +2,7 @@ class Player{
     constructor(){
         this.speed = 15
         this.position = {
-            x:100,
+            x:2800,
             y:100
         }
         this.velocity = {
@@ -14,7 +14,7 @@ class Player{
         this.sides = {
             bottom: this.position.y + this.height
         }
-        this.gravity = 0.5
+        this.gravity = 1
     }
 
     draw(){

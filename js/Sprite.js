@@ -1,14 +1,13 @@
 class Backgruond{
-    constructor({position, imageSrc}){
+    constructor({position, image}){
         this.position = position
-        this.image = new Image()
+        this.image = image
         this.image.onload = ()=>{
             this.loaded = true
         }
-        this.image.src = imageSrc
         this.loaded = false
 
-        this.width = 14.374 * canvas.height
+        this.width = 17.5185 * canvas.height - 550
         this.height = canvas.height
     }
 
@@ -42,8 +41,13 @@ class Room{
            y: (canvas.height -this.height) / 2
         }
         this.image = image
+        this.loaded = false
+        this.image.onload = ()=>{
+            this.loaded = true
+        }
     }
     draw(){
+        if(!this.loaded) return
         c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
     }
 }
@@ -56,8 +60,13 @@ class Dynamic{
            x,y
         }
         this.image = image
+        this.loaded = false
+        this.image.onload = ()=>{
+            this.loaded = true
+        }
     }
     draw(){
+        if(!this.loaded) return
         c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
     }
 }
@@ -75,8 +84,14 @@ class Shared{
         this.oldHeight = h
         this.width = this.oldWidth
         this.height = this.oldHeight
+
+        this.loaded = false
+        this.image.onload = ()=>{
+            this.loaded = true
+        }
     }
     draw(){
+        if(!this.loaded) return
         c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
     }
     

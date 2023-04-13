@@ -3,10 +3,9 @@ const c = canvas.getContext('2d')
 
 canvas.width =16 * 90
 canvas.height = 9 *90
-c.fillStyle = "#fff"
-c.fillRect(0,0,canvas.width, canvas.height)
 
-let scrollOffset = 0
+
+let scrollOffset = -3645
 
 const player = new Player()
 
@@ -20,12 +19,13 @@ const backgruond = new Backgruond({
     position:{
         x:0, y:0
     },
-    imageSrc :'./images/bg.png',
+    image :createImage('./images/bg.png'),
 })
 
 const interactions = [
-    new Interaction({x:460, y:480, w:140, h:218, name:'supermarket'}),
-    new Interaction({x:755, y:177, w:457, h:262, name:'occupy'}),
+    new Interaction({x:2889, y:481, w:142, h:218, name:'supermarket'}),
+    new Interaction({x:3176, y:177, w:440, h:262, name:'occupy'}),
+    new Interaction({x:4010, y:177, w:375, h:262, name:'hoard'}),
 ]
 const dynamics = [
 ]
@@ -57,11 +57,23 @@ const keys = {
         pressed:false
     }
 }
+let openAnim = null
+openAnim = setInterval(()=>{
+    scrollOffset += player.speed
+    backgruond.position.x -= player.speed *0.66
+    player.position.x -= player.speed *0.66
+    interactions.forEach(item=>{
+        item.position.x -= player.speed *0.66
+    })
+    if(backgruond.position.x <= -2400){
+        console.log(scrollOffset);
+        clearInterval(openAnim)
+    }
+}, 20)
+
 
 function animate(){
     window.requestAnimationFrame(animate)
-    c.fillStyle = "#fff"
-    c.fillRect(0,0,canvas.width, canvas.height)
     backgruond.draw()
 
     player.velocity.x = 0

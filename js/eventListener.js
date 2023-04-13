@@ -2,7 +2,7 @@ window.addEventListener("keydown", ({keyCode})=>{
     console.log(keyCode);
     switch (keyCode){
         case 87:
-            if(player.velocity.y ===0 ) player.velocity.y = -15
+            if(player.velocity.y ===0 ) player.velocity.y = -20
             break;
         case 68:
             if(!isRoomOpen){
@@ -35,17 +35,21 @@ window.addEventListener("keyup", ({keyCode})=>{
     }
 })
 
+
 canvas.addEventListener('mousemove', (e)=>{
     var rect = canvas.getBoundingClientRect();
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
     
-    interactions.forEach(interaction=>{
-        if(!isRoomOpen && x >= interaction.position.x && x <= interaction.position.x + interaction.width && y>=interaction.position.y && y<=interaction.position.y + interaction.height){
-            canvas.style.cursor = "pointer"
+    interactions.some(interaction=>{
+        if(!isRoomOpen && x > interaction.position.x && x < (interaction.position.x + interaction.width) && y > interaction.position.y && y < (interaction.position.y + interaction.height)){
+            return canvas.style.cursor = "pointer"
         }else{
             canvas.style.cursor = "default"
         }
+    })
+
+    interactions.forEach(interaction=>{
         
         if(interaction.name === 'occupy' && isRoomOpen){
             occupys.forEach(occupy=>{
@@ -60,6 +64,9 @@ canvas.addEventListener('mousemove', (e)=>{
                 }
             })
         }
+
+        
+        
     })
     
 })
