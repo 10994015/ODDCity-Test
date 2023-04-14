@@ -29,8 +29,8 @@ const interactions = [
 ]
 const dynamics = [
     
-]
-const bus = new Bus({x:200, y:461, w:2660/2.8, h:837/2.8, image:createImage('./images/bus.png')})
+]        
+const bus = new Bus({x:200, y:461, w:1024, h:825/2.7, image:createImage('./images/bus.png')})
 const supermarket = new Room({image:createImage('./images/supermarket.png')});
 
 //occupy
@@ -83,7 +83,7 @@ openAnim = setInterval(()=>{
     if(scrollOffset > -1500){
         busRun = true
     }
-}, 0)
+}, 20)
 
 let busPos = 1.5
 function animate(){
@@ -126,7 +126,7 @@ function animate(){
         dynamic.draw()
     })
 
-    bus.draw()
+    bus.update()
     if(busRun){
        if(bus.position.x > -600){
         bus.position.x -= 1.6

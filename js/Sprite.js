@@ -22,6 +22,7 @@ class Interaction {
         this.position = {
            x, y
         }
+
         this.width = w
         this.height = h
         this.name = name
@@ -83,10 +84,19 @@ class Bus{
         this.image.onload = ()=>{
             this.loaded = true
         }
+        this.frames = 0
+        this.currentCropWidth = 10752/4
     }
     draw(){
         if(!this.loaded) return
-        c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
+        c.drawImage(this.image, this.currentCropWidth*this.frames,0,this.currentCropWidth, 825, this.position.x, this.position.y, this.width, this.height)
+    }
+    update(){
+        this.frames ++ ;
+        if(this.frames>=4){
+            this.frames = 0
+        }
+        this.draw();
     }
 }
 
@@ -103,6 +113,9 @@ class Shared{
         this.oldHeight = h
         this.width = this.oldWidth
         this.height = this.oldHeight
+
+        this.oldPosX  = x
+        this.oldPosY = y
 
         this.loaded = false
         this.image.onload = ()=>{

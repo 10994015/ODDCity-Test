@@ -1,3 +1,9 @@
+
+let mousedownIdx = null
+let isDragging = false
+let differX = null
+let differY = null
+
 window.addEventListener("keydown", ({keyCode})=>{
     if(!isStart) return
     switch (keyCode){
@@ -64,6 +70,11 @@ canvas.addEventListener('mousemove', (e)=>{
             canvas.style.cursor = "default"
         })
     }
+
+    if(isDragging && roomOpen.occupy && isRoomOpen){
+        occupys[mousedownIdx].position.x = e.offsetX + differX
+        occupys[mousedownIdx].position.y = e.offsetY + differY
+    }
 })
 
 canvas.addEventListener('click', (e)=>{
@@ -85,4 +96,48 @@ canvas.addEventListener('click', (e)=>{
             isRoomOpen = true
         }
     })
+})
+
+canvas.addEventListener('mousedown', (e)=>{
+    e.preventDefault();
+    let x = parseInt(e.offsetX)
+    let y = parseInt(e.offsetY)
+    console.log(e.offsetX);
+    console.log(e.offsetY);
+    occupys.forEach((occupy,key)=>{
+        if(x > occupy.position.x && x < occupy.position.x + occupy.width && y > occupy.position.y && y < occupy.position.y + occupy.height){
+            console.log(occupy.image);
+            if(!occupy.image.src.includes('1-1.png')){
+                occupy.image.src = occupy.image.src.replace('1.png', '1-1.png')
+            }
+            mousedownIdx = key
+            isDragging = true
+            differX = occupy.position.x - x
+            differY = occupy.position.y - y
+        }
+    })
+})
+
+canvas.addEventListener('mouseup', ()=>{
+
+    if(isDragging && roomOpen.occupy && isRoomOpen){
+        let bool = occupys[mousedownIdx].position.x >= 1093 && occupys[mousedownIdx].position.x + occupys[mousedownIdx].width <= 1309 && occupys[mousedownIdx].position.y + occupys[mousedownIdx].height >= 251 && occupys[mousedownIdx].position.y + occupys[mousedownIdx].height <= 435
+        if(!bool){;
+            occupys[mousedownIdx].position.x = occupys[mousedownIdx].oldPosX
+            occupys[mousedownIdx].position.y = occupys[mousedownIdx].oldPosY
+            if(occupys[mousedownIdx].image.src.includes('1-1.png')){
+                occupys[mousedownIdx].image.src = occupys[mousedownIdx].image.src.replace('1-1.png', '1.png')
+            }
+            console.log('不再裡面');
+            console.log(occupys[mousedownIdx].oldPosX);
+            console.log(occupys[mousedownIdx].oldPosY);
+        }else{
+            console.log('在裡面');
+        }
+    }
+
+    mousedownIdx = null
+    isDragging = false
+    differX = null
+    differY = null
 })
