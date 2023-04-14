@@ -6,7 +6,7 @@ canvas.height = 9 *90
 
 
 let scrollOffset =-2400
-
+let isStart = false
 const player = new Player()
 
 const createImage = (imgSrc)=>{
@@ -23,8 +23,8 @@ const backgruond = new Backgruond({
 })
 
 const interactions = [
-    new Interaction({x:2889, y:481, w:142, h:218, name:'supermarket'}),
-    new Interaction({x:3176, y:177, w:440, h:262, name:'occupy'}),
+    new Interaction({x:2973, y:481, w:147, h:218, name:'supermarket'}),
+    new Interaction({x:3269, y:177, w:451, h:262, name:'occupy'}),
     new Interaction({x:4010, y:177, w:375, h:262, name:'hoard'}),
 ]
 const dynamics = [
@@ -36,7 +36,8 @@ const supermarket = new Room({image:createImage('./images/supermarket.png')});
 //occupy
 const occupy = new Room({image:createImage('./images/occupy.png')});
 const occupys = [
-    new Shared({x:235, y:500, w:134.784, h:40, image: createImage('./images/occupys/a1.png')}),
+    new Shared({x:235, y:480, w:134.784, h:40, image: createImage('./images/occupys/a1.png')}),
+    new Shared({x:290, y:535, w:91/2.8, h:137/2.8, image: createImage('./images/occupys/b1.png')}),
 ]
 
 
@@ -77,13 +78,12 @@ openAnim = setInterval(()=>{
     if(backgruond.position.x <= -2400){
         clearInterval(openAnim)
         scrollOffset = 0
-        console.log(scrollOffset);
+        isStart = true
     }
     if(scrollOffset > -1500){
         busRun = true
     }
-    console.log(scrollOffset);
-}, 20)
+}, 0)
 
 let busPos = 1.5
 function animate(){
@@ -92,7 +92,7 @@ function animate(){
 
     player.velocity.x = 0
     if((keys.right.pressed && player.position.x < 600) || (keys.right.pressed && scrollOffset>= 15400)){
-        if(player.position.x < 2500){
+        if(player.position.x < 1295){
             player.velocity.x = player.speed
         }
     }else if(keys.left.pressed && player.position.x >50){
@@ -101,6 +101,7 @@ function animate(){
         player.velocity.x = 0
         if(keys.right.pressed){
             scrollOffset += player.speed
+            bus.position.x -= player.speed *0.66
             backgruond.position.x -= player.speed *0.66
             interactions.forEach(item=>{
                 item.position.x -= player.speed *0.66
@@ -110,7 +111,7 @@ function animate(){
             if(scrollOffset > 0){
                 scrollOffset -=player.speed
                 backgruond.position.x += player.speed *0.66
-
+                bus.position.x += player.speed *0.66
                 interactions.forEach(item=>{
                     item.position.x += player.speed *0.66
                 })

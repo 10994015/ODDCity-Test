@@ -1,5 +1,5 @@
 window.addEventListener("keydown", ({keyCode})=>{
-    console.log(keyCode);
+    if(!isStart) return
     switch (keyCode){
         case 87:
             if(player.velocity.y ===0 ) player.velocity.y = -20
@@ -18,6 +18,7 @@ window.addEventListener("keydown", ({keyCode})=>{
 })
 
 window.addEventListener("keyup", ({keyCode})=>{
+    if(!isStart) return
     switch (keyCode){
         case 68:
             keys.right.pressed = false
@@ -37,6 +38,7 @@ window.addEventListener("keyup", ({keyCode})=>{
 
 
 canvas.addEventListener('mousemove', (e)=>{
+    if(!isStart) return
     var rect = canvas.getBoundingClientRect();
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
@@ -49,29 +51,23 @@ canvas.addEventListener('mousemove', (e)=>{
         }
     })
 
-    interactions.forEach(interaction=>{
-        
-        if(interaction.name === 'occupy' && isRoomOpen){
-            occupys.forEach(occupy=>{
-                if(x >= occupy.position.x && x<=occupy.position.x+occupy.width && y>=occupy.position.y && y<=occupy.position.y + occupy.height){
-                    canvas.style.cursor = "pointer"
-                    occupy.width = occupy.bigWidth
-                    occupy.height = occupy.bigHeight
-                }else{
-                    canvas.style.cursor = "default"
-                    occupy.width = occupy.oldWidth
-                    occupy.height = occupy.oldHeight
-                }
-            })
-        }
-
-        
-        
-    })
-    
+    if(roomOpen.occupy && isRoomOpen){
+        occupys.some(occupy=>{
+            if(x >= occupy.position.x && x<=occupy.position.x+occupy.width && y>=occupy.position.y && y<=occupy.position.y + occupy.height){
+                occupy.width = occupy.bigWidth
+                occupy.height = occupy.bigHeight
+                return canvas.style.cursor = "pointer"
+                
+            }
+            occupy.width = occupy.oldWidth
+            occupy.height = occupy.oldHeight
+            canvas.style.cursor = "default"
+        })
+    }
 })
 
 canvas.addEventListener('click', (e)=>{
+    if(!isStart) return
     var rect = canvas.getBoundingClientRect();
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
@@ -80,12 +76,13 @@ canvas.addEventListener('click', (e)=>{
         let bool = x >= interaction.position.x && x <= interaction.position.x + interaction.width && y>=interaction.position.y && y<=interaction.position.y + interaction.height
         if(!bool) return
         if(interaction.name === 'supermarket'){
+            if(isRoomOpen) return
             roomOpen.supermarket = true
             isRoomOpen = true
         }else if(interaction.name === 'occupy'){
+            if(isRoomOpen) return
             roomOpen.occupy = true
             isRoomOpen = true
-            
         }
     })
 })

@@ -7,7 +7,7 @@ class Backgruond{
         }
         this.loaded = false
 
-        this.width = 17.5185 * canvas.height - 550
+        this.width = 17.5185 * canvas.height -150
         this.height = canvas.height
     }
 
