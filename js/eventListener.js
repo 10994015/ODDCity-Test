@@ -59,6 +59,7 @@ canvas.addEventListener('mousemove', (e)=>{
 
     if(roomOpen.occupy && isRoomOpen){
         occupys.some(occupy=>{
+            if(!occupy.enlarge) return
             if(x >= occupy.position.x && x<=occupy.position.x+occupy.width && y>=occupy.position.y && y<=occupy.position.y + occupy.height){
                 occupy.width = occupy.bigWidth
                 occupy.height = occupy.bigHeight
@@ -70,7 +71,7 @@ canvas.addEventListener('mousemove', (e)=>{
             canvas.style.cursor = "default"
         })
     }
-
+    
     if(isDragging && roomOpen.occupy && isRoomOpen){
         occupys[mousedownIdx].position.x = e.offsetX + differX
         occupys[mousedownIdx].position.y = e.offsetY + differY
@@ -102,9 +103,8 @@ canvas.addEventListener('mousedown', (e)=>{
     e.preventDefault();
     let x = parseInt(e.offsetX)
     let y = parseInt(e.offsetY)
-    console.log(e.offsetX);
-    console.log(e.offsetY);
     occupys.forEach((occupy,key)=>{
+        if(!occupy.dragging) return
         if(x > occupy.position.x && x < occupy.position.x + occupy.width && y > occupy.position.y && y < occupy.position.y + occupy.height){
             console.log(occupy.image);
             if(!occupy.image.src.includes('1-1.png')){
