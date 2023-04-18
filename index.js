@@ -5,6 +5,13 @@ canvas.width =16 * 90
 canvas.height = 9 *90
 
 
+const CG = {
+    occupy:{
+        isPeace:true
+    }
+}
+let occupyInteractiveBtn = false
+
 let scrollOffset =-2400
 let isStart = false
 const player = new Player()
@@ -26,6 +33,10 @@ const interactions = [
     new Interaction({x:2973, y:481, w:147, h:218, name:'supermarket'}),
     new Interaction({x:3269, y:177, w:451, h:262, name:'occupy'}),
     new Interaction({x:4010, y:177, w:375, h:262, name:'hoard'}),
+
+
+    new Interaction({x:500, y:500, w:100, h:100, name:'occupyInteractiveBtn'}),
+    
 ]
 const dynamics = [
     
@@ -40,23 +51,25 @@ let mesterTalkY = 355
 //occupy
 const occupy = new Room({image:createImage('./images/occupy.png')});
 const occupys = [
-    new Shared({x:950, y:355, w:383/2, h:774/2, image: createImage('./images/occupys/sitdown.png'), isPeople:true, isEnlarge:true, nmae:'sitdown'}),
+    new Shared({x:950, y:355, w:383/2, h:774/2, image: createImage('./images/occupys/sitdown.png'), isPeople:true, isEnlarge:true, name:'sitdown', multiple:1.05}),
     new Shared({x:235, y:480, w:134.784, h:40, image: createImage('./images/occupys/a1.png'),}),
     new Shared({x:290, y:535, w:91/2.8, h:137/2.8, image: createImage('./images/occupys/b1.png')}),
-    new Shared({x:20, y:255, w:223, h:795, image: createImage('./images/occupys/people1.png'), isPeople:true, name:'people'}),
-    new Shared({x:playerTalkX-(2378/4.5), y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/1.png'), isTalk:true, isEnlarge:true, multiple:1, name:'1'}),
-    new Shared({x:playerTalkX-(2378/4.5), y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/10A.png'), isTalk:true, isEnlarge:true, multiple:1, name:'3A'}),
-    new Shared({x:playerTalkX-(2378/4.5), y:playerTalkXY-630/4.5*2, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/3B.png'), isTalk:true, isEnlarge:true, multiple:1, name:'3B'}),
-    new Shared({x:playerTalkX-(2378/4.5), y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/5A.png'), isTalk:true, isEnlarge:true, multiple:1, name:'5A'}),
-    new Shared({x:playerTalkX-(2378/4.5), y:playerTalkXY-630/4.5*2, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/5B.png'), isTalk:true, isEnlarge:true, multiple:1, name:'5B'}),
-    new Shared({x:playerTalkX-(2378/4.5), y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/7.png'), isTalk:true, isEnlarge:true, multiple:1, name:'7'}),
-    new Shared({x:playerTalkX-(2378/4.5), y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/10A.png'), isTalk:true, isEnlarge:true, multiple:1, name:'10A'}),
-    new Shared({x:playerTalkX-(2378/4.5), y:playerTalkXY-630/4.5*2, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/10B.png'), isTalk:true, isEnlarge:true, multiple:1, name:'10B'}),
-    new Shared({x:playerTalkX-(2378/4.5), y:playerTalkXY-630/4.5*3, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/10C.png'), isTalk:true, isEnlarge:true, multiple:1, name:'10C'}),
-    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/4.png'), isTalk:true, isEnlarge:true, multiple:1, name:'4'}),
-    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/6A.png'), isTalk:true, isEnlarge:true, multiple:1, name:'6A'}),
-    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/6B.png'), isTalk:true, isEnlarge:true, multiple:1, name:'6B'}),
-    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/8.png'), isTalk:true, isEnlarge:true, multiple:1, name:'8'}),
+    new Shared({x:20, y:255, w:223, h:795, image: createImage('./images/occupys/people1.png'), isPeople:true, name:'people', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/1.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'1', isShow:false, text:'先生！你怎麼把這邊搞得亂七八糟呢？'}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/10A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'3A', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/3B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'3B', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/5A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'5A', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/5B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'5B', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/7.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'7', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/10A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'10A', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/10B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'10B', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*3-30, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/10C.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'10C', isShow:false}),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'2', isShow:false, text:"啊林北就累了！這裡不就是給人休息的逆？", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'4', isShow:false ,text:"你管老子那麼多幹嘛！", isTypewriter:true}),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'6A', isShow:false , text:"但林北實在累到快昏倒，天氣熱、腳又酸，偏偏這條街上可以休息德地方少的可憐餒", isTypewriter:true}),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'6B', isShow:false ,text:"洗勒考喔！是在趕狗出去喔！", isTypewriter:true}),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'8', isShow:false ,text:"賀啦！也算是多虧這家店，林北才有地方休息，林北會盡量不影響其他人啦！", isTypewriter:true}),
+    new Shared({x:canvas.width/2 - (2378/4.5)/2, y:canvas.height/2 - (482/4.5)/2, w:2378/4.5, h:482/4.5, image: createImage('./images/occupys/talk/9.png'), isTalk:true, isEnlarge:false, multiple:1, name:'9', isShow:false ,}),
 ]
 
 
@@ -108,12 +121,12 @@ openAnim = setInterval(()=>{
         if(scrollOffset > -500){
             bus.divisor = 40
         }else{
-            bus.divisor = 25
+            bus.divisor = 15
         }
         
     }
   
-}, 20)
+}, 0)
 
 let busPos = 1.5
 function animate(){
@@ -150,7 +163,15 @@ function animate(){
     }
 
     interactions.forEach(interaction=>{
-        interaction.draw()
+        
+
+        if(interactions==='occupyInteractiveBtn'){
+            if(occupyInteractiveBtn){
+                interaction.draw()
+            }
+        }else{
+            interaction.draw()
+        }
     })
     dynamics.forEach(dynamic=>{
         dynamic.draw()
