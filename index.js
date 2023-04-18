@@ -30,7 +30,7 @@ const interactions = [
 const dynamics = [
     
 ]        
-const bus = new Bus({x:200, y:461, w:1024, h:825/2.7, image:createImage('./images/bus.png')})
+const bus = new Bus({x:200, y:461, w:1024, h:825/2.7, image:createImage('./images/bus3.png')})
 const supermarket = new Room({image:createImage('./images/supermarket.png')});
 
 let playerTalkX = canvas.width-(canvas.width-canvas.height*0.8*1.844)/2
@@ -94,16 +94,26 @@ openAnim = setInterval(()=>{
     interactions.forEach(item=>{
         item.position.x -= busSpeed
     })
+   
+    
     if(backgruond.position.x <= -2400){
         clearInterval(openAnim)
         scrollOffset = 0
         isStart = true
         bus.run = false
+        
     }
     if(scrollOffset > -1500){
         busRun = true
+        if(scrollOffset > -500){
+            bus.divisor = 40
+        }else{
+            bus.divisor = 25
+        }
+        
     }
-}, 0)
+  
+}, 20)
 
 let busPos = 1.5
 function animate(){

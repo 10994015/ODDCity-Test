@@ -86,7 +86,9 @@ class Bus{
             this.loaded = true
         }
         this.frames = 0
-        this.run = false
+        this.calc = 0;
+        this.run = true
+        this.divisor = 10
         this.currentCropWidth = 10752/4
     }
     draw(){
@@ -95,7 +97,10 @@ class Bus{
     }
     update(){
         if(this.run){
-            this.frames ++ ;
+            this.calc++
+            if(this.calc%this.divisor === 0){
+                this.frames ++ ;
+            }
             if(this.frames>=4){
                 this.frames = 0
             }
