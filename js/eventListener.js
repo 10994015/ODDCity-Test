@@ -101,6 +101,7 @@ let talk7Chk = true
 let response8 = occupys.filter(occupy=>occupy.name == '8')[0] 
 
 let response9 = occupys.filter(occupy=>occupy.name == '9')[0] 
+let chk = occupys.filter(occupy=>occupy.name == 'chk')[0] 
 
 let talk10A = occupys.filter(occupy=>occupy.name == '10A')[0]
 let talk10B = occupys.filter(occupy=>occupy.name == '10B')[0]
@@ -140,7 +141,7 @@ canvas.addEventListener('click', (e)=>{
                     talk3A.enlarge = true
                     talk3B.show = true
                     talk3B.enlarge = true
-                }, response2.text.split('').length*10 + 1000)
+                }, response2.text.split('').length*10 + 1500)
                 
             }
         }
@@ -181,7 +182,7 @@ canvas.addEventListener('click', (e)=>{
                 talk5B.enlarge = true
 
                 
-            }, response4.text.split('').length*10 + 1000)
+            }, response4.text.split('').length*10 + 1500)
         }
       
 
@@ -204,7 +205,7 @@ canvas.addEventListener('click', (e)=>{
                     talk7.show = true
                     talk7.enlarge = true
 
-                }, response6A.text.split('').length*10 + 1000)
+                }, response6A.text.split('').length*10 + 1500)
 
             }
             if(x>=talk5B.position.x && x<=talk5B.position.x + talk5B.oldWidth && y>=talk5B.position.y && y<=talk5B.position.y + talk5B.oldHeight){
@@ -224,7 +225,7 @@ canvas.addEventListener('click', (e)=>{
                     talk7.show = true
                     talk7.enlarge = true
 
-                }, response6B.text.split('').length*10 + 1000)
+                }, response6B.text.split('').length*10 + 1500)
 
             }
 
@@ -242,17 +243,19 @@ canvas.addEventListener('click', (e)=>{
 
                 setTimeout(()=>{
                     response9.show = true
-                    response9.enlarge = true
-                }, response8.text.split('').length*10 + 1000)
+                    chk.show = true
+                    chk.enlarge = true
+                    talk7.show = false
+                }, response8.text.split('').length*10 + 2000)
             }
         }
 
-        if(response9.show){
-            if(x>=response9.position.x && x<=response9.position.x + response9.oldWidth && y>=response9.position.y && y<=response9.position.y + response9.oldHeight){
-                talk7.show = false
+        if(response9.show && chk.show){
+            if(x>=chk.position.x && x<=chk.position.x + chk.oldWidth && y>=chk.position.y && y<=chk.position.y + chk.oldHeight){
                 response8.show = false
                 response9.show = false
-                response9.enlarge = false
+                chk.show = false
+                chk.enlarge = false
                 people.show = false
 
                 occupys.forEach(occupy=>{
