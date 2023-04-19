@@ -77,7 +77,10 @@ canvas.addEventListener('mousemove', (e)=>{
         occupys[mousedownIdx].position.y = e.offsetY + differY
     }
 })
+
+//霸位
 let sitdown = occupys.filter(occupy=> occupy.name === 'sitdown')[0]
+let sitdownChk = false
 let people = occupys.filter(occupy=>occupy.name === 'people')[0]
 let talk1 = occupys.filter(occupy=>occupy.name == '1')[0]
 let talk1Chk = true
@@ -99,34 +102,26 @@ let response8 = occupys.filter(occupy=>occupy.name == '8')[0]
 
 let response9 = occupys.filter(occupy=>occupy.name == '9')[0] 
 
+let talk10A = occupys.filter(occupy=>occupy.name == '10A')[0]
+let talk10B = occupys.filter(occupy=>occupy.name == '10B')[0]
+let talk10C = occupys.filter(occupy=>occupy.name == '10C')[0]
+let talk10Chk = false
+
 canvas.addEventListener('click', (e)=>{
     if(!isStart) return
     var rect = canvas.getBoundingClientRect();
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
 
-    interactions.forEach(interaction=>{
-        let bool = x >= interaction.position.x && x <= interaction.position.x + interaction.width && y>=interaction.position.y && y<=interaction.position.y + interaction.height
-        if(!bool) return
-        if(interaction.name === 'supermarket'){
-            if(isRoomOpen) return
-            roomOpen.supermarket = true
-            isRoomOpen = true
-        }else if(interaction.name === 'occupy'){
-            if(isRoomOpen) return
-            roomOpen.occupy = true
-            isRoomOpen = true
-        }
-    })
-    
     
     if(roomOpen.occupy && isRoomOpen){
-        
         if(sitdown.show){
             if(x>=sitdown.position.x && x<=sitdown.position.x + sitdown.oldWidth && y>=sitdown.position.y && y<=sitdown.position.y + sitdown.oldHeight){
                 sitdown.show = false
                 sitdown.enlarge = false
                 
+                sitdownChk = false
+
                 people.show = true
                 talk1.show = true
                 talk1.enlarge = true
@@ -257,6 +252,7 @@ canvas.addEventListener('click', (e)=>{
                 talk7.show = false
                 response8.show = false
                 response9.show = false
+                response9.enlarge = false
                 people.show = false
 
                 occupys.forEach(occupy=>{
@@ -267,9 +263,66 @@ canvas.addEventListener('click', (e)=>{
                 })
             }
         }   
+
+        if(talk10A.show && talk10B.show && talk10C.show && talk10Chk){
+            if(!talk10Chk) return
+            if(x>=talk10A.position.x && x<=talk10A.position.x + talk10A.oldWidth && y>=talk10A.position.y && y<=talk10A.position.y + talk10A.oldHeight){
+                talk10Chk = false
+                talk10A.enlarge = false
+                talk10B.enlarge = false
+                talk10C.enlarge = false
+                if(people.image.src.includes('people2')){
+                    people.image.src = people.image.src.replace('people2', 'people1')
+                }
+            }
+            if(x>=talk10B.position.x && x<=talk10B.position.x + talk10B.oldWidth && y>=talk10B.position.y && y<=talk10B.position.y + talk10B.oldHeight){
+                talk10Chk = false
+                talk10A.enlarge = false
+                talk10B.enlarge = false
+                talk10C.enlarge = false
+                if(people.image.src.includes('people2')){
+                    people.image.src = people.image.src.replace('people2', 'people1')
+                }
+            }
+            if(x>=talk10C.position.x && x<=talk10C.position.x + talk10C.oldWidth && y>=talk10C.position.y && y<=talk10C.position.y + talk10C.oldHeight){
+                talk10Chk = false
+                talk10A.enlarge = false
+                talk10B.enlarge = false
+                talk10C.enlarge = false
+                if(people.image.src.includes('people1')){
+                    people.image.src = people.image.src.replace('people1', 'people2')
+                }
+            }
+
+            setTimeout(()=>{
+                // talk10A.show = false
+                // talk10B.show = false
+                // talk10C.show = false
+
+                // people.show = false
+
+                
+                roomOpen.occupy =false
+                isRoomOpen = false
+            }, 1500)
+        }
         
     }
-    
+    interactions.forEach(interaction=>{
+        let bool = x >= interaction.position.x && x <= interaction.position.x + interaction.width && y>=interaction.position.y && y<=interaction.position.y + interaction.height
+        if(!bool) return
+        if(interaction.name === 'supermarket'){
+            if(isRoomOpen) return
+            roomOpen.supermarket = true
+            isRoomOpen = true
+        }else if(interaction.name === 'occupy'){
+            if(isRoomOpen) return
+            roomOpen.occupy = true
+            isRoomOpen = true
+        }
+        
+    })
+
 })
 
 canvas.addEventListener('mousedown', (e)=>{
@@ -290,22 +343,35 @@ canvas.addEventListener('mousedown', (e)=>{
         }
     })
 })
-
+let occupyMoveNum = 0
 canvas.addEventListener('mouseup', ()=>{
-
     if(isDragging && roomOpen.occupy && isRoomOpen){
-        let bool = occupys[mousedownIdx].position.x >= 1093 && occupys[mousedownIdx].position.x + occupys[mousedownIdx].width <= 1309 && occupys[mousedownIdx].position.y + occupys[mousedownIdx].height >= 251 && occupys[mousedownIdx].position.y + occupys[mousedownIdx].height <= 435
+        let bool = occupys[mousedownIdx].position.x >= 1093 && occupys[mousedownIdx].position.x + occupys[mousedownIdx].oldWidth <= 1309 && occupys[mousedownIdx].position.y + occupys[mousedownIdx].oldHeight >= 251 && occupys[mousedownIdx].position.y + occupys[mousedownIdx].oldHeight <= 435
         if(!bool){;
             occupys[mousedownIdx].position.x = occupys[mousedownIdx].oldPosX
             occupys[mousedownIdx].position.y = occupys[mousedownIdx].oldPosY
             if(occupys[mousedownIdx].image.src.includes('1-1.png')){
                 occupys[mousedownIdx].image.src = occupys[mousedownIdx].image.src.replace('1-1.png', '1.png')
             }
-            console.log('不再裡面');
             console.log(occupys[mousedownIdx].oldPosX);
             console.log(occupys[mousedownIdx].oldPosY);
         }else{
-            console.log('在裡面');
+            occupyMoveNum ++
+            console.log(occupyMoveNum);
+            if(occupyMoveNum === 10){
+                people.show = true
+                talk10A.show = true
+                talk10A.enlarge = true
+                talk10B.show = true
+                talk10B.enlarge = true
+                talk10C.show = true
+                talk10C.enlarge = true
+                setTimeout(()=>{
+                    talk10Chk = true
+                }, 500)
+            }
+            occupys[mousedownIdx].show = false
+            occupys[mousedownIdx].enlarge = false
         }
     }
 
