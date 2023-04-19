@@ -134,7 +134,7 @@ openAnim = setInterval(()=>{
         
     }
   
-}, 0)
+}, 20)
 
 let busPos = 1.5
 function animate(){
