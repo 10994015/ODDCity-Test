@@ -42,7 +42,8 @@ window.addEventListener("keyup", ({keyCode})=>{
     }
 })
 
-
+//talk
+let talk_occupy = talks.filter(talk=>talk.name === 'occupy')[0]
 canvas.addEventListener('mousemove', (e)=>{
     if(!isStart) return
     var rect = canvas.getBoundingClientRect();
@@ -51,12 +52,35 @@ canvas.addEventListener('mousemove', (e)=>{
     
     interactions.some(interaction=>{
         if(!isRoomOpen && x > interaction.position.x && x < (interaction.position.x + interaction.width) && y > interaction.position.y && y < (interaction.position.y + interaction.height)){
+            let talk = talks.filter(talk=> talk.name === interaction.name)[0]
+            if(talk) talk.show = true
+            
+            interaction.width = interaction.bigWidth
+            interaction.height = interaction.bigHeight
             return canvas.style.cursor = "pointer"
         }else{
+            talks.forEach(talk=>{
+                talk.show = false
+            })
+            interaction.width = interaction.oldWidth
+            interaction.height = interaction.oldHeight
             canvas.style.cursor = "default"
         }
     })
 
+
+    if(isRoomOpen){
+        let close = buttons.close;
+        if(x >= close.position.x && x<=close.position.x+close.width && y>=close.position.y && y<=close.position.y + close.height){
+            close.width = close.bigWidth
+            close.height = close.bigHeight
+            return canvas.style.cursor = "pointer"
+        }else{
+            close.width = close.oldWidth
+            close.height = close.oldHeight
+            canvas.style.cursor = "default"
+        }
+    }
     if(roomOpen.occupy && isRoomOpen){
         occupys.some(occupy=>{
             if(!occupy.enlarge) return
@@ -115,6 +139,17 @@ canvas.addEventListener('click', (e)=>{
     var y = e.clientY - rect.top;
 
     
+    if(isRoomOpen){
+        let close = buttons.close;
+        if(x >= close.position.x && x<=close.position.x+close.width && y>=close.position.y && y<=close.position.y + close.height){
+            isRoomOpen = false
+            Object.keys(roomOpen).forEach(room=>{
+                roomOpen[room] = false
+            })
+            console.log(roomOpen);
+        }
+    }
+
     if(roomOpen.occupy && isRoomOpen){
         if(sitdown.show){
             if(x>=sitdown.position.x && x<=sitdown.position.x + sitdown.oldWidth && y>=sitdown.position.y && y<=sitdown.position.y + sitdown.oldHeight){
@@ -349,7 +384,7 @@ canvas.addEventListener('mousedown', (e)=>{
 let occupyMoveNum = 0
 canvas.addEventListener('mouseup', ()=>{
     if(isDragging && roomOpen.occupy && isRoomOpen){
-        let bool = occupys[mousedownIdx].position.x >= 1093 && occupys[mousedownIdx].position.x + occupys[mousedownIdx].oldWidth <= 1309 && occupys[mousedownIdx].position.y + occupys[mousedownIdx].oldHeight >= 251 && occupys[mousedownIdx].position.y + occupys[mousedownIdx].oldHeight <= 435
+        let bool = occupys[mousedownIdx].position.x >= 1000 && occupys[mousedownIdx].position.x + occupys[mousedownIdx].oldWidth <= 1309 && occupys[mousedownIdx].position.y + occupys[mousedownIdx].oldHeight >= 251 && occupys[mousedownIdx].position.y + occupys[mousedownIdx].oldHeight <= 435
         if(!bool){;
             occupys[mousedownIdx].position.x = occupys[mousedownIdx].oldPosX
             occupys[mousedownIdx].position.y = occupys[mousedownIdx].oldPosY

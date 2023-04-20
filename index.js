@@ -31,12 +31,10 @@ const backgruond = new Backgruond({
 
 const interactions = [
     new Interaction({x:2973, y:481, w:147, h:218, name:'supermarket'}),
-    new Interaction({x:3269, y:177, w:451, h:262, name:'occupy'}),
-    new Interaction({x:4010, y:177, w:375, h:262, name:'hoard'}),
-
-
-    new Interaction({x:500, y:500, w:100, h:100, name:'occupyInteractiveBtn'}),
-    
+    new Interaction({x:3750, y:450, w:60, h:60, name:'occupy', image: createImage('./images/buttons/in2f.png'), multiple:1.05}),
+]
+const talks = [
+    new Talk({x:3780, y:350, w:3318/15, h:1604/15, name:'occupy', image: createImage('./images/talks/enter2f.png'),isShow:false}),
 ]
 const dynamics = [
     
@@ -78,9 +76,12 @@ const occupys = [
     new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'6B', isShow:false ,text:"洗勒考喔！是在趕狗出去喔！", isTypewriter:true}),
     new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'8', isShow:false ,text:"賀啦！也算是多虧這家店，林北才有地方休息，林北會盡量不影響其他人啦！", isTypewriter:true}),
     new Shared({x:canvas.width/2 - (2378/4.5)/2, y:canvas.height/2 - (482/4.5)/2, w:2378/4.5, h:482/4.5, image: createImage('./images/occupys/talk/9.png'), isTalk:true, isEnlarge:false, multiple:1, name:'9', isShow:false ,}),
-    new Shared({x:canvas.width/2 - (112/2)/2 + 200, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/occupys/talk/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
+    new Shared({x:canvas.width/2 - (112/2)/2 + 200, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
 ]
-
+const buttons = {
+    close: new Button({x:(canvas.width - ( canvas.height*0.8*1.844 ))/2 + canvas.height*0.8*1.844 - 10,y:(canvas.height - canvas.height *0.8)/2 - 50, w:418/9, h:418/9, image: createImage('./images/buttons/close.png'), name:"close", multiple:1.05}),
+    // in2f:  new Button({x: 3750, y:450, w:60, h:60, name:'in2f', isMove:true, image: createImage('./images/buttons/in2f.png'),}),
+}
 
 let isRoomOpen = false;
 
@@ -116,7 +117,9 @@ openAnim = setInterval(()=>{
     interactions.forEach(item=>{
         item.position.x -= busSpeed
     })
-   
+    talks.forEach(talk=>{
+        talk.position.x -= busSpeed
+    })
     
     if(backgruond.position.x <= -2400){
         clearInterval(openAnim)
@@ -135,7 +138,7 @@ openAnim = setInterval(()=>{
         
     }
   
-}, 20)
+}, 0)
 
 let busPos = 1.5
 function animate(){
@@ -158,6 +161,9 @@ function animate(){
             interactions.forEach(item=>{
                 item.position.x -= player.speed *0.66
             })
+            talks.forEach(talk=>{
+                talk.position.x -= player.speed *0.66
+            })
             
         }else if(keys.left.pressed){
             if(scrollOffset > 0){
@@ -167,12 +173,18 @@ function animate(){
                 interactions.forEach(item=>{
                     item.position.x += player.speed *0.66
                 })
+                talks.forEach(talk=>{
+                    talk.position.x += player.speed *0.66
+                })
             }
         }
     }
 
     interactions.forEach(interaction=>{
         interaction.draw()
+    })
+    talks.forEach(talk=>{
+        if(talk.show) talk.draw()
     })
     dynamics.forEach(dynamic=>{
         dynamic.draw()
@@ -197,11 +209,13 @@ function animate(){
         c.fillStyle = 'rgba(255,255,255,.5)'
         c.fillRect(0,0,canvas.width, canvas.height)
         occupy.draw()
+        buttons.close.draw()
         occupys.forEach(occupy=>{
             if(occupy.show){
                 occupy.draw()
             }
         })
+        
     }
     
 }

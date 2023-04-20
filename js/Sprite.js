@@ -18,19 +18,38 @@ class Backgruond{
 }
 
 class Interaction {
-    constructor({x, y, w, h, name}){
+    constructor({x, y, w, h, name, image=null, multiple=1}){
         this.position = {
            x, y
         }
-
+        this.oldWidth = w
+        this.oldHeight = h
+        this.bigWidth = w*multiple
+        this.bigHeight = h*multiple
         this.width = w
         this.height = h
         this.name = name
+        this.image = image
+        this.loaded = false
+        if(this.image !== null){
+            this.image.onload = ()=>{
+                this.loaded = true
+            }
+        }
+        
         
     }
     draw(){
-        c.fillStyle = 'rgba(0,0,255,.5)'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        if(this.image === null){
+            c.fillStyle = 'rgba(0,0,255,.5)'
+            c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        }else{
+            if(!this.loaded) return
+            c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
+        }
+        
+        
+
     }
 }
 
@@ -196,5 +215,50 @@ class Shared{
             let three_showText = three_text.join('')
             c.fillText(three_showText, this.position.x+30, this.position.y+this.addHeight+46) 
         }
+    }
+}
+
+class Button{
+    constructor({image, w, h, x, y, name=null, multiple=1.05}){
+        this.width = w
+        this.height = h
+        this.oldWidth = w
+        this.oldHeight = h
+        this.bigWidth = w*multiple
+        this.bigHeight = h*multiple
+        this.position = {
+            x,y
+        }
+        this.name = name
+        this.multiple = multiple
+        this.image = image
+        this.loaded = false
+        this.image.onload = ()=>{
+            this.loaded = true
+        }
+    }
+    draw(){
+        if(!this.loaded) return
+        c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
+    }
+}
+class Talk{
+    constructor({image, w, h, x, y, name=null, isShow=false}){
+        this.width = w
+        this.height = h
+        this.position = {
+            x,y
+        }
+        this.show = isShow
+        this.name = name
+        this.image = image
+        this.loaded = false
+        this.image.onload = ()=>{
+            this.loaded = true
+        }
+    }
+    draw(){
+        if(!this.loaded) return
+        c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
     }
 }
