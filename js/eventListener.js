@@ -87,12 +87,19 @@ canvas.addEventListener('mousemove', (e)=>{
             if(x >= occupy.position.x && x<=occupy.position.x+occupy.width && y>=occupy.position.y && y<=occupy.position.y + occupy.height){
                 occupy.width = occupy.bigWidth
                 occupy.height = occupy.bigHeight
+                if((!occupy.image.src.includes('_.png')) && occupy.talk){
+                    occupy.image.src = occupy.image.src.replace('.png', '_.png')
+                }
+                
                 return canvas.style.cursor = "pointer"
                 
             }
             occupy.width = occupy.oldWidth
             occupy.height = occupy.oldHeight
             canvas.style.cursor = "default"
+            if(occupy.image.src.includes('_.png')){
+                occupy.image.src = occupy.image.src.replace('_.png', '.png')
+            }
         })
     }
     
