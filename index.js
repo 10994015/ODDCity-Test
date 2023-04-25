@@ -4,6 +4,7 @@ const c = canvas.getContext('2d')
 canvas.width =16 * 90
 canvas.height = 9 *90
 
+let globalClick = false
 
 const CG = {
     occupy:{
@@ -30,8 +31,8 @@ const backgruond = new Backgruond({
 })
 
 const interactions = [
-    new Interaction({x:2973, y:481, w:147, h:218, name:'supermarket'}),
-    new Interaction({x:3750, y:450, w:60, h:60, name:'occupy', image: createImage('./images/buttons/in2f.png'), multiple:1.05}),
+    new Interaction({x:2973, y:481, w:147, h:218, name:'supermarket', isShow:false}),
+    new Interaction({x:3750, y:450, w:60, h:60, name:'occupy', image: createImage('./images/buttons/in2f.png'), multiple:1.05, isShow:false}),
 ]
 const talks = [
     new Talk({x:3780, y:350, w:3318/15, h:1604/15, name:'occupy', image: createImage('./images/talks/enter2f.png'),isShow:false}),
@@ -48,6 +49,17 @@ let mesterTalkX = (canvas.width-canvas.height*0.8*1.844)/2 + 100
 let mesterTalkY = 355
 //occupy
 const occupy = new Room({image:createImage('./images/occupy.png')});
+
+let startNav = false;
+let getOff = false;
+const starts = [
+    new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start01',image: createImage('./images/starts/talk/01.png'), multiple:1, isShow:false  }),
+    new Interaction({x:2650+6110/13 - 80, y:330+1641/13-75, w:112/2, h:68/2, name:'start01Btn',image: createImage('./images/buttons/chk.png'), multiple:1, isShow:false, isEnlarge:true  }),
+    new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start02',image: createImage('./images/starts/talk/02.png'), multiple:1, isShow:false  }),
+    new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start03',image: createImage('./images/starts/talk/03.png'), multiple:1, isShow:false  }),
+    new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start04',image: createImage('./images/starts/talk/04.png'), multiple:1, isShow:false  }),
+    new Interaction({x:2650, y:330, w:3318/13, h:1639/13, name:'start05',image: createImage('./images/starts/talk/05.png'), multiple:1, isShow:false  }),
+]
 const occupys = [
     new Shared({x:235, y:480, w:134.784, h:40, image: createImage('./images/occupys/a1.png'),}),
     new Shared({x:290, y:535, w:91/2.8, h:137/2.8, image: createImage('./images/occupys/b1.png')}),
@@ -120,12 +132,19 @@ openAnim = setInterval(()=>{
     talks.forEach(talk=>{
         talk.position.x -= busSpeed
     })
-    
+    starts.forEach(start=>{
+        start.position.x -= busSpeed
+    })
     if(backgruond.position.x <= -2400){
         clearInterval(openAnim)
         scrollOffset = 0
         isStart = true
         bus.run = false
+
+        // 顯示第一句對話
+        startNav = true;
+        starts.filter(start=> start.name==='start01')[0].show = true;
+        starts.filter(start=> start.name==='start01Btn')[0].show = true;
         
     }
     if(scrollOffset > -1500){
@@ -138,7 +157,7 @@ openAnim = setInterval(()=>{
         
     }
   
-}, 0)
+}, 20)
 
 let busPos = 1.5
 function animate(){
@@ -164,6 +183,9 @@ function animate(){
             talks.forEach(talk=>{
                 talk.position.x -= player.speed *0.66
             })
+            starts.forEach(start=>{
+                start.position.x -= player.speed *0.66
+            })
             
         }else if(keys.left.pressed){
             if(scrollOffset > 0){
@@ -176,11 +198,15 @@ function animate(){
                 talks.forEach(talk=>{
                     talk.position.x += player.speed *0.66
                 })
+                starts.forEach(start=>{
+                    start.position.x += player.speed *0.66
+                })
             }
         }
     }
 
     interactions.forEach(interaction=>{
+        if(!interaction.show) return
         interaction.draw()
     })
     talks.forEach(talk=>{
@@ -189,6 +215,12 @@ function animate(){
     dynamics.forEach(dynamic=>{
         dynamic.draw()
     })
+    if(startNav){
+        starts.forEach(start=>{
+            if(start.show) start.draw();
+        })
+    }
+    
 
     bus.update()
     if(busRun){
@@ -197,9 +229,11 @@ function animate(){
        }
         
     }
-    player.draw()
-    player.update()
-
+    if(getOff){
+        player.draw()
+        player.update()
+    }
+    
     if(roomOpen.supermarket && isRoomOpen){
         c.fillStyle = 'rgba(255,255,255,.5)'
         c.fillRect(0,0,canvas.width, canvas.height)

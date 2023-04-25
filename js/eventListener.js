@@ -6,6 +6,7 @@ let differY = null
 
 window.addEventListener("keydown", ({keyCode})=>{
     if(!isStart) return
+    if(startNav) return
     switch (keyCode){
         case 87:
             if(player.velocity.y ===0 ) player.velocity.y = -20
@@ -25,6 +26,7 @@ window.addEventListener("keydown", ({keyCode})=>{
 
 window.addEventListener("keyup", ({keyCode})=>{
     if(!isStart) return
+    if(startNav) return
     switch (keyCode){
         case 68:
             keys.right.pressed = false
@@ -51,10 +53,12 @@ canvas.addEventListener('mousemove', (e)=>{
     var y = e.clientY - rect.top;
     
     interactions.some(interaction=>{
+
         if(!isRoomOpen && x > interaction.position.x && x < (interaction.position.x + interaction.width) && y > interaction.position.y && y < (interaction.position.y + interaction.height)){
             let talk = talks.filter(talk=> talk.name === interaction.name)[0]
             if(talk) talk.show = true
             
+            if(!interaction.show) return
             interaction.width = interaction.bigWidth
             interaction.height = interaction.bigHeight
             return canvas.style.cursor = "pointer"
@@ -68,6 +72,18 @@ canvas.addEventListener('mousemove', (e)=>{
         }
     })
 
+    starts.some(start=>{
+        if(!(start.show && start.enlarge)) return 
+        if(startNav && x > start.position.x && x < (start.position.x + start.width) && y > start.position.y && y < (start.position.y + start.height)){
+            start.width = start.bigWidth
+            start.height = start.bigHeight
+            return canvas.style.cursor = "pointer"
+        }else{
+            start.width = start.oldWidth
+            start.height = start.oldHeight
+            canvas.style.cursor = "default"
+        }
+    })
 
     if(isRoomOpen){
         let close = buttons.close;
@@ -356,7 +372,11 @@ canvas.addEventListener('click', (e)=>{
     interactions.forEach(interaction=>{
         let bool = x >= interaction.position.x && x <= interaction.position.x + interaction.width && y>=interaction.position.y && y<=interaction.position.y + interaction.height
         if(!bool) return
+        if(startNav){
+            if(!interaction.show) return
+        }
         if(interaction.name === 'supermarket'){
+
             if(isRoomOpen) return
             roomOpen.supermarket = true
             isRoomOpen = true
@@ -367,6 +387,58 @@ canvas.addEventListener('click', (e)=>{
         }
         
     })
+    if(startNav){
+        starts.forEach(start=>{
+            let bool = x >= start.position.x && x <= start.position.x + start.width && y>=start.position.y && y<=start.position.y + start.height
+            if(!bool) return
+            if(!start.show) return
+            if(!start.enlarge) return
+            if(start.name === 'start01Btn'){
+                getOff = true;
+                starts.filter(start=> start.name === 'start01' )[0].show = false
+                starts.filter(start=> start.name === 'start01Btn' )[0].show = false
+                starts.filter(start=> start.name === 'start02' )[0].show = true
+                setTimeout(()=>{
+                    globalClick = true
+                }, 100)
+
+
+            }
+        
+        })
+    }
+
+    if(startNav && globalClick && starts.filter(start=> start.name === 'start02' )[0].show ){
+        globalClick = false
+        starts.filter(start=> start.name === 'start02' )[0].show = false
+        starts.filter(start=> start.name === 'start03' )[0].show = true
+        setTimeout(()=>{
+            globalClick = true
+        }, 100)
+    }
+    if(startNav && globalClick && starts.filter(start=> start.name === 'start03' )[0].show ){
+        globalClick = false
+        starts.filter(start=> start.name === 'start03' )[0].show = false
+        starts.filter(start=> start.name === 'start04' )[0].show = true
+        setTimeout(()=>{
+            globalClick = true
+        }, 100)
+    }
+    if(startNav && globalClick && starts.filter(start=> start.name === 'start04' )[0].show ){
+        globalClick = false
+        starts.filter(start=> start.name === 'start04' )[0].show = false
+        starts.filter(start=> start.name === 'start05' )[0].show = true
+        setTimeout(()=>{
+            globalClick = true
+        }, 100)
+    }
+    if(startNav && globalClick && starts.filter(start=> start.name === 'start05' )[0].show ){
+        starts.filter(start=> start.name === 'start05' )[0].show = false
+        // starts.filter(start=> start.name === 'start05' )[0].show = true
+        interactions.filter(interaction=>interaction.name === 'supermarket')[0].show = true
+    }
+
+    
 
 })
 

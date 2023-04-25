@@ -18,7 +18,7 @@ class Backgruond{
 }
 
 class Interaction {
-    constructor({x, y, w, h, name, image=null, multiple=1}){
+    constructor({x, y, w, h, name, image=null, multiple=1, isShow=true, isEnlarge=false}){
         this.position = {
            x, y
         }
@@ -31,6 +31,8 @@ class Interaction {
         this.name = name
         this.image = image
         this.loaded = false
+        this.show = isShow
+        this.enlarge = isEnlarge
         if(this.image !== null){
             this.image.onload = ()=>{
                 this.loaded = true
