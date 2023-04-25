@@ -7,6 +7,9 @@ canvas.height = 9 *90
 let globalClick = false
 
 const CG = {
+    cool:{
+        isPeace:true
+    },
     occupy:{
         isPeace:true
     }
@@ -15,6 +18,7 @@ let occupyInteractiveBtn = false
 
 let scrollOffset =-2400
 let isStart = false
+
 const player = new Player()
 
 const createImage = (imgSrc)=>{
@@ -31,7 +35,8 @@ const backgruond = new Backgruond({
 })
 
 const interactions = [
-    new Interaction({x:2973, y:481, w:147, h:218, name:'supermarket', isShow:false}),
+    // new Interaction({x:2973, y:481, w:147, h:218, name:'supermarket', isShow:false}),
+    new Interaction({x:2973, y:481, w:147, h:218, name:'cool', isShow:false}),
     new Interaction({x:3750, y:450, w:60, h:60, name:'occupy', image: createImage('./images/buttons/in2f.png'), multiple:1.05, isShow:false}),
 ]
 const talks = [
@@ -41,7 +46,7 @@ const dynamics = [
     
 ]        
 const bus = new Bus({x:200, y:461, w:1024, h:825/2.7, image:createImage('./images/bus3.png')})
-const supermarket = new Room({image:createImage('./images/supermarket.png')});
+const cool = new Room({image:createImage('./images/cool.png')});
 
 let playerTalkX = canvas.width-(canvas.width-canvas.height*0.8*1.844)/2
 let playerTalkXY= canvas.height-(canvas.height-canvas.height*0.8)/2
@@ -50,7 +55,7 @@ let mesterTalkY = 355
 //occupy
 const occupy = new Room({image:createImage('./images/occupy.png')});
 
-let startNav = false;
+let startNav = true;
 let getOff = false;
 const starts = [
     new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start01',image: createImage('./images/starts/talk/01.png'), multiple:1, isShow:false  }),
@@ -58,7 +63,35 @@ const starts = [
     new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start02',image: createImage('./images/starts/talk/02.png'), multiple:1, isShow:false  }),
     new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start03',image: createImage('./images/starts/talk/03.png'), multiple:1, isShow:false  }),
     new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start04',image: createImage('./images/starts/talk/04.png'), multiple:1, isShow:false  }),
-    new Interaction({x:2650, y:330, w:3318/13, h:1639/13, name:'start05',image: createImage('./images/starts/talk/05.png'), multiple:1, isShow:false  }),
+    new Interaction({x:3100, y:330, w:3318/13, h:1639/13, name:'start05',image: createImage('./images/starts/talk/05.png'), multiple:1, isShow:false  }),
+]
+const cools = [
+    new Shared({x:160, y:170, w:316/1.8, h:679/1.8, image:createImage('./images/cool/people1.png'), isPeople:true, name:'people', isShow:true}),
+    new Shared({x:50, y:450, w:316/1.1, h:679/1.1, image:createImage('./images/cool/people1.png'), isPeople:true, name:'talkPeople', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/cool/talk/1.png'), isTalk:true, isEnlarge:true, multiple:1.02, name:'1', isShow:true,}),
+    new Shared({x:playerTalkX-(2378/4.5)-175, y:playerTalkXY-630/4.5 - 630/4.5 - 10, w:2378/4.8, h:639/4.8, image: createImage('./images/cool/talk/001.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'001', isShow:true,}),
+    new Shared({x:canvas.width/2 - (3149/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:3149/4.5, h:484/4.5, image: createImage('./images/cool/talk/1001.png'), isTalk:true, isEnlarge:false, multiple:1, name:'1001', isShow:false ,}),
+    new Shared({x:canvas.width/2 - (3149/4.5)/2  + 30, y:canvas.height/2 - (484/4.5) - 60, w:2378/4.8, h:639/4.8, image: createImage('./images/cool/talk/002.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'002', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/cool/talk/3.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'3', isShow:false,}),
+
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/cool/talk/4A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'4A', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/cool/talk/4B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'4B', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-40, y:playerTalkXY-630/4.5*3+15, w:2378/4.8, h:639/4.8, image: createImage('./images/cool/talk/003.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'003', isShow:false}),
+    
+    
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/cool/talk/6.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'6', isShow:false}),
+
+    
+    
+    
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5 +140, w:2378/4.5, h:630/4.5, image: createImage('./images/cool/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'5A', isShow:false, text:"沒有...", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5 +140, w:2378/4.5, h:630/4.5, image: createImage('./images/cool/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'5B', isShow:false, text:"我又沒有...打擾到別人...", isTypewriter:true }),
+    
+    new Shared({x:mesterTalkX - 30, y:mesterTalkY-630/4.5 , w:2378/4.8, h:639/4.8, image: createImage('./images/cool/talk/004.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'004', isShow:false,}),
+
+    
+    new Shared({x:canvas.width/2 - (112/2)/2 + 300, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
+
 ]
 const occupys = [
     new Shared({x:235, y:480, w:134.784, h:40, image: createImage('./images/occupys/a1.png'),}),
@@ -73,8 +106,8 @@ const occupys = [
     new Shared({x:1120, y:680, w:134/2.9, h:89/2.8, image: createImage('./images/occupys/j1.png')}),
     new Shared({x:950, y:355, w:383/2, h:774/2, image: createImage('./images/occupys/sitdown.png'), isPeople:true, isEnlarge:true, name:'sitdown', multiple:1.05}),
     new Shared({x:20, y:255, w:223, h:795, image: createImage('./images/occupys/people1.png'), isPeople:true, name:'people', isShow:false}),
-    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/1.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'1', isShow:false, text:'先生！你怎麼把這邊搞得亂七八糟呢？'}),
-    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/10A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'3A', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/1.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'1', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/3A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'3A', isShow:false}),
     new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/3B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'3B', isShow:false}),
     new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/5A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'5A', isShow:false}),
     new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/occupys/talk/5B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'5B', isShow:false}),
@@ -98,7 +131,7 @@ const buttons = {
 let isRoomOpen = false;
 
 const roomOpen = {
-    supermarket:false,
+    cool:false,
     occupy:false,
 }
 
@@ -157,7 +190,7 @@ openAnim = setInterval(()=>{
         
     }
   
-}, 20)
+}, 0)
 
 let busPos = 1.5
 function animate(){
@@ -206,7 +239,7 @@ function animate(){
     }
 
     interactions.forEach(interaction=>{
-        if(!interaction.show) return
+        if(interaction.show===false) return
         interaction.draw()
     })
     talks.forEach(talk=>{
@@ -234,10 +267,16 @@ function animate(){
         player.update()
     }
     
-    if(roomOpen.supermarket && isRoomOpen){
+    if(roomOpen.cool && isRoomOpen){
         c.fillStyle = 'rgba(255,255,255,.5)'
         c.fillRect(0,0,canvas.width, canvas.height)
-        supermarket.draw()
+        cool.draw()
+        buttons.close.draw()
+        cools.forEach(cool=>{
+            if(cool.show){
+                cool.draw()
+            }
+        })
     }
     if(roomOpen.occupy && isRoomOpen){
         c.fillStyle = 'rgba(255,255,255,.5)'

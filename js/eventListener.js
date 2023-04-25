@@ -7,6 +7,8 @@ let differY = null
 window.addEventListener("keydown", ({keyCode})=>{
     if(!isStart) return
     if(startNav) return
+    if(!player.move) return
+    console.log(keyCode);
     switch (keyCode){
         case 87:
             if(player.velocity.y ===0 ) player.velocity.y = -20
@@ -27,6 +29,7 @@ window.addEventListener("keydown", ({keyCode})=>{
 window.addEventListener("keyup", ({keyCode})=>{
     if(!isStart) return
     if(startNav) return
+    if(!player.move) return
     switch (keyCode){
         case 68:
             keys.right.pressed = false
@@ -53,12 +56,12 @@ canvas.addEventListener('mousemove', (e)=>{
     var y = e.clientY - rect.top;
     
     interactions.some(interaction=>{
-
         if(!isRoomOpen && x > interaction.position.x && x < (interaction.position.x + interaction.width) && y > interaction.position.y && y < (interaction.position.y + interaction.height)){
             let talk = talks.filter(talk=> talk.name === interaction.name)[0]
+            if(interaction.show===false) return
             if(talk) talk.show = true
             
-            if(!interaction.show) return
+            
             interaction.width = interaction.bigWidth
             interaction.height = interaction.bigHeight
             return canvas.style.cursor = "pointer"
@@ -97,6 +100,27 @@ canvas.addEventListener('mousemove', (e)=>{
             canvas.style.cursor = "default"
         }
     }
+    if(roomOpen.cool && isRoomOpen){
+        cools.some(cool=>{
+            if(!cool.enlarge) return
+            if(x >= cool.position.x && x<=cool.position.x+cool.width && y>=cool.position.y && y<=cool.position.y + cool.height){
+                cool.width = cool.bigWidth
+                cool.height = cool.bigHeight
+                if((!cool.image.src.includes('_.png')) && cool.talk){
+                    cool.image.src = cool.image.src.replace('.png', '_.png')
+                }
+                
+                return canvas.style.cursor = "pointer"
+                
+            }
+            cool.width = cool.oldWidth
+            cool.height = cool.oldHeight
+            canvas.style.cursor = "default"
+            if(cool.image.src.includes('_.png')){
+                cool.image.src = cool.image.src.replace('_.png', '.png')
+            }
+        })
+    }
     if(roomOpen.occupy && isRoomOpen){
         occupys.some(occupy=>{
             if(!occupy.enlarge) return
@@ -126,34 +150,66 @@ canvas.addEventListener('mousemove', (e)=>{
 })
 
 //霸位
-let sitdown = occupys.filter(occupy=> occupy.name === 'sitdown')[0]
-let sitdownChk = false
-let people = occupys.filter(occupy=>occupy.name === 'people')[0]
-let talk1 = occupys.filter(occupy=>occupy.name == '1')[0]
-let talk1Chk = true
-let response2 = occupys.filter(occupy=>occupy.name == '2')[0]
-let talk3A = occupys.filter(occupy=>occupy.name == '3A')[0]
-let talk3B = occupys.filter(occupy=>occupy.name == '3B')[0]
-let talk3Chk = true
-let response4 = occupys.filter(occupy=>occupy.name == '4')[0] 
+const occupyObject = {
+    sitdown: occupys.filter(occupy=> occupy.name === 'sitdown')[0],
+    sitdownChk: false,
+    people: occupys.filter(occupy=>occupy.name === 'people')[0],
+    talk1: occupys.filter(occupy=>occupy.name == '1')[0],
+    talk1Chk: true,
+    response2: occupys.filter(occupy=>occupy.name == '2')[0],
+    talk3A: occupys.filter(occupy=>occupy.name == '3A')[0],
+    talk3B: occupys.filter(occupy=>occupy.name == '3B')[0],
+    talk3Chk: true,
+    response4: occupys.filter(occupy=>occupy.name == '4')[0], 
+    
+    talk5A: occupys.filter(occupy=>occupy.name == '5A')[0],
+    talk5B: occupys.filter(occupy=>occupy.name == '5B')[0],
+    talk5Chk: true,
+    response6A: occupys.filter(occupy=>occupy.name == '6A')[0], 
+    response6B: occupys.filter(occupy=>occupy.name == '6B')[0], 
+    
+    talk7: occupys.filter(occupy=>occupy.name == '7')[0],
+    talk7Chk: true,
+    response8: occupys.filter(occupy=>occupy.name == '8')[0], 
+    
+    response9: occupys.filter(occupy=>occupy.name == '9')[0], 
+    chk: occupys.filter(occupy=>occupy.name == 'chk')[0], 
+    
+    talk10A: occupys.filter(occupy=>occupy.name == '10A')[0],
+    talk10B: occupys.filter(occupy=>occupy.name == '10B')[0],
+    talk10C: occupys.filter(occupy=>occupy.name == '10C')[0],
+    talk10Chk: false,
+}
 
-let talk5A = occupys.filter(occupy=>occupy.name == '5A')[0]
-let talk5B = occupys.filter(occupy=>occupy.name == '5B')[0]
-let talk5Chk = true
-let response6A = occupys.filter(occupy=>occupy.name == '6A')[0] 
-let response6B = occupys.filter(occupy=>occupy.name == '6B')[0] 
+//納涼
+const coolObject = {
+    people: cools.filter(cool=>cool.name === 'people')[0],
+    talk1: cools.filter(cool=> cool.name === '1')[0],
+    talk001: cools.filter(cool=> cool.name === '001')[0],
+    talk1Chk: true,
 
-let talk7 = occupys.filter(occupy=>occupy.name == '7')[0]
-let talk7Chk = true
-let response8 = occupys.filter(occupy=>occupy.name == '8')[0] 
+    talk1001: cools.filter(cool=> cool.name === '1001')[0],
+    talk002: cools.filter(cool=> cool.name === '002')[0],
+    chk: cools.filter(cool=> cool.name === 'chk')[0],
+    talk2Chk: false,
 
-let response9 = occupys.filter(occupy=>occupy.name == '9')[0] 
-let chk = occupys.filter(occupy=>occupy.name == 'chk')[0] 
+    talk3: cools.filter(cool=> cool.name === '3')[0],
+    talk3Chk: false,
 
-let talk10A = occupys.filter(occupy=>occupy.name == '10A')[0]
-let talk10B = occupys.filter(occupy=>occupy.name == '10B')[0]
-let talk10C = occupys.filter(occupy=>occupy.name == '10C')[0]
-let talk10Chk = false
+    talk4A: cools.filter(cool=> cool.name === '4A')[0],
+    talk4B: cools.filter(cool=> cool.name === '4B')[0],
+    talk003: cools.filter(cool=> cool.name === '003')[0],
+    talk4Chk: false,
+
+    talkPeople: cools.filter(cool=> cool.name === 'talkPeople')[0],
+    response5A: cools.filter(cool=> cool.name === '5A')[0],
+    response5B: cools.filter(cool=> cool.name === '5B')[0],
+    talk004: cools.filter(cool=> cool.name === '004')[0],
+
+    talk6: cools.filter(cool=> cool.name === '6')[0],
+    talk6Chk: false
+
+}
 
 canvas.addEventListener('click', (e)=>{
     if(!isStart) return
@@ -173,148 +229,264 @@ canvas.addEventListener('click', (e)=>{
         }
     }
 
-    if(roomOpen.occupy && isRoomOpen){
-        if(sitdown.show){
-            if(x>=sitdown.position.x && x<=sitdown.position.x + sitdown.oldWidth && y>=sitdown.position.y && y<=sitdown.position.y + sitdown.oldHeight){
-                sitdown.show = false
-                sitdown.enlarge = false
-                
-                sitdownChk = false
+    if(roomOpen.cool && isRoomOpen){
+        if(coolObject.talk1.show && coolObject.talk1Chk){
+            if(!coolObject.talk1Chk) return
+            if(x>=coolObject.talk1.position.x && x<=coolObject.talk1.position.x + coolObject.talk1.width && y>=coolObject.talk1.position.y && y<=coolObject.talk1.position.y+coolObject.talk1.height){
+                coolObject.talk1Chk = false
+                coolObject.talk1.show = false
+                coolObject.talk1.enlarge = false
+                coolObject.talk001.show = false
 
-                people.show = true
-                talk1.show = true
-                talk1.enlarge = true
-            }
-        }
-        if(talk1.show && talk1Chk){
-            if(!talk1Chk) return
-            if(x>=talk1.position.x && x<=talk1.position.x + talk1.oldWidth && y>=talk1.position.y && y<=talk1.position.y + talk1.oldHeight){
-                response2.show = true
-                talk1Chk = false
-                talk1.enlarge = false
+                coolObject.talk1001.show = true
+                coolObject.talk002.show = true
+                coolObject.chk.show = true
+                coolObject.chk.enlarge = true
+
                 setTimeout(()=>{
-                    talk1.show = false
+                    coolObject.talk2Chk = true
+                },100)
+            }
+        }
+        if(coolObject.talk002.show && coolObject.talk2Chk){
+            if(!coolObject.talk2Chk) return
+            if(x>=coolObject.chk.position.x && x<=coolObject.chk.position.x + coolObject.chk.width && y>=coolObject.chk.position.y && y<=coolObject.chk.position.y+coolObject.chk.height){
+                coolObject.talk2Chk = false
 
-                    talk3A.show = true
-                    talk3A.enlarge = true
-                    talk3B.show = true
-                    talk3B.enlarge = true
-                }, response2.text.split('').length*10 + 1500)
+                coolObject.talk1001.show = false
+                coolObject.talk002.show = false
+                coolObject.chk.show = false
+                coolObject.chk.enlarge = false
+            
+                coolObject.talk3.show = true
+                coolObject.talk3.enlarge = true
+
+                setTimeout(()=>{
+                    coolObject.talk3Chk = true
+                },100)
+            }
+        }
+
+        if(coolObject.talk3.show && coolObject.talk3Chk){
+            if(!coolObject.talk3Chk) return
+            if(x>=coolObject.talk3.position.x && x<=coolObject.talk3.position.x + coolObject.talk3.width && y>=coolObject.talk3.position.y && y<=coolObject.talk3.position.y+coolObject.talk3.height){
+                coolObject.talk3Chk = false
+
+                coolObject.talk3.show = false
+                coolObject.talk3.enlarge = false
+                
+                coolObject.talk4A.show = true
+                coolObject.talk4A.enlarge = true
+                coolObject.talk4B.show = true
+                coolObject.talk4B.enlarge = true
+                coolObject.talk003.show = true
+
+                setTimeout(()=>{
+                    coolObject.talk4Chk = true
+                },100)
                 
             }
         }
 
-        if((talk3A.show && talk3B.show && talk3Chk)){
-            if(!talk3Chk) return
-            if(x>=talk3A.position.x && x<=talk3A.position.x + talk3A.oldWidth && y>=talk3A.position.y && y<=talk3A.position.y + talk3A.oldHeight){
-                response4.show = true
-                response2.show = false
-                talk3Chk = false
-                talk3A.enlarge = false
-                talk3B.enlarge = false
-                if(people.image.src.includes('people2')){
-                    people.image.src = people.image.src.replace('people2', 'people1')
+        if(coolObject.talk4A.show && coolObject.talk4B.show && coolObject.talk4Chk){
+            if(!coolObject.talk4Chk) return
+            if(x>=coolObject.talk4A.position.x && x<=coolObject.talk4A.position.x + coolObject.talk4A.width && y>=coolObject.talk4A.position.y && y<=coolObject.talk4A.position.y+coolObject.talk4A.height){
+                coolObject.talkPeople.image.src = './images/cool/people2.png'
+
+                coolObject.talk4Chk = false
+                coolObject.people.show = false
+                coolObject.talk003.show = false
+
+                coolObject.talkPeople.show = true
+                coolObject.response5A.show = true
+                coolObject.talk004.show = true
+                
+                coolObject.talk4A.show = false
+                coolObject.talk4B.enlarge = false
+
+                setTimeout(()=>{
+                    coolObject.talk4A.enlarge = false
+                    coolObject.talk4B.show = false
+                    
+                    coolObject.talk6.show = true
+                    coolObject.talk6.enlarge = true
+                    coolObject.talk6Chk = true
+                    coolObject.talkPeople.image.src = './images/cool/people1.png'
+
+                }, coolObject.response5A.text.split('').length*10 + 1500)
+            }
+            if(x>=coolObject.talk4B.position.x && x<=coolObject.talk4B.position.x + coolObject.talk4B.width && y>=coolObject.talk4B.position.y && y<=coolObject.talk4B.position.y+coolObject.talk4B.height){
+                coolObject.talkPeople.image.src = './images/cool/people2.png'
+
+                coolObject.talk4Chk = false
+                coolObject.people.show = false
+                coolObject.talk003.show = false
+
+                coolObject.talkPeople.show = true
+                coolObject.response5B.show = true
+                coolObject.talk004.show = true
+
+                coolObject.talk4A.enlarge = false
+                coolObject.talk4B.enlarge = false
+
+                CG.cool.isPeace = false
+               
+                setTimeout(()=>{
+                    coolObject.talk4A.show = false
+                    coolObject.talk4B.show = false
+                    
+                    
+                    coolObject.talk6.show = true
+                    coolObject.talk6.enlarge = true
+                    coolObject.talk6Chk = true
+                    coolObject.talkPeople.image.src = './images/cool/people3.png'
+                }, coolObject.response5B.text.split('').length*10 + 1500)
+            }
+        }
+    }
+
+    if(roomOpen.occupy && isRoomOpen){
+        if(occupyObject.sitdown.show){
+            if(x>=occupyObject.sitdown.position.x && x<=occupyObject.sitdown.position.x + occupyObject.sitdown.oldWidth && y>=occupyObject.sitdown.position.y && y<=occupyObject.sitdown.position.y + occupyObject.sitdown.oldHeight){
+                occupyObject.sitdown.show = false
+                occupyObject.sitdown.enlarge = false
+                
+                occupyObject.sitdownChk = false
+
+                occupyObject.people.show = true
+                occupyObject.talk1.show = true
+                occupyObject.talk1.enlarge = true
+            }
+        }
+        if(occupyObject.talk1.show && occupyObject.talk1Chk){
+            if(!occupyObject.talk1Chk) return
+            if(x>=occupyObject.talk1.position.x && x<=occupyObject.talk1.position.x + occupyObject.talk1.oldWidth && y>=occupyObject.talk1.position.y && y<=occupyObject.talk1.position.y + occupyObject.talk1.oldHeight){
+                occupyObject.response2.show = true
+                occupyObject.talk1Chk = false
+                occupyObject.talk1.enlarge = false
+                setTimeout(()=>{
+                    occupyObject.talk1.show = false
+
+                    occupyObject.talk3A.show = true
+                    occupyObject.talk3A.enlarge = true
+                    occupyObject.talk3B.show = true
+                    occupyObject.talk3B.enlarge = true
+                }, occupyObject.response2.text.split('').length*10 + 1500)
+                
+            }
+        }
+
+        if((occupyObject.talk3A.show && occupyObject.talk3B.show && occupyObject.talk3Chk)){
+            if(!occupyObject.talk3Chk) return
+            if(x>=occupyObject.talk3A.position.x && x<=occupyObject.talk3A.position.x + occupyObject.talk3A.oldWidth && y>=occupyObject.talk3A.position.y && y<=occupyObject.talk3A.position.y + occupyObject.talk3A.oldHeight){
+                occupyObject.response4.show = true
+                occupyObject.response2.show = false
+                occupyObject.talk3Chk = false
+                occupyObject.talk3A.enlarge = false
+                occupyObject.talk3B.enlarge = false
+                if(occupyObject.people.image.src.includes('people2')){
+                    occupyObject.people.image.src = occupyObject.people.image.src.replace('people2', 'people1')
                 }
                 
             }
 
-            if(x>=talk3B.position.x && x<=talk3B.position.x + talk3B.oldWidth && y>=talk3B.position.y && y<=talk3B.position.y + talk3B.oldHeight){
-                response4.show = true
-                response2.show = false
-                talk3Chk = false
-                talk3A.enlarge = false
-                talk3B.enlarge = false
+            if(x>=occupyObject.talk3B.position.x && x<=occupyObject.talk3B.position.x + occupyObject.talk3B.oldWidth && y>=occupyObject.talk3B.position.y && y<=occupyObject.talk3B.position.y + occupyObject.talk3B.oldHeight){
+                occupyObject.response4.show = true
+                occupyObject.response2.show = false
+                occupyObject.talk3Chk = false
+                occupyObject.talk3A.enlarge = false
+                occupyObject.talk3B.enlarge = false
                 CG.occupy.isPeace = false
-                if(people.image.src.includes('people1')){
-                    people.image.src = people.image.src.replace('people1', 'people2')
+                if(occupyObject.people.image.src.includes('people1')){
+                    occupyObject.people.image.src = occupyObject.people.image.src.replace('people1', 'people2')
                 }
             }
 
             setTimeout(()=>{
-                talk3A.show = false
-                talk3B.show = false
+                occupyObject.talk3A.show = false
+                occupyObject.talk3B.show = false
 
-                talk5A.show = true
-                talk5A.enlarge = true
-                talk5B.show = true
-                talk5B.enlarge = true
+                occupyObject.talk5A.show = true
+                occupyObject.talk5A.enlarge = true
+                occupyObject.talk5B.show = true
+                occupyObject.talk5B.enlarge = true
 
                 
-            }, response4.text.split('').length*10 + 1500)
+            }, occupyObject.response4.text.split('').length*10 + 1500)
         }
       
 
-        if((talk5A.show && talk5B.show && talk5Chk)){
-            if(!talk5Chk) return
-            if(x>=talk5A.position.x && x<=talk5A.position.x + talk5A.oldWidth && y>=talk5A.position.y && y<=talk5A.position.y + talk5A.oldHeight){
-                response6A.show = true
-                response4.show = false
-                talk5Chk = false
-                talk5A.enlarge = false
-                talk5B.enlarge = false
-                if(people.image.src.includes('people2')){
-                    people.image.src = people.image.src.replace('people2', 'people1')
+        if((occupyObject.talk5A.show && occupyObject.talk5B.show && occupyObject.talk5Chk)){
+            if(!occupyObject.talk5Chk) return
+            if(x>=occupyObject.talk5A.position.x && x<=occupyObject.talk5A.position.x + occupyObject.talk5A.oldWidth && y>=occupyObject.talk5A.position.y && y<=occupyObject.talk5A.position.y + occupyObject.talk5A.oldHeight){
+                occupyObject.response6A.show = true
+                occupyObject.response4.show = false
+                occupyObject.talk5Chk = false
+                occupyObject.talk5A.enlarge = false
+                occupyObject.talk5B.enlarge = false
+                if(occupyObject.people.image.src.includes('people2')){
+                    occupyObject.people.image.src = occupyObject.people.image.src.replace('people2', 'people1')
                 }
 
                 setTimeout(()=>{
-                    talk5A.show = false
-                    talk5B.show = false
+                    occupyObject.talk5A.show = false
+                    occupyObject.talk5B.show = false
 
-                    talk7.show = true
-                    talk7.enlarge = true
+                    occupyObject.talk7.show = true
+                    occupyObject.talk7.enlarge = true
 
-                }, response6A.text.split('').length*10 + 1500)
+                }, occupyObject.response6A.text.split('').length*10 + 1500)
 
             }
-            if(x>=talk5B.position.x && x<=talk5B.position.x + talk5B.oldWidth && y>=talk5B.position.y && y<=talk5B.position.y + talk5B.oldHeight){
-                response6B.show = true
-                response4.show = false
-                talk5Chk = false
-                talk5A.enlarge = false
-                talk5B.enlarge = false
+            if(x>=occupyObject.talk5B.position.x && x<=occupyObject.talk5B.position.x + occupyObject.talk5B.oldWidth && y>=occupyObject.talk5B.position.y && y<=occupyObject.talk5B.position.y + occupyObject.talk5B.oldHeight){
+                occupyObject.response6B.show = true
+                occupyObject.response4.show = false
+                occupyObject.talk5Chk = false
+                occupyObject.talk5A.enlarge = false
+                occupyObject.talk5B.enlarge = false
                 CG.occupy.isPeace = false
-                if(people.image.src.includes('people1')){
-                    people.image.src = people.image.src.replace('people1', 'people2')
+                if(occupyObject.people.image.src.includes('people1')){
+                    occupyObject.people.image.src = occupyObject.people.image.src.replace('people1', 'people2')
                 }
                 setTimeout(()=>{
-                    talk5A.show = false
-                    talk5B.show = false
+                    occupyObject.talk5A.show = false
+                    occupyObject.talk5B.show = false
 
-                    talk7.show = true
-                    talk7.enlarge = true
+                    occupyObject.talk7.show = true
+                    occupyObject.talk7.enlarge = true
 
-                }, response6B.text.split('').length*10 + 1500)
+                }, occupyObject.response6B.text.split('').length*10 + 1500)
 
             }
 
             
         }
 
-        if(talk7.show && talk7Chk){
-            if(!talk7Chk) return
-            if(x>=talk7.position.x && x<=talk7.position.x + talk7.oldWidth && y>=talk7.position.y && y<=talk7.position.y + talk7.oldHeight){
-                response8.show = true
-                response6A.show = false
-                response6B.show = false
-                talk7Chk = false
-                talk7.enlarge = false
+        if(occupyObject.talk7.show && occupyObject.talk7Chk){
+            if(!occupyObject.talk7Chk) return
+            if(x>=occupyObject.talk7.position.x && x<=occupyObject.talk7.position.x + occupyObject.talk7.oldWidth && y>=occupyObject.talk7.position.y && y<=occupyObject.talk7.position.y + occupyObject.talk7.oldHeight){
+                occupyObject.response8.show = true
+                occupyObject.response6A.show = false
+                occupyObject.response6B.show = false
+                occupyObject.talk7Chk = false
+                occupyObject.talk7.enlarge = false
 
                 setTimeout(()=>{
-                    response9.show = true
-                    chk.show = true
-                    chk.enlarge = true
-                    talk7.show = false
-                }, response8.text.split('').length*10 + 2000)
+                    occupyObject.response9.show = true
+                    occupyObject.chk.show = true
+                    occupyObject.chk.enlarge = true
+                    occupyObject.talk7.show = false
+                }, occupyObject.response8.text.split('').length*10 + 2000)
             }
         }
 
-        if(response9.show && chk.show){
-            if(x>=chk.position.x && x<=chk.position.x + chk.oldWidth && y>=chk.position.y && y<=chk.position.y + chk.oldHeight){
-                response8.show = false
-                response9.show = false
-                chk.show = false
-                chk.enlarge = false
-                people.show = false
+        if(occupyObject.response9.show && occupyObject.chk.show){
+            if(x>=occupyObject.chk.position.x && x<=occupyObject.chk.position.x + occupyObject.chk.oldWidth && y>=occupyObject.chk.position.y && y<=occupyObject.chk.position.y + occupyObject.chk.oldHeight){
+                occupyObject.response8.show = false
+                occupyObject.response9.show = false
+                occupyObject.chk.show = false
+                occupyObject.chk.enlarge = false
+                occupyObject.people.show = false
 
                 occupys.forEach(occupy=>{
                     if(occupy.name === null){
@@ -325,44 +497,37 @@ canvas.addEventListener('click', (e)=>{
             }
         }   
 
-        if(talk10A.show && talk10B.show && talk10C.show && talk10Chk){
-            if(!talk10Chk) return
-            if(x>=talk10A.position.x && x<=talk10A.position.x + talk10A.oldWidth && y>=talk10A.position.y && y<=talk10A.position.y + talk10A.oldHeight){
-                talk10Chk = false
-                talk10A.enlarge = false
-                talk10B.enlarge = false
-                talk10C.enlarge = false
-                if(people.image.src.includes('people2')){
-                    people.image.src = people.image.src.replace('people2', 'people1')
+        if(occupyObject.talk10A.show && occupyObject.talk10B.show && occupyObject.talk10C.show && occupyObject.talk10Chk){
+            if(!occupyObject.talk10Chk) return
+            if(x>=occupyObject.talk10A.position.x && x<=occupyObject.talk10A.position.x + occupyObject.talk10A.oldWidth && y>=occupyObject.talk10A.position.y && y<=occupyObject.talk10A.position.y + occupyObject.talk10A.oldHeight){
+                occupyObject.talk10Chk = false
+                occupyObject.talk10A.enlarge = false
+                occupyObject.talk10B.enlarge = false
+                occupyObject.talk10C.enlarge = false
+                if(occupyObject.people.image.src.includes('people2')){
+                    occupyObject.people.image.src = occupyObject.people.image.src.replace('people2', 'people1')
                 }
             }
-            if(x>=talk10B.position.x && x<=talk10B.position.x + talk10B.oldWidth && y>=talk10B.position.y && y<=talk10B.position.y + talk10B.oldHeight){
-                talk10Chk = false
-                talk10A.enlarge = false
-                talk10B.enlarge = false
-                talk10C.enlarge = false
-                if(people.image.src.includes('people2')){
-                    people.image.src = people.image.src.replace('people2', 'people1')
+            if(x>=occupyObject.talk10B.position.x && x<=occupyObject.talk10B.position.x + occupyObject.talk10B.oldWidth && y>=occupyObject.talk10B.position.y && y<=occupyObject.talk10B.position.y + occupyObject.talk10B.oldHeight){
+                occupyObject.talk10Chk = false
+                occupyObject.talk10A.enlarge = false
+                occupyObject.talk10B.enlarge = false
+                occupyObject.talk10C.enlarge = false
+                if(occupyObject.people.image.src.includes('people2')){
+                    occupyObject.people.image.src = occupyObject.people.image.src.replace('people2', 'people1')
                 }
             }
-            if(x>=talk10C.position.x && x<=talk10C.position.x + talk10C.oldWidth && y>=talk10C.position.y && y<=talk10C.position.y + talk10C.oldHeight){
-                talk10Chk = false
-                talk10A.enlarge = false
-                talk10B.enlarge = false
-                talk10C.enlarge = false
-                if(people.image.src.includes('people1')){
-                    people.image.src = people.image.src.replace('people1', 'people2')
+            if(x>=occupyObject.talk10C.position.x && x<=occupyObject.talk10C.position.x + occupyObject.talk10C.oldWidth && y>=occupyObject.talk10C.position.y && y<=occupyObject.talk10C.position.y + occupyObject.talk10C.oldHeight){
+                occupyObject.talk10Chk = false
+                occupyObject.talk10A.enlarge = false
+                occupyObject.talk10B.enlarge = false
+                occupyObject.talk10C.enlarge = false
+                if(occupyObject.people.image.src.includes('people1')){
+                    occupyObject.people.image.src = occupyObject.people.image.src.replace('people1', 'people2')
                 }
             }
 
             setTimeout(()=>{
-                // talk10A.show = false
-                // talk10B.show = false
-                // talk10C.show = false
-
-                // people.show = false
-
-                
                 roomOpen.occupy =false
                 isRoomOpen = false
             }, 1500)
@@ -375,11 +540,19 @@ canvas.addEventListener('click', (e)=>{
         if(startNav){
             if(!interaction.show) return
         }
-        if(interaction.name === 'supermarket'){
+        if(interaction.name === 'cool'){
 
             if(isRoomOpen) return
-            roomOpen.supermarket = true
+            roomOpen.cool = true
             isRoomOpen = true
+            player.move = true
+            if(startNav){
+                startNav = false
+                Object.keys(interactions).forEach(interaction=>{
+                    interactions[interaction].show = true
+                })
+            }
+            
         }else if(interaction.name === 'occupy'){
             if(isRoomOpen) return
             roomOpen.occupy = true
@@ -428,18 +601,8 @@ canvas.addEventListener('click', (e)=>{
         globalClick = false
         starts.filter(start=> start.name === 'start04' )[0].show = false
         starts.filter(start=> start.name === 'start05' )[0].show = true
-        setTimeout(()=>{
-            globalClick = true
-        }, 100)
+        interactions.filter(interaction=>interaction.name === 'cool')[0].show = true
     }
-    if(startNav && globalClick && starts.filter(start=> start.name === 'start05' )[0].show ){
-        starts.filter(start=> start.name === 'start05' )[0].show = false
-        // starts.filter(start=> start.name === 'start05' )[0].show = true
-        interactions.filter(interaction=>interaction.name === 'supermarket')[0].show = true
-    }
-
-    
-
 })
 
 canvas.addEventListener('mousedown', (e)=>{
@@ -470,21 +633,18 @@ canvas.addEventListener('mouseup', ()=>{
             if(occupys[mousedownIdx].image.src.includes('1-1.png')){
                 occupys[mousedownIdx].image.src = occupys[mousedownIdx].image.src.replace('1-1.png', '1.png')
             }
-            console.log(occupys[mousedownIdx].oldPosX);
-            console.log(occupys[mousedownIdx].oldPosY);
         }else{
             occupyMoveNum ++
-            console.log(occupyMoveNum);
             if(occupyMoveNum === 10){
-                people.show = true
-                talk10A.show = true
-                talk10A.enlarge = true
-                talk10B.show = true
-                talk10B.enlarge = true
-                talk10C.show = true
-                talk10C.enlarge = true
+                occupyObject.people.show = true
+                occupyObject.talk10A.show = true
+                occupyObject.talk10A.enlarge = true
+                occupyObject.talk10B.show = true
+                occupyObject.talk10B.enlarge = true
+                occupyObject.talk10C.show = true
+                occupyObject.talk10C.enlarge = true
                 setTimeout(()=>{
-                    talk10Chk = true
+                    occupyObject.talk10Chk = true
                 }, 500)
             }
             occupys[mousedownIdx].show = false

@@ -3,12 +3,18 @@ class Player{
         this.speed = 15
         this.position = {
             x:2800,
-            y:500
+            y:500,
+            
+        }
+        this.absolute = {
+            x:2800,
+            y:500,
         }
         this.velocity = {
             x:0,
             y:0
         }
+        this.move = false
         this.width = 100
         this.height = 100
         this.sides = {
