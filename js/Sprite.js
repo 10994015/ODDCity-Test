@@ -38,8 +38,6 @@ class Interaction {
                 this.loaded = true
             }
         }
-        
-        
     }
     draw(){
         if(this.image === null){
@@ -49,11 +47,9 @@ class Interaction {
             if(!this.loaded) return
             c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
         }
-        
-        
-
     }
 }
+
 
 class Room{
     constructor({image}){
@@ -245,9 +241,10 @@ class Button{
     }
 }
 class Talk{
-    constructor({image, w, h, x, y, name=null, isShow=false}){
+    constructor({image, w, h, x, y, name=null, isShow=false, direction}){
         this.width = w
         this.height = h
+        this.direction = direction
         this.position = {
             x,y
         }

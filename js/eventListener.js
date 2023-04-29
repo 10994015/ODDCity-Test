@@ -33,6 +33,7 @@ window.addEventListener("keyup", ({keyCode})=>{
     switch (keyCode){
         case 68:
             keys.right.pressed = false
+            console.log(scrollOffset);
             break;
         case 65:
             keys.left.pressed = false
@@ -48,7 +49,7 @@ window.addEventListener("keyup", ({keyCode})=>{
 })
 
 //talk
-let talk_occupy = talks.filter(talk=>talk.name === 'occupy')[0]
+// let talk_occupy = talks.filter(talk=>talk.name === 'occupy')[0]
 canvas.addEventListener('mousemove', (e)=>{
     if(!isStart) return
     var rect = canvas.getBoundingClientRect();
@@ -59,7 +60,22 @@ canvas.addEventListener('mousemove', (e)=>{
         if(!isRoomOpen && x > interaction.position.x && x < (interaction.position.x + interaction.width) && y > interaction.position.y && y < (interaction.position.y + interaction.height)){
             let talk = talks.filter(talk=> talk.name === interaction.name)[0]
             if(interaction.show===false) return
-            if(talk) talk.show = true
+            if(talk) {
+                if(talk.direction!==0){
+                    if(scrollOffset <= talk.direction){
+                        if(!talk.image.src.includes('_.png')){
+                            talk.position.x = talk.position.x - talk.width
+                            talk.image.src = talk.image.src.replace('.png', '_.png')
+                        }
+                    }else{
+                        if(talk.image.src.includes('_.png')){
+                            talk.position.x = talk.position.x + talk.width
+                            talk.image.src = talk.image.src.replace('_.png', '.png')
+                        }
+                    }
+                }
+                talk.show = true
+            }
             
             
             interaction.width = interaction.bigWidth
@@ -207,7 +223,21 @@ const coolObject = {
     talk004: cools.filter(cool=> cool.name === '004')[0],
 
     talk6: cools.filter(cool=> cool.name === '6')[0],
-    talk6Chk: false
+    talk6Chk: false,
+
+    response7: cools.filter(cool=> cool.name === '7')[0],
+
+    talk8: cools.filter(cool=> cool.name === '8')[0],
+    talk8Chk: false,
+
+    response9: cools.filter(cool=> cool.name === '9')[0],
+
+    talk10A: cools.filter(cool=> cool.name === '10A')[0],
+    talk10B: cools.filter(cool=> cool.name === '10B')[0],
+    talk10Chk: false,
+
+    response11A: cools.filter(cool=> cool.name === '11A')[0],
+    response11B: cools.filter(cool=> cool.name === '11B')[0],
 
 }
 
@@ -301,11 +331,11 @@ canvas.addEventListener('click', (e)=>{
                 coolObject.response5A.show = true
                 coolObject.talk004.show = true
                 
-                coolObject.talk4A.show = false
+                coolObject.talk4A.enlarge = false
                 coolObject.talk4B.enlarge = false
 
                 setTimeout(()=>{
-                    coolObject.talk4A.enlarge = false
+                    coolObject.talk4A.show = false
                     coolObject.talk4B.show = false
                     
                     coolObject.talk6.show = true
@@ -343,6 +373,115 @@ canvas.addEventListener('click', (e)=>{
                 }, coolObject.response5B.text.split('').length*10 + 1500)
             }
         }
+
+        if(coolObject.talk6.show && coolObject.talk6Chk){
+            if(!coolObject.talk6Chk) return
+            if(x>=coolObject.talk6.position.x && x<=coolObject.talk6.position.x + coolObject.talk6.width && y>=coolObject.talk6.position.y && y<=coolObject.talk6.position.y+coolObject.talk6.height){
+                coolObject.talkPeople.image.src = './images/cool/people2.png'
+
+                coolObject.talk6Chk = false
+                coolObject.talk004.show = false
+
+                coolObject.response5A.show = false
+                coolObject.response5B.show = false
+                coolObject.talk6.enlarge = false
+
+                coolObject.response7.show = true
+
+                setTimeout(()=>{
+                    coolObject.talk6.show = false
+                    
+                    coolObject.talk8.show = true
+                    coolObject.talk8.enlarge = true
+                    coolObject.talk8Chk = true
+
+                    if(CG.cool.isPeace){
+                        coolObject.talkPeople.image.src = './images/cool/people1.png'
+                    }else{
+                        coolObject.talkPeople.image.src = './images/cool/people3.png'
+                    }
+
+                }, coolObject.response7.text.split('').length*10 + 2500)
+
+            }
+        }
+
+        if(coolObject.talk8.show && coolObject.talk8Chk){
+            if(!coolObject.talk8Chk) return
+            if(x>=coolObject.talk8.position.x && x<=coolObject.talk8.position.x + coolObject.talk8.width && y>=coolObject.talk8.position.y && y<=coolObject.talk8.position.y+coolObject.talk8.height){
+                coolObject.talkPeople.image.src = './images/cool/people2.png'
+
+                coolObject.talk8Chk = false
+
+                coolObject.response7.show = false
+                coolObject.talk8.enlarge = false
+
+                coolObject.response9.show = true
+
+                setTimeout(()=>{
+                    coolObject.talk8.show = false
+                    
+                    coolObject.talk10A.show = true
+                    coolObject.talk10A.enlarge = true
+                    coolObject.talk10B.show = true
+                    coolObject.talk10B.enlarge = true
+                    coolObject.talk10Chk = true
+
+                    if(CG.cool.isPeace){
+                        coolObject.talkPeople.image.src = './images/cool/people1.png'
+                    }else{
+                        coolObject.talkPeople.image.src = './images/cool/people3.png'
+                    }
+
+                }, coolObject.response9.text.split('').length*10 + 2500)
+
+            }
+        }
+
+        if(coolObject.talk10A.show && coolObject.talk10B.show && coolObject.talk10Chk){
+            if(!coolObject.talk10Chk) return
+            if(x>=coolObject.talk10A.position.x && x<=coolObject.talk10A.position.x + coolObject.talk10A.width && y>=coolObject.talk10A.position.y && y<=coolObject.talk10A.position.y+coolObject.talk10A.height){
+                coolObject.talkPeople.image.src = './images/cool/people2.png'
+
+                coolObject.talk10Chk = false
+
+                coolObject.response9.show = false
+                coolObject.talk10A.enlarge = false
+                coolObject.talk10B.enlarge = false
+
+                coolObject.response11A.show = true
+
+                setTimeout(()=>{
+                    coolObject.talk10A.show = false
+                    coolObject.talk10B.show = false
+                    coolObject.talkPeople.image.src = './images/cool/people1.png'
+
+
+                }, coolObject.response11A.text.split('').length*10 + 2500)
+            }
+            if(x>=coolObject.talk10B.position.x && x<=coolObject.talk10B.position.x + coolObject.talk10B.width && y>=coolObject.talk10B.position.y && y<=coolObject.talk10B.position.y+coolObject.talk10B.height){
+                coolObject.talkPeople.image.src = './images/cool/people2.png'
+
+                coolObject.talk10Chk = false
+
+                coolObject.response9.show = false
+                coolObject.talk10A.enlarge = false
+                coolObject.talk10B.enlarge = false
+
+                coolObject.response11B.show = true
+
+                CG.cool.isPeace = false
+                setTimeout(()=>{
+                    coolObject.talk10A.show = false
+                    coolObject.talk10B.show = false
+                    
+                    coolObject.talkPeople.image.src = './images/cool/people3.png'
+
+                }, coolObject.response11B.text.split('').length*10 + 2500)
+            }
+        }
+
+       
     }
 
     if(roomOpen.occupy && isRoomOpen){
