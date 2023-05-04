@@ -38,6 +38,7 @@ const interactions = [
     // new Interaction({x:2973, y:481, w:147, h:218, name:'supermarket', isShow:false}),
     new Interaction({x:2973, y:481, w:147, h:218, name:'cool', isShow:false}),
     new Interaction({x:3750, y:450, w:60, h:60, name:'occupy', image: createImage('./images/buttons/in2f.png'), multiple:1.05, isShow:false, }),
+    new Interaction({x:4170, y:500, w:455, h:225, name:'hoard', isShow:false}),
 ]
 const talks = [
     new Talk({x:3780 -3318/15, y:350, w:3318/15, h:1604/15, name:'occupy', image: createImage('./images/talks/enter2f_.png'),isShow:false, direction:1650}),
@@ -54,7 +55,8 @@ let mesterTalkX = (canvas.width-canvas.height*0.8*1.844)/2 + 100
 let mesterTalkY = 355
 //occupy
 const occupy = new Room({image:createImage('./images/occupy.png')});
-
+//hoard
+const hoard = new Room({image:createImage('./images/hoard.png')})
 let startNav = true;
 let getOff = false;
 const starts = [
@@ -66,6 +68,7 @@ const starts = [
     new Interaction({x:3100, y:330, w:3318/13, h:1639/13, name:'start05',image: createImage('./images/starts/talk/05.png'), multiple:1, isShow:false  }),
 ]
 const cools = [
+    new Shared({x:280, y:190, w:300/2.9, h:125/2.9, image: createImage('./images/cool/cup.png'),name:'cup'}),
     new Shared({x:160, y:170, w:316/1.8, h:679/1.8, image:createImage('./images/cool/people1.png'), isPeople:true, name:'people', isShow:true}),
     new Shared({x:50, y:450, w:316/1.1, h:679/1.1, image:createImage('./images/cool/people1.png'), isPeople:true, name:'talkPeople', isShow:false}),
     new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/cool/talk/1.png'), isTalk:true, isEnlarge:true, multiple:1.02, name:'1', isShow:true,}),
@@ -91,7 +94,7 @@ const cools = [
     new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5 +140, w:2378/4.5, h:630/4.5, image: createImage('./images/cool/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'5B', isShow:false, text:"我又沒有...打擾到別人...", isTypewriter:true }),
     new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5 +140, w:2378/4.5, h:630/4.5, image: createImage('./images/cool/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'7', isShow:false, text:"因為這邊...很涼爽...，外面...很熱...", isTypewriter:true }),
     new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5 +140, w:2378/4.5, h:630/4.5, image: createImage('./images/cool/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'9', isShow:false, text:"冷氣很貴...不想浪費錢...", isTypewriter:true }),
-    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5 +140, w:2378/4.5, h:630/4.5, image: createImage('./images/cool/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'11A', isShow:false, text:"啊.. ..會這樣嗎.. .那好吧 .等等就 .離開", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5 +140, w:2378/4.5, h:630/4.5, image: createImage('./images/cool/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'11A', isShow:false, text:"啊...會這樣嗎...那好吧 .等等就...離開", isTypewriter:true }),
     new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5 +140, w:2378/4.5, h:630/4.5, image: createImage('./images/cool/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'11B', isShow:false, text:"...我很喜歡這裡...所以...我不走...", isTypewriter:true }),
 
     
@@ -141,6 +144,7 @@ let isRoomOpen = false;
 const roomOpen = {
     cool:false,
     occupy:false,
+    hoard:false,
 }
 
 const keys = {
@@ -296,7 +300,17 @@ function animate(){
                 occupy.draw()
             }
         })
-        
+    }
+    if(roomOpen.hoard && isRoomOpen){
+        c.fillStyle = 'rgba(255,255,255,.5)'
+        c.fillRect(0,0,canvas.width, canvas.height)
+        hoard.draw()
+        buttons.close.draw()
+        // hoards.forEach(hoard=>{
+        //     if(hoard.show){
+        //         hoard.draw()
+        //     }
+        // })
     }
     
 }

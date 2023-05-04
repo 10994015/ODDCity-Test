@@ -239,6 +239,9 @@ const coolObject = {
     response11A: cools.filter(cool=> cool.name === '11A')[0],
     response11B: cools.filter(cool=> cool.name === '11B')[0],
 
+
+    cup:cools.filter(cool=> cool.name==='cup')[0],
+    cupChk:false,
 }
 
 canvas.addEventListener('click', (e)=>{
@@ -455,8 +458,10 @@ canvas.addEventListener('click', (e)=>{
                     coolObject.talk10A.show = false
                     coolObject.talk10B.show = false
                     coolObject.talkPeople.image.src = './images/cool/people1.png'
+                    coolObject.response11A.show = false
 
-
+                    coolObject.cup.enlarge = true
+                    coolObject.cupChk = true
                 }, coolObject.response11A.text.split('').length*10 + 2500)
             }
             if(x>=coolObject.talk10B.position.x && x<=coolObject.talk10B.position.x + coolObject.talk10B.width && y>=coolObject.talk10B.position.y && y<=coolObject.talk10B.position.y+coolObject.talk10B.height){
@@ -474,14 +479,23 @@ canvas.addEventListener('click', (e)=>{
                 setTimeout(()=>{
                     coolObject.talk10A.show = false
                     coolObject.talk10B.show = false
-                    
                     coolObject.talkPeople.image.src = './images/cool/people3.png'
+                    coolObject.response11B.show = false
 
+                    coolObject.cup.enlarge = true
+                    coolObject.cupChk = true
                 }, coolObject.response11B.text.split('').length*10 + 2500)
             }
+
+            
         }
 
-       
+        if(coolObject.cup.enlarge && coolObject.cupChk){
+            if(x>=coolObject.cup.position.x && x<=coolObject.cup.position.x + coolObject.cup.width && y>=coolObject.cup.position.y && y<=coolObject.cup.position.y+coolObject.cup.height){
+                coolObject.cupChk = false
+                console.log(123);
+            }
+        }
     }
 
     if(roomOpen.occupy && isRoomOpen){
@@ -680,7 +694,6 @@ canvas.addEventListener('click', (e)=>{
             if(!interaction.show) return
         }
         if(interaction.name === 'cool'){
-
             if(isRoomOpen) return
             roomOpen.cool = true
             isRoomOpen = true
@@ -695,6 +708,10 @@ canvas.addEventListener('click', (e)=>{
         }else if(interaction.name === 'occupy'){
             if(isRoomOpen) return
             roomOpen.occupy = true
+            isRoomOpen = true
+        }else if(interaction.name === 'hoard'){
+            if(isRoomOpen) return
+            roomOpen.hoard = true
             isRoomOpen = true
         }
         
@@ -751,7 +768,6 @@ canvas.addEventListener('mousedown', (e)=>{
     occupys.forEach((occupy,key)=>{
         if(!occupy.dragging) return
         if(x > occupy.position.x && x < occupy.position.x + occupy.width && y > occupy.position.y && y < occupy.position.y + occupy.height){
-            console.log(occupy.image);
             if(!occupy.image.src.includes('1-1.png')){
                 occupy.image.src = occupy.image.src.replace('1.png', '1-1.png')
             }
