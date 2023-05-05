@@ -217,7 +217,7 @@ class Shared{
 }
 
 class Button{
-    constructor({image, w, h, x, y, name=null, multiple=1.05}){
+    constructor({image, w, h, x, y, name=null, multiple=1.05, isEnlarge=false}){
         this.width = w
         this.height = h
         this.oldWidth = w
@@ -231,6 +231,7 @@ class Button{
         this.multiple = multiple
         this.image = image
         this.loaded = false
+        this.enlarge = isEnlarge
         this.image.onload = ()=>{
             this.loaded = true
         }

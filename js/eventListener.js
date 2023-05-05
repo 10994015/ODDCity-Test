@@ -55,11 +55,35 @@ canvas.addEventListener('mousemove', (e)=>{
     var rect = canvas.getBoundingClientRect();
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
-    
+   
+    starts.some(start=>{
+        if(!(start.show && start.enlarge)) return 
+        if(startNav && x > start.position.x && x < (start.position.x + start.width) && y > start.position.y && y < (start.position.y + start.height)){
+            start.width = start.bigWidth
+            start.height = start.bigHeight
+            return canvas.style.cursor = "pointer"
+        }else{
+            start.width = start.oldWidth
+            start.height = start.oldHeight
+            canvas.style.cursor = "default"
+        }
+    })
+    if(phone.show && !isRoomOpen){
+        if( x > phone.position.x && x < (phone.position.x + phone.width) && y > phone.position.y && y < (phone.position.y + phone.height)){
+            phone.width = phone.bigWidth
+            phone.height = phone.bigHeight
+            return canvas.style.cursor = "pointer"
+        }else{
+            phone.width = phone.oldWidth
+            phone.height = phone.oldHeight
+            canvas.style.cursor = "default"
+        }
+    }
     interactions.some(interaction=>{
         if(!isRoomOpen && x > interaction.position.x && x < (interaction.position.x + interaction.width) && y > interaction.position.y && y < (interaction.position.y + interaction.height)){
             let talk = talks.filter(talk=> talk.name === interaction.name)[0]
             if(interaction.show===false) return
+            if(interaction.enlarge===false) return
             if(talk) {
                 if(talk.direction!==0){
                     if(scrollOffset <= talk.direction){
@@ -77,7 +101,6 @@ canvas.addEventListener('mousemove', (e)=>{
                 talk.show = true
             }
             
-            
             interaction.width = interaction.bigWidth
             interaction.height = interaction.bigHeight
             return canvas.style.cursor = "pointer"
@@ -90,23 +113,11 @@ canvas.addEventListener('mousemove', (e)=>{
             canvas.style.cursor = "default"
         }
     })
-
-    starts.some(start=>{
-        if(!(start.show && start.enlarge)) return 
-        if(startNav && x > start.position.x && x < (start.position.x + start.width) && y > start.position.y && y < (start.position.y + start.height)){
-            start.width = start.bigWidth
-            start.height = start.bigHeight
-            return canvas.style.cursor = "pointer"
-        }else{
-            start.width = start.oldWidth
-            start.height = start.oldHeight
-            canvas.style.cursor = "default"
-        }
-    })
+    
 
     if(isRoomOpen){
         let close = buttons.close;
-        if(x >= close.position.x && x<=close.position.x+close.width && y>=close.position.y && y<=close.position.y + close.height){
+        if(x >= close.position.x && x<=close.position.x+close.width && y>=close.position.y && y<=close.position.y + close.height && close.enlarge){
             close.width = close.bigWidth
             close.height = close.bigHeight
             return canvas.style.cursor = "pointer"
@@ -242,6 +253,17 @@ const coolObject = {
 
     cup:cools.filter(cool=> cool.name==='cup')[0],
     cupChk:false,
+
+    end:cools.filter(cool=> cool.name === 'end')[0],
+
+    talk005: cools.filter(cool=>cool.name === '005')[0],
+    talk005Chk: false,
+    talk006: cools.filter(cool=>cool.name === '006')[0],
+    talk006Chk: false,
+
+    talk06: cools.filter(cool=>cool.name === '06')[0],
+    talk06Chk: false,
+    
 }
 
 canvas.addEventListener('click', (e)=>{
@@ -253,12 +275,21 @@ canvas.addEventListener('click', (e)=>{
     
     if(isRoomOpen){
         let close = buttons.close;
-        if(x >= close.position.x && x<=close.position.x+close.width && y>=close.position.y && y<=close.position.y + close.height){
+        if(x >= close.position.x && x<=close.position.x+close.width && y>=close.position.y && y<=close.position.y + close.height && close.enlarge){
             isRoomOpen = false
+
             Object.keys(roomOpen).forEach(room=>{
                 roomOpen[room] = false
             })
-            console.log(roomOpen);
+            if(startNav && coolObject.talk06Chk && coolObject.talk06.show && isTeaching){
+                coolObject.talk06.show = false
+                coolObject.talk06Chk = false
+                globalClick = true
+                interactions.filter(interaction=>interaction.name === 'cool')[0].show = false
+                setTimeout(()=>{
+                    starts.filter(start=>start.name === 'start07')[0].show = true
+                },10)
+            }
         }
     }
 
@@ -270,9 +301,10 @@ canvas.addEventListener('click', (e)=>{
                 coolObject.talk1.show = false
                 coolObject.talk1.enlarge = false
                 coolObject.talk001.show = false
-
+                if(isTeaching){
+                    coolObject.talk002.show = true
+                }
                 coolObject.talk1001.show = true
-                coolObject.talk002.show = true
                 coolObject.chk.show = true
                 coolObject.chk.enlarge = true
 
@@ -281,7 +313,7 @@ canvas.addEventListener('click', (e)=>{
                 },100)
             }
         }
-        if(coolObject.talk002.show && coolObject.talk2Chk){
+        if(coolObject.talk1001.show && coolObject.talk2Chk){
             if(!coolObject.talk2Chk) return
             if(x>=coolObject.chk.position.x && x<=coolObject.chk.position.x + coolObject.chk.width && y>=coolObject.chk.position.y && y<=coolObject.chk.position.y+coolObject.chk.height){
                 coolObject.talk2Chk = false
@@ -312,7 +344,9 @@ canvas.addEventListener('click', (e)=>{
                 coolObject.talk4A.enlarge = true
                 coolObject.talk4B.show = true
                 coolObject.talk4B.enlarge = true
-                coolObject.talk003.show = true
+                if(isTeaching){
+                    coolObject.talk003.show = true
+                }
 
                 setTimeout(()=>{
                     coolObject.talk4Chk = true
@@ -332,7 +366,9 @@ canvas.addEventListener('click', (e)=>{
 
                 coolObject.talkPeople.show = true
                 coolObject.response5A.show = true
-                coolObject.talk004.show = true
+                if(isTeaching){
+                    coolObject.talk004.show = true
+                }
                 
                 coolObject.talk4A.enlarge = false
                 coolObject.talk4B.enlarge = false
@@ -493,8 +529,53 @@ canvas.addEventListener('click', (e)=>{
         if(coolObject.cup.enlarge && coolObject.cupChk){
             if(x>=coolObject.cup.position.x && x<=coolObject.cup.position.x + coolObject.cup.width && y>=coolObject.cup.position.y && y<=coolObject.cup.position.y+coolObject.cup.height){
                 coolObject.cupChk = false
-                console.log(123);
+                coolObject.cup.enlarge = false
+                coolObject.cup.show = false
+
+                coolObject.end.show = true
+                
+                if(!CG.cool.isPeace){
+                    coolObject.end.image.src = coolObject.end.image.src.replace('good', 'bad')
+                }
+                if(isTeaching){
+                    coolObject.talk005.show = true
+                }
+
+                globalClick = true
+
+                setTimeout(()=>{
+                    coolObject.talk005Chk = true
+                },100)
             }
+            
+        }
+
+        if(globalClick && coolObject.talk005.show && coolObject.talk005Chk){
+            coolObject.talk005Chk = false
+            coolObject.talk005.show = false
+            if(isTeaching){
+                coolObject.talk006.show = true
+            }
+
+            setTimeout(()=>{
+                coolObject.talk006Chk = true
+            },100)
+        }
+
+        if(globalClick && coolObject.talk006.show && coolObject.talk006Chk){
+            coolObject.talk006Chk = false
+            coolObject.talk006.show = false
+            if(isTeaching){
+                coolObject.talk06.show = true
+            }
+            buttons.close.enlarge = true
+            globalClick = false
+            starts.filter(start=>start.name === 'start05')[0].show = false
+
+            setTimeout(()=>{
+                coolObject.talk06Chk = true
+                startNav = true
+            }, 100)
         }
     }
 
@@ -690,6 +771,8 @@ canvas.addEventListener('click', (e)=>{
     interactions.forEach(interaction=>{
         let bool = x >= interaction.position.x && x <= interaction.position.x + interaction.width && y>=interaction.position.y && y<=interaction.position.y + interaction.height
         if(!bool) return
+        if(!interaction.show) return
+        if(!interaction.enlarge) return
         if(startNav){
             if(!interaction.show) return
         }
@@ -698,10 +781,17 @@ canvas.addEventListener('click', (e)=>{
             roomOpen.cool = true
             isRoomOpen = true
             player.move = true
+            if(!isTeaching){
+                buttons.close.enlarge = true
+                cools.filter(cool=> cool.name === '001')[0].show = false
+            }else{
+                buttons.close.enlarge = false
+            }
             if(startNav){
                 startNav = false
                 Object.keys(interactions).forEach(interaction=>{
                     interactions[interaction].show = true
+                    interactions[interaction].enlarge = false
                 })
             }
             
@@ -729,6 +819,8 @@ canvas.addEventListener('click', (e)=>{
                 starts.filter(start=> start.name === 'start02' )[0].show = true
                 setTimeout(()=>{
                     globalClick = true
+                    starts.filter(start=> start.name === 'skip' )[0].show = true
+                    starts.filter(start=> start.name === 'skip' )[0].enlarge = true
                 }, 100)
 
 
@@ -736,29 +828,94 @@ canvas.addEventListener('click', (e)=>{
         
         })
     }
+    if(startNav){
+        if(startNav && globalClick && starts.filter(start=> start.name === 'start02' )[0].show ){
+            let skip = starts.filter(start=> start.name === 'skip' )[0]
+            let bool = x >= skip.position.x && x <= skip.position.x + skip.width && y>=skip.position.y && y<=skip.position.y + skip.height
+            if(!bool){
+                globalClick = false
+                starts.filter(start=> start.name === 'start02' )[0].show = false
+                console.log(1);
+                starts.filter(start=> start.name === 'skip' )[0].show = false
+                starts.filter(start=> start.name === 'skip' )[0].enlarge = false
+        
+                starts.filter(start=> start.name === 'start03' )[0].show = true
+                setTimeout(()=>{
+                    globalClick = true
+                }, 100)
+            }
+            
+        }
+        if(startNav && globalClick && starts.filter(start=> start.name === 'start03' )[0].show ){
+            globalClick = false
+            starts.filter(start=> start.name === 'start03' )[0].show = false
+            starts.filter(start=> start.name === 'start04' )[0].show = true
+            setTimeout(()=>{
+                globalClick = true
+            }, 100)
+        }
+        if(startNav && globalClick && starts.filter(start=> start.name === 'start04' )[0].show ){
+            globalClick = false
+            starts.filter(start=> start.name === 'start04' )[0].show = false
+            starts.filter(start=> start.name === 'start05' )[0].show = true
+            interactions.filter(interaction=>interaction.name === 'cool')[0].show = true
+            interactions.filter(interaction=>interaction.name === 'cool')[0].enlarge = true
+        }
+        if(startNav && globalClick && starts.filter(start=> start.name === 'start07' )[0].show){
+            starts.filter(start=> start.name === 'start07' )[0].show = false
+    
+            setTimeout(()=>{
+                starts.filter(start=> start.name === 'start08' )[0].show = true
+            }, 10)
+        }
+        if(startNav && globalClick && starts.filter(start=> start.name === 'start08' )[0].show){
+            starts.filter(start=> start.name === 'start08' )[0].show = false
+    
+            setTimeout(()=>{
+                starts.filter(start=> start.name === 'start09' )[0].show = true
+            }, 10)
+        }
+        if(startNav && globalClick && starts.filter(start=> start.name === 'start09' )[0].show){
+            starts.filter(start=> start.name === 'start09' )[0].show = false
+    
+            setTimeout(()=>{
+                starts.filter(start=> start.name === 'start10' )[0].show = true
+            }, 10)
+        }
+        if(startNav && globalClick && starts.filter(start=> start.name === 'start10' )[0].show){
+            starts.filter(start=> start.name === 'start10' )[0].show = false
+            setTimeout(()=>{
+                startNav = false
+                globalClick = false
+                isTeaching = false
+                Object.keys(interactions).forEach(interaction=>{
+                    interactions[interaction].show = true
+                    interactions[interaction].enlarge = true
+                })
+            }, 10)
+        }
+        if(isTeaching && starts.filter(start=> start.name === 'skip' )[0].show && starts.filter(start=> start.name === 'skip' )[0].enlarge){
+    
+            let skip = starts.filter(start=> start.name === 'skip' )[0]
+            let bool = x >= skip.position.x && x <= skip.position.x + skip.width && y>=skip.position.y && y<=skip.position.y + skip.height
+            if(bool){
+                starts.forEach(start=>{
+                    start.show = false
+                    start.enlarge = false
+                })
+                Object.keys(interactions).forEach(interaction=>{
+                    interactions[interaction].show = true
+                    interactions[interaction].enlarge = true
+                })
+                startNav = false
+                isTeaching = false
+                globalClick = false
+                player.move = true
+            }
+        }
+    }
+    
 
-    if(startNav && globalClick && starts.filter(start=> start.name === 'start02' )[0].show ){
-        globalClick = false
-        starts.filter(start=> start.name === 'start02' )[0].show = false
-        starts.filter(start=> start.name === 'start03' )[0].show = true
-        setTimeout(()=>{
-            globalClick = true
-        }, 100)
-    }
-    if(startNav && globalClick && starts.filter(start=> start.name === 'start03' )[0].show ){
-        globalClick = false
-        starts.filter(start=> start.name === 'start03' )[0].show = false
-        starts.filter(start=> start.name === 'start04' )[0].show = true
-        setTimeout(()=>{
-            globalClick = true
-        }, 100)
-    }
-    if(startNav && globalClick && starts.filter(start=> start.name === 'start04' )[0].show ){
-        globalClick = false
-        starts.filter(start=> start.name === 'start04' )[0].show = false
-        starts.filter(start=> start.name === 'start05' )[0].show = true
-        interactions.filter(interaction=>interaction.name === 'cool')[0].show = true
-    }
 })
 
 canvas.addEventListener('mousedown', (e)=>{

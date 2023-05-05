@@ -4,8 +4,8 @@ const c = canvas.getContext('2d')
 canvas.width =16 * 90
 canvas.height = 9 *90
 
-let globalClick = false
-
+let globalClick = false //全局可以按
+let isTeaching = true //教學
 const CG = {
     cool:{
         isPeace:true
@@ -33,7 +33,7 @@ const backgruond = new Backgruond({
     },
     image :createImage('./images/bg.png'),
 })
-
+const phone = new Interaction({x:1320, y:50, w:308/4.5, h:492/4.5, name:'phone',image: createImage('./images/buttons/phone.png'), multiple:1.05, isShow:true})
 const interactions = [
     // new Interaction({x:2973, y:481, w:147, h:218, name:'supermarket', isShow:false}),
     new Interaction({x:2973, y:481, w:147, h:218, name:'cool', isShow:false}),
@@ -63,10 +63,20 @@ const starts = [
     new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start01',image: createImage('./images/starts/talk/01.png'), multiple:1, isShow:false  }),
     new Interaction({x:2650+6110/13 - 80, y:330+1641/13-75, w:112/2, h:68/2, name:'start01Btn',image: createImage('./images/buttons/chk.png'), multiple:1, isShow:false, isEnlarge:true  }),
     new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start02',image: createImage('./images/starts/talk/02.png'), multiple:1, isShow:false  }),
+    new Interaction({x:2650+6110/13 - 80, y:380, w:333/6, h:202/6, name:'skip',image: createImage('./images/buttons/Skip.png'), isEnlarge: false, multiple:1.05, isShow:false  }),
     new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start03',image: createImage('./images/starts/talk/03.png'), multiple:1, isShow:false  }),
     new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start04',image: createImage('./images/starts/talk/04.png'), multiple:1, isShow:false  }),
     new Interaction({x:3100, y:330, w:3318/13, h:1639/13, name:'start05',image: createImage('./images/starts/talk/05.png'), multiple:1, isShow:false  }),
+
+
+    new Interaction({x:3300, y:330, w:6110/13, h:1641/13, name:'start07',image: createImage('./images/starts/talk/07.png'), multiple:1, isShow:false  }),
+    new Interaction({x:3300, y:50, w:6110/13, h:1641/13, name:'start08',image: createImage('./images/starts/talk/08.png'), multiple:1, isShow:false  }),
+    new Interaction({x:2900, y:330, w:6110/13, h:1641/13, name:'start09',image: createImage('./images/starts/talk/09.png'), multiple:1, isShow:false  }),
+    new Interaction({x:2900, y:330, w:6110/13, h:1641/13, name:'start10',image: createImage('./images/starts/talk/010.png'), multiple:1, isShow:false  }),
 ]
+
+
+// const skip = new Interaction({x:20, y:650, w:333/4.5, h:202/4.5, name:'skip',image: createImage('./images/buttons/Skip.png'), isEnlarge: true, multiple:1.05, isShow:true  })
 const cools = [
     new Shared({x:280, y:190, w:300/2.9, h:125/2.9, image: createImage('./images/cool/cup.png'),name:'cup'}),
     new Shared({x:160, y:170, w:316/1.8, h:679/1.8, image:createImage('./images/cool/people1.png'), isPeople:true, name:'people', isShow:true}),
@@ -100,7 +110,12 @@ const cools = [
     
     new Shared({x:mesterTalkX - 30, y:mesterTalkY-630/4.5 , w:2378/4.8, h:639/4.8, image: createImage('./images/cool/talk/004.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'004', isShow:false,}),
 
-    
+    new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
+
+    new Shared({x:canvas.width/2 - (3149/4.5)/2, y:canvas.height/2 - (484/4.5) - 100, w:2378/4.8, h:639/4.8, image: createImage('./images/cool/talk/005.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'005', isShow:false,}),
+    new Shared({x:canvas.width/2 - (3149/4.5)/2 , y:canvas.height/2 - (484/4.5) - 100, w:2378/4.8, h:639/4.8, image: createImage('./images/cool/talk/006.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'006', isShow:false,}),
+    new Shared({x:canvas.width -2378/4.8 - 80  , y:80, w:2378/4.8, h:639/4.8, image: createImage('./images/cool/talk/06.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'06', isShow:false,}),
+
     new Shared({x:canvas.width/2 - (112/2)/2 + 300, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
 
 ]
@@ -274,11 +289,16 @@ function animate(){
        }
         
     }
-    if(getOff){
+    if(getOff ){
         player.draw()
         player.update()
     }
     
+
+    if(getOff && !isTeaching){
+        phone.draw() 
+    }
+
     if(roomOpen.cool && isRoomOpen){
         c.fillStyle = 'rgba(255,255,255,.5)'
         c.fillRect(0,0,canvas.width, canvas.height)
@@ -312,6 +332,11 @@ function animate(){
         //     }
         // })
     }
+
+    // if(isTeaching && getOff){
+    //     skip.draw()
+    // }
+
     
 }
 
