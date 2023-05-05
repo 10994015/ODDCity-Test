@@ -206,6 +206,8 @@ const occupyObject = {
     talk10B: occupys.filter(occupy=>occupy.name == '10B')[0],
     talk10C: occupys.filter(occupy=>occupy.name == '10C')[0],
     talk10Chk: false,
+
+    end: occupys.filter(occupy=>occupy.name === 'end')[0],
 }
 
 //納涼
@@ -762,9 +764,14 @@ canvas.addEventListener('click', (e)=>{
             }
 
             setTimeout(()=>{
-                roomOpen.occupy =false
-                isRoomOpen = false
-            }, 1500)
+                if(!CG.occupy.isPeace){
+                    occupyObject.end.image.src = occupyObject.end.image.src.replace('good', 'bad');
+                }
+                occupyObject.end.show = true
+                occupyObject.talk10A.show = false
+                occupyObject.talk10B.show = false
+                occupyObject.talk10C.show = false
+            }, 1000)
         }
         
     }
@@ -894,27 +901,28 @@ canvas.addEventListener('click', (e)=>{
                 })
             }, 10)
         }
-        if(isTeaching && starts.filter(start=> start.name === 'skip' )[0].show && starts.filter(start=> start.name === 'skip' )[0].enlarge){
+        
+    }
+    if(isTeaching && starts.filter(start=> start.name === 'skip' )[0].show && starts.filter(start=> start.name === 'skip' )[0].enlarge){
     
-            let skip = starts.filter(start=> start.name === 'skip' )[0]
-            let bool = x >= skip.position.x && x <= skip.position.x + skip.width && y>=skip.position.y && y<=skip.position.y + skip.height
-            if(bool){
-                starts.forEach(start=>{
-                    start.show = false
-                    start.enlarge = false
-                })
-                Object.keys(interactions).forEach(interaction=>{
-                    interactions[interaction].show = true
-                    interactions[interaction].enlarge = true
-                })
-                startNav = false
-                isTeaching = false
-                globalClick = false
-                player.move = true
-            }
+        let skip = starts.filter(start=> start.name === 'skip' )[0]
+        let bool = x >= skip.position.x && x <= skip.position.x + skip.width && y>=skip.position.y && y<=skip.position.y + skip.height
+        if(bool){
+            starts.forEach(start=>{
+                start.show = false
+                start.enlarge = false
+            })
+            Object.keys(interactions).forEach(interaction=>{
+                interactions[interaction].show = true
+                interactions[interaction].enlarge = true
+            })
+            buttons.close.enlarge = true
+            startNav = false
+            isTeaching = false
+            globalClick = false
+            player.move = true
         }
     }
-    
 
 })
 
