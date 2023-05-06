@@ -131,7 +131,9 @@ class Bus{
 
 class Shared{
     constructor({x, y, w, h, image, isPeople=false, isEnlarge=false, isShow=true, isTalk=false,multiple=1.1, name=null, text="", color="#000", isTypewriter=false}){
-       
+        this.oldPosition = {
+            x, y
+        },
         this.position = {
            x,y
         }
@@ -176,8 +178,9 @@ class Shared{
     draw(){
         if(!this.loaded) return
         c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
-
+        
         if(!this.talk) return
+        
         if(this.isTypewriter){
             if(this.step < this.text.split('').length){
                 this.num++
@@ -200,7 +203,7 @@ class Shared{
         c.font = "bold 18px sans-serif"
         let text = this.text.split('').slice(0,this.step)
         let showText = text.join('')
-        c.fillText(showText, this.position.x+30, this.position.y+this.addHeight)
+        c.fillText( showText, this.position.x+30, this.position.y+this.addHeight)
 
         
         if(this.step >= 24){

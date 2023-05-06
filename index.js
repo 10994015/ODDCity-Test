@@ -14,6 +14,11 @@ const CG = {
         isPeace:true
     }
 }
+//好:1 壞:0
+const getCG = {
+    cool:[],
+    occupy:[],
+}
 let occupyInteractiveBtn = false
 
 let scrollOffset =-2400
@@ -61,7 +66,7 @@ let startNav = true;
 let getOff = false;
 const starts = [
     new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start01',image: createImage('./images/starts/talk/01.png'), multiple:1, isShow:false  }),
-    new Interaction({x:2650+6110/13 - 80, y:330+1641/13-75, w:112/2, h:68/2, name:'start01Btn',image: createImage('./images/buttons/chk.png'), multiple:1, isShow:false, isEnlarge:true  }),
+    new Interaction({x:2650+6110/13 - 80, y:330+1641/13-75, w:112/2, h:68/2, name:'start01Btn',image: createImage('./images/buttons/chk.png'), multiple:1.05, isShow:false, isEnlarge:true  }),
     new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start02',image: createImage('./images/starts/talk/02.png'), multiple:1, isShow:false  }),
     new Interaction({x:2650+6110/13 - 80, y:380, w:333/6, h:202/6, name:'skip',image: createImage('./images/buttons/Skip.png'), isEnlarge: false, multiple:1.05, isShow:false  }),
     new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start03',image: createImage('./images/starts/talk/03.png'), multiple:1, isShow:false  }),

@@ -1,5 +1,5 @@
 
-let mousedownIdx = null
+let mousedownIdx= null
 let isDragging = false
 let differX = null
 let differY = null
@@ -8,7 +8,6 @@ window.addEventListener("keydown", ({keyCode})=>{
     if(!isStart) return
     if(startNav) return
     if(!player.move) return
-    console.log(keyCode);
     switch (keyCode){
         case 87:
             if(player.velocity.y ===0 ) player.velocity.y = -20
@@ -33,7 +32,6 @@ window.addEventListener("keyup", ({keyCode})=>{
     switch (keyCode){
         case 68:
             keys.right.pressed = false
-            console.log(scrollOffset);
             break;
         case 65:
             keys.left.pressed = false
@@ -56,18 +54,7 @@ canvas.addEventListener('mousemove', (e)=>{
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
    
-    starts.some(start=>{
-        if(!(start.show && start.enlarge)) return 
-        if(startNav && x > start.position.x && x < (start.position.x + start.width) && y > start.position.y && y < (start.position.y + start.height)){
-            start.width = start.bigWidth
-            start.height = start.bigHeight
-            return canvas.style.cursor = "pointer"
-        }else{
-            start.width = start.oldWidth
-            start.height = start.oldHeight
-            canvas.style.cursor = "default"
-        }
-    })
+    
     if(phone.show && !isRoomOpen){
         if( x > phone.position.x && x < (phone.position.x + phone.width) && y > phone.position.y && y < (phone.position.y + phone.height)){
             phone.width = phone.bigWidth
@@ -114,7 +101,18 @@ canvas.addEventListener('mousemove', (e)=>{
         }
     })
     
-
+    starts.some(start=>{
+        if(!(start.show && start.enlarge)) return 
+        if(startNav && x > start.position.x && x < (start.position.x + start.width) && y > start.position.y && y < (start.position.y + start.height)){
+            start.width = start.bigWidth
+            start.height = start.bigHeight
+            return canvas.style.cursor = "pointer"
+        }else{
+            start.width = start.oldWidth
+            start.height = start.oldHeight
+            canvas.style.cursor = "default"
+        }
+    })
     if(isRoomOpen){
         let close = buttons.close;
         if(x >= close.position.x && x<=close.position.x+close.width && y>=close.position.y && y<=close.position.y + close.height && close.enlarge){
@@ -179,24 +177,24 @@ canvas.addEventListener('mousemove', (e)=>{
 //霸位
 const occupyObject = {
     sitdown: occupys.filter(occupy=> occupy.name === 'sitdown')[0],
-    sitdownChk: false,
+    sitdownChk: true,
     people: occupys.filter(occupy=>occupy.name === 'people')[0],
     talk1: occupys.filter(occupy=>occupy.name == '1')[0],
-    talk1Chk: true,
+    talk1Chk: false,
     response2: occupys.filter(occupy=>occupy.name == '2')[0],
     talk3A: occupys.filter(occupy=>occupy.name == '3A')[0],
     talk3B: occupys.filter(occupy=>occupy.name == '3B')[0],
-    talk3Chk: true,
+    talk3Chk: false,
     response4: occupys.filter(occupy=>occupy.name == '4')[0], 
     
     talk5A: occupys.filter(occupy=>occupy.name == '5A')[0],
     talk5B: occupys.filter(occupy=>occupy.name == '5B')[0],
-    talk5Chk: true,
+    talk5Chk: false,
     response6A: occupys.filter(occupy=>occupy.name == '6A')[0], 
     response6B: occupys.filter(occupy=>occupy.name == '6B')[0], 
     
     talk7: occupys.filter(occupy=>occupy.name == '7')[0],
-    talk7Chk: true,
+    talk7Chk: false,
     response8: occupys.filter(occupy=>occupy.name == '8')[0], 
     
     response9: occupys.filter(occupy=>occupy.name == '9')[0], 
@@ -209,7 +207,15 @@ const occupyObject = {
 
     end: occupys.filter(occupy=>occupy.name === 'end')[0],
 }
-
+const occupyTimer = {
+    timer1:null,
+    timer2:null,
+    timer3:null,
+    timer4:null,
+    timer5:null,
+    timer6:null,
+    timer7:null,
+}
 //納涼
 const coolObject = {
     people: cools.filter(cool=>cool.name === 'people')[0],
@@ -267,7 +273,20 @@ const coolObject = {
     talk06Chk: false,
     
 }
-
+const coolTimer = {
+    timer1:null,
+    timer2:null,
+    timer3:null,
+    timer4:null,
+    timer5:null,
+    timer6:null,
+    timer7:null,
+    timer8:null,
+    timer9:null,
+    timer10:null,
+    timer11:null,
+    timer12:null,
+}
 canvas.addEventListener('click', (e)=>{
     if(!isStart) return
     var rect = canvas.getBoundingClientRect();
@@ -279,6 +298,12 @@ canvas.addEventListener('click', (e)=>{
         let close = buttons.close;
         if(x >= close.position.x && x<=close.position.x+close.width && y>=close.position.y && y<=close.position.y + close.height && close.enlarge){
             isRoomOpen = false
+
+            if(roomOpen.cool){
+                initCoolRoom(); 
+            }else if(roomOpen.occupy){
+                initOccupyRoom()
+            }
 
             Object.keys(roomOpen).forEach(room=>{
                 roomOpen[room] = false
@@ -292,6 +317,7 @@ canvas.addEventListener('click', (e)=>{
                     starts.filter(start=>start.name === 'start07')[0].show = true
                 },10)
             }
+            
         }
     }
 
@@ -310,7 +336,7 @@ canvas.addEventListener('click', (e)=>{
                 coolObject.chk.show = true
                 coolObject.chk.enlarge = true
 
-                setTimeout(()=>{
+                coolTimer.timer1 = setTimeout(()=>{
                     coolObject.talk2Chk = true
                 },100)
             }
@@ -328,7 +354,7 @@ canvas.addEventListener('click', (e)=>{
                 coolObject.talk3.show = true
                 coolObject.talk3.enlarge = true
 
-                setTimeout(()=>{
+                coolTimer.timer2 = setTimeout(()=>{
                     coolObject.talk3Chk = true
                 },100)
             }
@@ -350,7 +376,7 @@ canvas.addEventListener('click', (e)=>{
                     coolObject.talk003.show = true
                 }
 
-                setTimeout(()=>{
+                coolTimer.timer3=  setTimeout(()=>{
                     coolObject.talk4Chk = true
                 },100)
                 
@@ -375,7 +401,7 @@ canvas.addEventListener('click', (e)=>{
                 coolObject.talk4A.enlarge = false
                 coolObject.talk4B.enlarge = false
 
-                setTimeout(()=>{
+                coolTimer.timer4 = setTimeout(()=>{
                     coolObject.talk4A.show = false
                     coolObject.talk4B.show = false
                     
@@ -395,14 +421,17 @@ canvas.addEventListener('click', (e)=>{
 
                 coolObject.talkPeople.show = true
                 coolObject.response5B.show = true
-                coolObject.talk004.show = true
+
+                if(isTeaching){
+                    coolObject.talk004.show = true
+                }
 
                 coolObject.talk4A.enlarge = false
                 coolObject.talk4B.enlarge = false
 
                 CG.cool.isPeace = false
                
-                setTimeout(()=>{
+                coolTimer.timer5 = setTimeout(()=>{
                     coolObject.talk4A.show = false
                     coolObject.talk4B.show = false
                     
@@ -428,8 +457,7 @@ canvas.addEventListener('click', (e)=>{
                 coolObject.talk6.enlarge = false
 
                 coolObject.response7.show = true
-
-                setTimeout(()=>{
+                coolTimer.timer6 = setTimeout(()=>{
                     coolObject.talk6.show = false
                     
                     coolObject.talk8.show = true
@@ -459,7 +487,7 @@ canvas.addEventListener('click', (e)=>{
 
                 coolObject.response9.show = true
 
-                setTimeout(()=>{
+                coolTimer.timer7 = setTimeout(()=>{
                     coolObject.talk8.show = false
                     
                     coolObject.talk10A.show = true
@@ -492,7 +520,7 @@ canvas.addEventListener('click', (e)=>{
 
                 coolObject.response11A.show = true
 
-                setTimeout(()=>{
+                coolTimer.timer8 = setTimeout(()=>{
                     coolObject.talk10A.show = false
                     coolObject.talk10B.show = false
                     coolObject.talkPeople.image.src = './images/cool/people1.png'
@@ -514,7 +542,7 @@ canvas.addEventListener('click', (e)=>{
                 coolObject.response11B.show = true
 
                 CG.cool.isPeace = false
-                setTimeout(()=>{
+                coolTimer.timer9 = setTimeout(()=>{
                     coolObject.talk10A.show = false
                     coolObject.talk10B.show = false
                     coolObject.talkPeople.image.src = './images/cool/people3.png'
@@ -534,18 +562,21 @@ canvas.addEventListener('click', (e)=>{
                 coolObject.cup.enlarge = false
                 coolObject.cup.show = false
 
-                coolObject.end.show = true
-                
                 if(!CG.cool.isPeace){
                     coolObject.end.image.src = coolObject.end.image.src.replace('good', 'bad')
+                    getCG.cool.push(0)
+                }else{
+                    getCG.cool.push(1)
                 }
+                coolObject.end.show = true
+                
                 if(isTeaching){
                     coolObject.talk005.show = true
                 }
 
                 globalClick = true
 
-                setTimeout(()=>{
+                coolTimer.timer10 = setTimeout(()=>{
                     coolObject.talk005Chk = true
                 },100)
             }
@@ -559,7 +590,7 @@ canvas.addEventListener('click', (e)=>{
                 coolObject.talk006.show = true
             }
 
-            setTimeout(()=>{
+            coolTimer.timer11 = setTimeout(()=>{
                 coolObject.talk006Chk = true
             },100)
         }
@@ -574,7 +605,7 @@ canvas.addEventListener('click', (e)=>{
             globalClick = false
             starts.filter(start=>start.name === 'start05')[0].show = false
 
-            setTimeout(()=>{
+            coolTimer.timer12 = setTimeout(()=>{
                 coolObject.talk06Chk = true
                 startNav = true
             }, 100)
@@ -582,7 +613,7 @@ canvas.addEventListener('click', (e)=>{
     }
 
     if(roomOpen.occupy && isRoomOpen){
-        if(occupyObject.sitdown.show){
+        if(occupyObject.sitdown.show && occupyObject.sitdownChk){
             if(x>=occupyObject.sitdown.position.x && x<=occupyObject.sitdown.position.x + occupyObject.sitdown.oldWidth && y>=occupyObject.sitdown.position.y && y<=occupyObject.sitdown.position.y + occupyObject.sitdown.oldHeight){
                 occupyObject.sitdown.show = false
                 occupyObject.sitdown.enlarge = false
@@ -592,6 +623,12 @@ canvas.addEventListener('click', (e)=>{
                 occupyObject.people.show = true
                 occupyObject.talk1.show = true
                 occupyObject.talk1.enlarge = true
+                
+                occupyTimer.timer1 = setTimeout(()=>{
+                    occupyObject.talk1Chk = true
+
+                }, 100)
+                
             }
         }
         if(occupyObject.talk1.show && occupyObject.talk1Chk){
@@ -600,13 +637,14 @@ canvas.addEventListener('click', (e)=>{
                 occupyObject.response2.show = true
                 occupyObject.talk1Chk = false
                 occupyObject.talk1.enlarge = false
-                setTimeout(()=>{
+                occupyTimer.timer2 = setTimeout(()=>{
                     occupyObject.talk1.show = false
 
                     occupyObject.talk3A.show = true
                     occupyObject.talk3A.enlarge = true
                     occupyObject.talk3B.show = true
                     occupyObject.talk3B.enlarge = true
+                    occupyObject.talk3Chk  = true
                 }, occupyObject.response2.text.split('').length*10 + 1500)
                 
             }
@@ -623,6 +661,18 @@ canvas.addEventListener('click', (e)=>{
                 if(occupyObject.people.image.src.includes('people2')){
                     occupyObject.people.image.src = occupyObject.people.image.src.replace('people2', 'people1')
                 }
+                occupyTimer.timer3 = setTimeout(()=>{
+                    occupyObject.talk3A.show = false
+                    occupyObject.talk3B.show = false
+    
+                    occupyObject.talk5A.show = true
+                    occupyObject.talk5A.enlarge = true
+                    occupyObject.talk5B.show = true
+                    occupyObject.talk5B.enlarge = true
+    
+                    occupyObject.talk5Chk = true
+                    
+                }, occupyObject.response4.text.split('').length*10 + 1500)
                 
             }
 
@@ -636,25 +686,29 @@ canvas.addEventListener('click', (e)=>{
                 if(occupyObject.people.image.src.includes('people1')){
                     occupyObject.people.image.src = occupyObject.people.image.src.replace('people1', 'people2')
                 }
+                occupyTimer.timer3 = setTimeout(()=>{
+                    occupyObject.talk3A.show = false
+                    occupyObject.talk3B.show = false
+    
+                    occupyObject.talk5A.show = true
+                    occupyObject.talk5A.enlarge = true
+                    occupyObject.talk5B.show = true
+                    occupyObject.talk5B.enlarge = true
+    
+                    occupyObject.talk5Chk = true
+                    
+                }, occupyObject.response4.text.split('').length*10 + 1500)
             }
 
-            setTimeout(()=>{
-                occupyObject.talk3A.show = false
-                occupyObject.talk3B.show = false
-
-                occupyObject.talk5A.show = true
-                occupyObject.talk5A.enlarge = true
-                occupyObject.talk5B.show = true
-                occupyObject.talk5B.enlarge = true
-
-                
-            }, occupyObject.response4.text.split('').length*10 + 1500)
+            
         }
       
 
         if((occupyObject.talk5A.show && occupyObject.talk5B.show && occupyObject.talk5Chk)){
             if(!occupyObject.talk5Chk) return
             if(x>=occupyObject.talk5A.position.x && x<=occupyObject.talk5A.position.x + occupyObject.talk5A.oldWidth && y>=occupyObject.talk5A.position.y && y<=occupyObject.talk5A.position.y + occupyObject.talk5A.oldHeight){
+
+                console.log('chk5');
                 occupyObject.response6A.show = true
                 occupyObject.response4.show = false
                 occupyObject.talk5Chk = false
@@ -664,17 +718,18 @@ canvas.addEventListener('click', (e)=>{
                     occupyObject.people.image.src = occupyObject.people.image.src.replace('people2', 'people1')
                 }
 
-                setTimeout(()=>{
+                occupyTimer.timer4 = setTimeout(()=>{
                     occupyObject.talk5A.show = false
                     occupyObject.talk5B.show = false
 
                     occupyObject.talk7.show = true
                     occupyObject.talk7.enlarge = true
-
+                    occupyObject.talk7Chk = true
                 }, occupyObject.response6A.text.split('').length*10 + 1500)
 
             }
             if(x>=occupyObject.talk5B.position.x && x<=occupyObject.talk5B.position.x + occupyObject.talk5B.oldWidth && y>=occupyObject.talk5B.position.y && y<=occupyObject.talk5B.position.y + occupyObject.talk5B.oldHeight){
+                console.log('chk5');
                 occupyObject.response6B.show = true
                 occupyObject.response4.show = false
                 occupyObject.talk5Chk = false
@@ -684,13 +739,13 @@ canvas.addEventListener('click', (e)=>{
                 if(occupyObject.people.image.src.includes('people1')){
                     occupyObject.people.image.src = occupyObject.people.image.src.replace('people1', 'people2')
                 }
-                setTimeout(()=>{
+                occupyTimer.timer5 = setTimeout(()=>{
                     occupyObject.talk5A.show = false
                     occupyObject.talk5B.show = false
 
                     occupyObject.talk7.show = true
                     occupyObject.talk7.enlarge = true
-
+                    occupyObject.talk7Chk = true
                 }, occupyObject.response6B.text.split('').length*10 + 1500)
 
             }
@@ -701,13 +756,14 @@ canvas.addEventListener('click', (e)=>{
         if(occupyObject.talk7.show && occupyObject.talk7Chk){
             if(!occupyObject.talk7Chk) return
             if(x>=occupyObject.talk7.position.x && x<=occupyObject.talk7.position.x + occupyObject.talk7.oldWidth && y>=occupyObject.talk7.position.y && y<=occupyObject.talk7.position.y + occupyObject.talk7.oldHeight){
+                console.log('chk7');
                 occupyObject.response8.show = true
                 occupyObject.response6A.show = false
                 occupyObject.response6B.show = false
                 occupyObject.talk7Chk = false
                 occupyObject.talk7.enlarge = false
 
-                setTimeout(()=>{
+                occupyTimer.timer6 = setTimeout(()=>{
                     occupyObject.response9.show = true
                     occupyObject.chk.show = true
                     occupyObject.chk.enlarge = true
@@ -718,6 +774,7 @@ canvas.addEventListener('click', (e)=>{
 
         if(occupyObject.response9.show && occupyObject.chk.show){
             if(x>=occupyObject.chk.position.x && x<=occupyObject.chk.position.x + occupyObject.chk.oldWidth && y>=occupyObject.chk.position.y && y<=occupyObject.chk.position.y + occupyObject.chk.oldHeight){
+
                 occupyObject.response8.show = false
                 occupyObject.response9.show = false
                 occupyObject.chk.show = false
@@ -730,6 +787,8 @@ canvas.addEventListener('click', (e)=>{
                         occupy.enlarge = true
                     }
                 })
+
+
             }
         }   
 
@@ -758,14 +817,18 @@ canvas.addEventListener('click', (e)=>{
                 occupyObject.talk10A.enlarge = false
                 occupyObject.talk10B.enlarge = false
                 occupyObject.talk10C.enlarge = false
+                CG.occupy.isPeace = false
                 if(occupyObject.people.image.src.includes('people1')){
                     occupyObject.people.image.src = occupyObject.people.image.src.replace('people1', 'people2')
                 }
             }
 
-            setTimeout(()=>{
+            occupyTimer.timer7 = setTimeout(()=>{
                 if(!CG.occupy.isPeace){
                     occupyObject.end.image.src = occupyObject.end.image.src.replace('good', 'bad');
+                    getCG.occupy.push(0)
+                }else{
+                    getCG.occupy.push(1)
                 }
                 occupyObject.end.show = true
                 occupyObject.talk10A.show = false
@@ -842,7 +905,6 @@ canvas.addEventListener('click', (e)=>{
             if(!bool){
                 globalClick = false
                 starts.filter(start=> start.name === 'start02' )[0].show = false
-                console.log(1);
                 starts.filter(start=> start.name === 'skip' )[0].show = false
                 starts.filter(start=> start.name === 'skip' )[0].enlarge = false
         
@@ -977,3 +1039,94 @@ canvas.addEventListener('mouseup', ()=>{
     differX = null
     differY = null
 })
+
+
+function initCoolRoom(){
+    coolObject.talk1Chk = true
+    coolObject.talk2Chk = false
+    coolObject.talk3Chk = false
+    coolObject.talk4Chk = false
+    coolObject.talk6Chk = false
+    coolObject.talk8Chk = false
+    coolObject.talk10Chk = false
+    coolObject.cupChk = false
+    coolObject.talk005Chk = false
+    coolObject.talk006Chk = false
+    coolObject.talk06Chk = false
+    
+    Object.keys(coolTimer).forEach(timer=>{
+        clearTimeout(coolTimer[timer])
+    })
+    cools.forEach(cool=>{
+        if(cool.name === 'cup' || cool.name === 'people' || cool.name === '1'){
+            cool.show = true
+        }else{
+            cool.show = false
+        }
+
+        if(cool.name === '1'){
+            cool.enlarge = true
+        }else{
+            cool.enlarge = false
+        }
+        if(cool.talk){
+            cool.isTypewriter = true
+            if(cool.image.src.includes('_.png')){
+                cool.image.src = cool.image.src.replace('_.png', '.png')
+            }
+        }
+        cool.num = 0;cool.step = 0;cool.twoStep = 25;cool.threeStep = 50
+    })
+
+    CG.cool.isPeace = true
+
+    console.log(getCG);
+}
+function initOccupyRoom(){
+    occupyObject.sitdownChk = true
+    occupyObject.talk1Chk = false
+    occupyObject.talk3Chk = false
+    occupyObject.talk5Chk = false
+    occupyObject.talk7Chk = false
+    occupyObject.talk10Chk = false
+
+    occupyMoveNum = 0
+
+    Object.keys(occupyTimer).forEach(timer=>{
+        clearTimeout(occupyTimer[timer])
+    })
+    occupys.forEach(occupy=>{
+        
+        if(occupy.name === 'sitdown'){
+            occupy.show = true
+            occupy.enlarge = true
+        }else{
+            occupy.dragging = false
+            occupy.enlarge = false
+            if(occupy.name === null){
+                occupy.show = true
+                occupy.position.x = occupy.oldPosition.x
+                occupy.position.y = occupy.oldPosition.y
+                occupy.width = occupy.oldWidth
+                occupy.height = occupy.oldHeight
+                if(occupy.image.src.includes('1-1.png')){
+                    occupy.image.src = occupy.image.src.replace('1-1.png', '1.png')
+                }
+            }else{
+                occupy.show = false
+            }
+        }
+
+        if(occupy.talk){
+            occupy.isTypewriter = true
+            if(occupy.image.src.includes('_.png')){
+                occupy.image.src = occupy.image.src.replace('_.png', '.png')
+            }
+        }
+        occupy.num = 0;occupy.step = 0;occupy.twoStep = 25;occupy.threeStep = 50
+
+    })
+    CG.occupy.isPeace = true
+
+    console.log(getCG);
+}
