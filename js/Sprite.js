@@ -130,7 +130,7 @@ class Bus{
 }
 
 class Shared{
-    constructor({x, y, w, h, image, isPeople=false, isEnlarge=false, isShow=true, isTalk=false,multiple=1.1, name=null, text="", color="#000", isTypewriter=false}){
+    constructor({x, y, w, h, image, isPeople=false, isEnlarge=false, isShow=true, isTalk=false,multiple=1.1, name=null, text="", color="#000", isTypewriter=false,}){
         this.oldPosition = {
             x, y
         },
@@ -177,8 +177,9 @@ class Shared{
     }
     draw(){
         if(!this.loaded) return
+      
         c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
-        
+      
         if(!this.talk) return
         
         if(this.isTypewriter){

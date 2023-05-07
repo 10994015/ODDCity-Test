@@ -167,6 +167,26 @@ canvas.addEventListener('mousemove', (e)=>{
             }
         })
     }
+    if(roomOpen.hoard && isRoomOpen){
+        hoards.some(hoard=>{
+            if(!hoard.enlarge) return
+            if(x >= hoard.position.x && x<=hoard.position.x+hoard.width && y>=hoard.position.y && y<=hoard.position.y + hoard.height){
+                hoard.width = hoard.bigWidth
+                hoard.height = hoard.bigHeight
+                if((!hoard.image.src.includes('_.png')) && hoard.talk){
+                    hoard.image.src = hoard.image.src.replace('.png', '_.png')
+                }
+
+                return canvas.style.cursor = "pointer"
+            }
+            hoard.width = hoard.oldWidth
+            hoard.height = hoard.oldHeight
+            canvas.style.cursor = "default"
+            if(hoard.image.src.includes('_.png')){
+                hoard.image.src = hoard.image.src.replace('_.png', '.png')
+            }
+        })
+    }
     
     if(isDragging && roomOpen.occupy && isRoomOpen){
         occupys[mousedownIdx].position.x = e.offsetX + differX
@@ -286,6 +306,30 @@ const coolTimer = {
     timer10:null,
     timer11:null,
     timer12:null,
+}
+
+const hoardObject = {
+    talk1: hoards.filter(hoard=>hoard.name === '1')[0],
+    talk1Chk: true,
+    talk2: hoards.filter(hoard=>hoard.name === '2')[0],
+    talk2Chk: false,
+    s1: hoards.filter(hoard=>hoard.name === 's1')[0],
+    a1: hoards.filter(hoard=>hoard.name === 'a1')[0],
+    b1: hoards.filter(hoard=>hoard.name === 'b1')[0],
+    c1: hoards.filter(hoard=>hoard.name === 'c1')[0],
+    d1: hoards.filter(hoard=>hoard.name === 'd1')[0],
+    e1: hoards.filter(hoard=>hoard.name === 'e1')[0],
+    f1: hoards.filter(hoard=>hoard.name === 'f1')[0],
+    g1: hoards.filter(hoard=>hoard.name === 'g1')[0],
+    h1: hoards.filter(hoard=>hoard.name === 'h1')[0],
+
+    removeInterObj: false,
+
+    hold: hoards.filter(hoard=>hoard.name === 'hold')[0],
+    smallPeople: hoards.filter(hoard=>hoard.name === 'smallPeople')[0],
+
+    chk: hoards.filter(hoard=>hoard.name === 'chk')[0],
+
 }
 canvas.addEventListener('click', (e)=>{
     if(!isStart) return
@@ -838,6 +882,135 @@ canvas.addEventListener('click', (e)=>{
         }
         
     }
+    if(roomOpen.hoard && isRoomOpen){
+        if(hoardObject.talk1.show && hoardObject.talk1Chk){
+            if(!hoardObject.talk1Chk) return
+            if(x>=hoardObject.talk1.position.x && x<=hoardObject.talk1.position.x + hoardObject.talk1.width && y>=hoardObject.talk1.position.y && y<=hoardObject.talk1.position.y+hoardObject.talk1.height){
+                hoardObject.talk1Chk = false
+                hoardObject.talk1.show = false
+                hoardObject.talk1.enlarge = false
+
+                setTimeout(()=>{
+                    hoardObject.talk2.show = true
+                    hoardObject.chk.show = true
+                    hoardObject.chk.enlarge = true
+                    hoardObject.talk2Chk = true
+                }, 50)
+            }
+        }
+        if(hoardObject.talk2.show && hoardObject.talk2Chk){
+            if(!hoardObject.talk2Chk) return
+            if(x>=hoardObject.chk.position.x && x<=hoardObject.chk.position.x + hoardObject.chk.width && y>=hoardObject.chk.position.y && y<=hoardObject.chk.position.y+hoardObject.chk.height){
+                hoardObject.talk2Chk = false
+                hoardObject.talk2.show = false
+                hoardObject.chk.show = false
+                hoardObject.chk.enlarge = false
+
+                setTimeout(()=>{
+                    hoardObject.h1.enlarge = true
+                    hoardObject.removeInterObj = true
+                }, 50)
+            }
+        }
+        if(hoardObject.removeInterObj){
+            if(hoardObject.removeInterObj && hoardObject.s1.show && hoardObject.s1.enlarge){
+                if(x>=hoardObject.s1.position.x && x<=hoardObject.s1.position.x + hoardObject.s1.width && y>=hoardObject.s1.position.y && y<=hoardObject.s1.position.y+hoardObject.s1.height){
+                    hoardObject.removeInterObj = false
+
+                    hoardObject.s1.show = false
+                    hoardObject.s1.enlarge = false
+                    
+                    hoardObject.hold.show = false
+                    hoardObject.hold.enlarge = false
+                    setTimeout(()=>{
+                        console.log('finish!!!');
+                        hoardObject.smallPeople.show = true
+                    }, 10)
+                }
+            }
+            if(hoardObject.removeInterObj && hoardObject.a1.show && hoardObject.a1.enlarge){
+                if(x>=hoardObject.a1.position.x && x<=hoardObject.a1.position.x + hoardObject.a1.width && y>=hoardObject.a1.position.y && y<=hoardObject.a1.position.y+hoardObject.a1.height){
+                    hoardObject.a1.show = false
+                    hoardObject.a1.enlarge = false
+                    setTimeout(()=>{
+                        hoardObject.s1.enlarge = true
+                    }, 10)
+                }
+            }
+            if(hoardObject.removeInterObj && hoardObject.b1.show && hoardObject.b1.enlarge){
+                if(x>=hoardObject.b1.position.x && x<=hoardObject.b1.position.x + hoardObject.b1.width && y>=hoardObject.b1.position.y && y<=hoardObject.b1.position.y+hoardObject.b1.height){
+                    hoardObject.b1.show = false
+                    hoardObject.b1.enlarge = false
+    
+                    setTimeout(()=>{
+                        hoardObject.a1.enlarge = true
+                    }, 50)
+                }
+            }
+            if(hoardObject.removeInterObj && hoardObject.c1.show && hoardObject.c1.enlarge){
+                if(x>=hoardObject.c1.position.x && x<=hoardObject.c1.position.x + hoardObject.c1.width && y>=hoardObject.c1.position.y && y<=hoardObject.c1.position.y+hoardObject.c1.height){
+                    hoardObject.c1.show = false
+                    hoardObject.c1.enlarge = false
+    
+                    setTimeout(()=>{
+                        hoardObject.b1.enlarge = true
+                    }, 50)
+                }
+            }
+            if(hoardObject.removeInterObj && hoardObject.d1.show && hoardObject.d1.enlarge){
+                if(x>=hoardObject.d1.position.x && x<=hoardObject.d1.position.x + hoardObject.d1.width && y>=hoardObject.d1.position.y && y<=hoardObject.d1.position.y+hoardObject.d1.height){
+                    hoardObject.d1.show = false
+                    hoardObject.d1.enlarge = false
+    
+                    setTimeout(()=>{
+                        hoardObject.c1.enlarge = true
+                    }, 50)
+                }
+            }
+            if(hoardObject.removeInterObj && hoardObject.e1.show && hoardObject.e1.enlarge){
+                if(x>=hoardObject.e1.position.x && x<=hoardObject.e1.position.x + hoardObject.e1.width && y>=hoardObject.e1.position.y && y<=hoardObject.e1.position.y+hoardObject.e1.height){
+                    hoardObject.e1.show = false
+                    hoardObject.e1.enlarge = false
+    
+                    setTimeout(()=>{
+                        hoardObject.d1.enlarge = true
+                    }, 50)
+                }
+            }
+            if(hoardObject.removeInterObj && hoardObject.f1.show && hoardObject.f1.enlarge){
+                if(x>=hoardObject.f1.position.x && x<=hoardObject.f1.position.x + hoardObject.f1.width && y>=hoardObject.f1.position.y && y<=hoardObject.f1.position.y+hoardObject.f1.height){
+                    hoardObject.f1.show = false
+                    hoardObject.f1.enlarge = false
+    
+                    setTimeout(()=>{
+                        hoardObject.e1.enlarge = true
+                    }, 50)
+                }
+            }
+            if(hoardObject.removeInterObj && hoardObject.g1.show && hoardObject.g1.enlarge){
+                if(x>=hoardObject.g1.position.x && x<=hoardObject.g1.position.x + hoardObject.g1.width && y>=hoardObject.g1.position.y && y<=hoardObject.g1.position.y+hoardObject.g1.height){
+                    hoardObject.g1.show = false
+                    hoardObject.g1.enlarge = false
+    
+                    setTimeout(()=>{
+                        hoardObject.f1.enlarge = true
+                    }, 50)
+                }
+            }
+            if(hoardObject.removeInterObj && hoardObject.h1.show && hoardObject.h1.enlarge ){
+                if(x>=hoardObject.h1.position.x && x<=hoardObject.h1.position.x + hoardObject.h1.width && y>=hoardObject.h1.position.y && y<=hoardObject.h1.position.y+hoardObject.h1.height){
+                    hoardObject.h1.show = false
+                    hoardObject.h1.enlarge = false
+    
+                    setTimeout(()=>{
+                        hoardObject.g1.enlarge = true
+                    }, 50)
+                }
+            }
+            
+        }
+        
+    }
     interactions.forEach(interaction=>{
         let bool = x >= interaction.position.x && x <= interaction.position.x + interaction.width && y>=interaction.position.y && y<=interaction.position.y + interaction.height
         if(!bool) return
@@ -889,25 +1062,28 @@ canvas.addEventListener('click', (e)=>{
                 starts.filter(start=> start.name === 'start02' )[0].show = true
                 setTimeout(()=>{
                     globalClick = true
+                    starts.filter(start=> start.name === 'chk2' )[0].show = true
+                    starts.filter(start=> start.name === 'chk2' )[0].enlarge = true
                     starts.filter(start=> start.name === 'skip' )[0].show = true
                     starts.filter(start=> start.name === 'skip' )[0].enlarge = true
                 }, 100)
-
-
             }
         
         })
     }
     if(startNav){
         if(startNav && globalClick && starts.filter(start=> start.name === 'start02' )[0].show ){
-            let skip = starts.filter(start=> start.name === 'skip' )[0]
-            let bool = x >= skip.position.x && x <= skip.position.x + skip.width && y>=skip.position.y && y<=skip.position.y + skip.height
-            if(!bool){
+            let chk = starts.filter(start=> start.name === 'chk2' )[0]
+            let bool = x >= chk.position.x && x <= chk.position.x + chk.width && y>=chk.position.y && y<=chk.position.y + chk.height
+            if(bool){
                 globalClick = false
                 starts.filter(start=> start.name === 'start02' )[0].show = false
                 starts.filter(start=> start.name === 'skip' )[0].show = false
                 starts.filter(start=> start.name === 'skip' )[0].enlarge = false
-        
+
+                starts.filter(start=> start.name === 'chk2' )[0].show = false
+                starts.filter(start=> start.name === 'chk2' )[0].enlarge = false
+
                 starts.filter(start=> start.name === 'start03' )[0].show = true
                 setTimeout(()=>{
                     globalClick = true

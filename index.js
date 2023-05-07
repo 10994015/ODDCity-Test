@@ -69,6 +69,7 @@ const starts = [
     new Interaction({x:2650+6110/13 - 80, y:330+1641/13-75, w:112/2, h:68/2, name:'start01Btn',image: createImage('./images/buttons/chk.png'), multiple:1.05, isShow:false, isEnlarge:true  }),
     new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start02',image: createImage('./images/starts/talk/02.png'), multiple:1, isShow:false  }),
     new Interaction({x:2650+6110/13 - 80, y:380, w:333/6, h:202/6, name:'skip',image: createImage('./images/buttons/Skip.png'), isEnlarge: false, multiple:1.05, isShow:false  }),
+    new Interaction({x:2650+6110/13 - 80 - 333/6 -20, y:380, w:333/6, h:202/6, name:'chk2',image: createImage('./images/buttons/chk.png'), isEnlarge: false, multiple:1.05, isShow:false  }),
     new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start03',image: createImage('./images/starts/talk/03.png'), multiple:1, isShow:false  }),
     new Interaction({x:2650, y:330, w:6110/13, h:1641/13, name:'start04',image: createImage('./images/starts/talk/04.png'), multiple:1, isShow:false  }),
     new Interaction({x:3100, y:330, w:3318/13, h:1639/13, name:'start05',image: createImage('./images/starts/talk/05.png'), multiple:1, isShow:false  }),
@@ -156,6 +157,43 @@ const occupys = [
 
 
     new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
+
+]
+
+const hoards = [
+    new Shared({x:891, y:549, w:508/2.93, h:372/2.93, image: createImage('./images/hoards/inter/1.png'),}),
+    new Shared({x:373, y:324, w:990/2.9, h:519/2.9, image: createImage('./images/hoards/inter/2.png'),}),
+    new Shared({x:757, y:385, w:312/2.7, h:341/2.7, image: createImage('./images/hoards/inter/3.png'),}),
+    new Shared({x:1107, y:375, w:540/2.8, h:730/2.8, image: createImage('./images/hoards/inter/4.png'),}),
+    new Shared({x:160, y:490, w:1295/2.85, h:647/2.85, image: createImage('./images/hoards/inter/5.png'),}),
+    new Shared({x:615, y:562, w:802/2.9, h:391/2.9, image: createImage('./images/hoards/inter/6.png'),}),
+    new Shared({x:932, y:346, w:518/2.9, h:400/2.9, image: createImage('./images/hoards/inter/7.png'),}),
+    new Shared({x:380, y:117, w:919/2.9, h:208/2.9, image: createImage('./images/hoards/inter/8.png'),}),
+    new Shared({x:765, y:420, w:753/1.8, h:450/1.8, image: createImage('./images/hoards/hold.png'), name:"hold"}),
+
+
+
+    new Shared({x:865, y:490, w:391/2, h:209/2, image: createImage('./images/hoards/s1.png'), name:'s1', isEnlarge:false, multiple:1.05, }),
+    new Shared({x:1050, y:590, w:177/1.3, h:135/1.3, image: createImage('./images/hoards/a1.png'), name:'a1', isEnlarge:false, multiple:1.05, }),
+    new Shared({x:760, y:605, w:222, h:61, image: createImage('./images/hoards/b1.png'), name:'b1', isEnlarge:false, multiple:1.05, }),
+    new Shared({x:930, y:560, w:257/1.6, h:234/1.6, image: createImage('./images/hoards/c1.png'), name:'c1', isEnlarge:false, multiple:1.05}),
+    new Shared({x:865, y:625, w:99, h:72, image: createImage('./images/hoards/d1.png'), name:'d1', isEnlarge:false, multiple:1.05}),
+    new Shared({x:825, y:555, w:222/1.1, h:61/1.1, image: createImage('./images/hoards/e1.png'), name:'e1', isEnlarge:false, multiple:1.05}),
+    new Shared({x:1000, y:460, w:259/1.6, h:256/1.6, image: createImage('./images/hoards/f1.png'), name:'f1', isEnlarge:false, multiple:1.05}),
+    new Shared({x:940, y:480, w:165/1.8, h:198/1.8, image: createImage('./images/hoards/g1.png'), name:'g1', isEnlarge:false, multiple:1.05}),
+    new Shared({x:880, y:550, w:69/1.1, h:33/1.1, image: createImage('./images/hoards/h1.png'), name:'h1', isEnlarge:false, multiple:1.05}),
+
+
+    new Shared({x:380, y:420, w:2378/5, h:639/5, image: createImage('./images/hoards/talk/1.png'), isTalk:false, isEnlarge:true, multiple:1.02, name:'1'}),
+    new Shared({x:canvas.width/2 - (3149/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:3149/4.5, h:484/4.5, image: createImage('./images/hoards/talk/2.png'), isTalk:true, isEnlarge:false, multiple:1, name:'2', isShow:false ,}),
+
+
+    new Shared({x:840, y:300, w:393/1.9, h:749/1.9, image: createImage('./images/hoards/people1.png'), name:"smallPeople", isEnlarge:false, isShow:false, multiple:1}),
+
+
+    new Shared({x:canvas.width/2 - (112/2)/2 + 300, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
+
+
 
 ]
 const buttons = {
@@ -335,11 +373,11 @@ function animate(){
         c.fillRect(0,0,canvas.width, canvas.height)
         hoard.draw()
         buttons.close.draw()
-        // hoards.forEach(hoard=>{
-        //     if(hoard.show){
-        //         hoard.draw()
-        //     }
-        // })
+        hoards.forEach(hoard=>{
+            if(hoard.show){
+                hoard.draw()
+            }
+        })
     }
 
     // if(isTeaching && getOff){
