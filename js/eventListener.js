@@ -1,4 +1,6 @@
 
+
+
 let mousedownIdx= null
 let isDragging = false
 let differX = null
@@ -15,11 +17,15 @@ window.addEventListener("keydown", ({keyCode})=>{
         case 68:
             if(!isRoomOpen){
                 keys.right.pressed = true
+                audioWalk.loop = true
+                audioWalk.play()
             }
             break;
         case 65:
             if(!isRoomOpen){
                 keys.left.pressed = true
+                audioWalk.loop = true
+                audioWalk.play()
             }
             break;
     }
@@ -32,9 +38,13 @@ window.addEventListener("keyup", ({keyCode})=>{
     switch (keyCode){
         case 68:
             keys.right.pressed = false
+            audioWalk.pause()
+            audioWalk.currentTime = 0
             break;
         case 65:
             keys.left.pressed = false
+            audioWalk.pause()
+            audioWalk.currentTime = 0
             break;
         case 27:
             if(isRoomOpen){
@@ -45,17 +55,20 @@ window.addEventListener("keyup", ({keyCode})=>{
             }
     }
 })
-
 //talk
 // let talk_occupy = talks.filter(talk=>talk.name === 'occupy')[0]
 canvas.addEventListener('mousemove', (e)=>{
+    if(busAudioStart){
+        busAudio.play()
+    }
+    busAudioStart = false
     if(!isStart) return
     var rect = canvas.getBoundingClientRect();
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
    
     
-    if(phone.show && !isRoomOpen){
+    if(phone.show && phone.enlarge && !isRoomOpen){
         if( x > phone.position.x && x < (phone.position.x + phone.width) && y > phone.position.y && y < (phone.position.y + phone.height)){
             phone.width = phone.bigWidth
             phone.height = phone.bigHeight
@@ -425,7 +438,17 @@ canvas.addEventListener('click', (e)=>{
         let close = buttons.close;
         if(x >= close.position.x && x<=close.position.x+close.width && y>=close.position.y && y<=close.position.y + close.height && close.enlarge){
             isRoomOpen = false
-
+            if(startNav && coolObject.talk06Chk && coolObject.talk06.show && isTeaching){
+                coolObject.talk06.show = false
+                coolObject.talk06Chk = false
+                globalClick = true
+                interactions.filter(interaction=>interaction.name === 'cool')[0].show = false
+                console.log(startNav);
+                console.log(isTeaching);
+                setTimeout(()=>{
+                    starts.filter(start=>start.name === 'start07')[0].show = true
+                },10)
+            }
             if(roomOpen.cool){
                 initCoolRoom(); 
             }else if(roomOpen.occupy){
@@ -433,19 +456,18 @@ canvas.addEventListener('click', (e)=>{
             }else if(roomOpen.hoard){
                 initHoardRoom()
             }
-
+            clickVedioPlay('inRoom')
+            stopBgm()
+            playBgm()
+            audioGoodend.pause()
+            audioGoodend.currentTime = 0
+            audioBadend.pause()
+            audioBadend.currentTime = 0
             Object.keys(roomOpen).forEach(room=>{
                 roomOpen[room] = false
             })
-            if(startNav && coolObject.talk06Chk && coolObject.talk06.show && isTeaching){
-                coolObject.talk06.show = false
-                coolObject.talk06Chk = false
-                globalClick = true
-                interactions.filter(interaction=>interaction.name === 'cool')[0].show = false
-                setTimeout(()=>{
-                    starts.filter(start=>start.name === 'start07')[0].show = true
-                },10)
-            }
+            
+            
             
         }
     }
@@ -454,6 +476,7 @@ canvas.addEventListener('click', (e)=>{
         if(coolObject.talk1.show && coolObject.talk1Chk){
             if(!coolObject.talk1Chk) return
             if(x>=coolObject.talk1.position.x && x<=coolObject.talk1.position.x + coolObject.talk1.width && y>=coolObject.talk1.position.y && y<=coolObject.talk1.position.y+coolObject.talk1.height){
+                clickVedioPlay('talk')
                 coolObject.talk1Chk = false
                 coolObject.talk1.show = false
                 coolObject.talk1.enlarge = false
@@ -473,6 +496,7 @@ canvas.addEventListener('click', (e)=>{
         if(coolObject.talk1001.show && coolObject.talk2Chk){
             if(!coolObject.talk2Chk) return
             if(x>=coolObject.chk.position.x && x<=coolObject.chk.position.x + coolObject.chk.width && y>=coolObject.chk.position.y && y<=coolObject.chk.position.y+coolObject.chk.height){
+                clickVedioPlay('btn')
                 coolObject.talk2Chk = false
 
                 coolObject.talk1001.show = false
@@ -492,6 +516,7 @@ canvas.addEventListener('click', (e)=>{
         if(coolObject.talk3.show && coolObject.talk3Chk){
             if(!coolObject.talk3Chk) return
             if(x>=coolObject.talk3.position.x && x<=coolObject.talk3.position.x + coolObject.talk3.width && y>=coolObject.talk3.position.y && y<=coolObject.talk3.position.y+coolObject.talk3.height){
+                clickVedioPlay('talk')
                 coolObject.talk3Chk = false
 
                 coolObject.talk3.show = false
@@ -515,6 +540,7 @@ canvas.addEventListener('click', (e)=>{
         if(coolObject.talk4A.show && coolObject.talk4B.show && coolObject.talk4Chk){
             if(!coolObject.talk4Chk) return
             if(x>=coolObject.talk4A.position.x && x<=coolObject.talk4A.position.x + coolObject.talk4A.width && y>=coolObject.talk4A.position.y && y<=coolObject.talk4A.position.y+coolObject.talk4A.height){
+                clickVedioPlay('talk')
                 coolObject.talkPeople.image.src = './images/cool/people2.png'
 
                 coolObject.talk4Chk = false
@@ -542,6 +568,7 @@ canvas.addEventListener('click', (e)=>{
                 }, coolObject.response5A.text.split('').length*10 + 1500)
             }
             if(x>=coolObject.talk4B.position.x && x<=coolObject.talk4B.position.x + coolObject.talk4B.width && y>=coolObject.talk4B.position.y && y<=coolObject.talk4B.position.y+coolObject.talk4B.height){
+                clickVedioPlay('talk')
                 coolObject.talkPeople.image.src = './images/cool/people2.png'
 
                 coolObject.talk4Chk = false
@@ -576,6 +603,7 @@ canvas.addEventListener('click', (e)=>{
         if(coolObject.talk6.show && coolObject.talk6Chk){
             if(!coolObject.talk6Chk) return
             if(x>=coolObject.talk6.position.x && x<=coolObject.talk6.position.x + coolObject.talk6.width && y>=coolObject.talk6.position.y && y<=coolObject.talk6.position.y+coolObject.talk6.height){
+                clickVedioPlay('talk')
                 coolObject.talkPeople.image.src = './images/cool/people2.png'
 
                 coolObject.talk6Chk = false
@@ -607,6 +635,7 @@ canvas.addEventListener('click', (e)=>{
         if(coolObject.talk8.show && coolObject.talk8Chk){
             if(!coolObject.talk8Chk) return
             if(x>=coolObject.talk8.position.x && x<=coolObject.talk8.position.x + coolObject.talk8.width && y>=coolObject.talk8.position.y && y<=coolObject.talk8.position.y+coolObject.talk8.height){
+                clickVedioPlay('talk')
                 coolObject.talkPeople.image.src = './images/cool/people2.png'
 
                 coolObject.talk8Chk = false
@@ -639,6 +668,7 @@ canvas.addEventListener('click', (e)=>{
         if(coolObject.talk10A.show && coolObject.talk10B.show && coolObject.talk10Chk){
             if(!coolObject.talk10Chk) return
             if(x>=coolObject.talk10A.position.x && x<=coolObject.talk10A.position.x + coolObject.talk10A.width && y>=coolObject.talk10A.position.y && y<=coolObject.talk10A.position.y+coolObject.talk10A.height){
+                clickVedioPlay('talk')
                 coolObject.talkPeople.image.src = './images/cool/people2.png'
 
                 coolObject.talk10Chk = false
@@ -660,6 +690,7 @@ canvas.addEventListener('click', (e)=>{
                 }, coolObject.response11A.text.split('').length*10 + 2500)
             }
             if(x>=coolObject.talk10B.position.x && x<=coolObject.talk10B.position.x + coolObject.talk10B.width && y>=coolObject.talk10B.position.y && y<=coolObject.talk10B.position.y+coolObject.talk10B.height){
+                clickVedioPlay('talk')
                 coolObject.talkPeople.image.src = './images/cool/people2.png'
 
                 coolObject.talk10Chk = false
@@ -687,6 +718,7 @@ canvas.addEventListener('click', (e)=>{
 
         if(coolObject.cup.enlarge && coolObject.cupChk){
             if(x>=coolObject.cup.position.x && x<=coolObject.cup.position.x + coolObject.cup.width && y>=coolObject.cup.position.y && y<=coolObject.cup.position.y+coolObject.cup.height){
+                clickVedioPlay('obj')
                 coolObject.cupChk = false
                 coolObject.cup.enlarge = false
                 coolObject.cup.show = false
@@ -694,8 +726,12 @@ canvas.addEventListener('click', (e)=>{
                 if(!CG.cool.isPeace){
                     coolObject.end.image.src = coolObject.end.image.src.replace('good', 'bad')
                     getCG.cool.push(0)
+                    stopBgm()
+                    audioBadend.play()
                 }else{
                     getCG.cool.push(1)
+                    stopBgm()
+                    audioGoodend.play()
                 }
                 coolObject.end.show = true
                 
@@ -707,12 +743,14 @@ canvas.addEventListener('click', (e)=>{
 
                 coolTimer.timer10 = setTimeout(()=>{
                     coolObject.talk005Chk = true
+                    
                 },100)
             }
             
         }
 
         if(globalClick && coolObject.talk005.show && coolObject.talk005Chk){
+            clickVedioPlay('btn')
             coolObject.talk005Chk = false
             coolObject.talk005.show = false
             if(isTeaching){
@@ -725,6 +763,7 @@ canvas.addEventListener('click', (e)=>{
         }
 
         if(globalClick && coolObject.talk006.show && coolObject.talk006Chk){
+            clickVedioPlay('btn')
             coolObject.talk006Chk = false
             coolObject.talk006.show = false
             if(isTeaching){
@@ -744,6 +783,7 @@ canvas.addEventListener('click', (e)=>{
     if(roomOpen.occupy && isRoomOpen){
         if(occupyObject.sitdown.show && occupyObject.sitdownChk){
             if(x>=occupyObject.sitdown.position.x && x<=occupyObject.sitdown.position.x + occupyObject.sitdown.oldWidth && y>=occupyObject.sitdown.position.y && y<=occupyObject.sitdown.position.y + occupyObject.sitdown.oldHeight){
+                clickVedioPlay('btn')
                 occupyObject.sitdown.show = false
                 occupyObject.sitdown.enlarge = false
                 
@@ -763,6 +803,7 @@ canvas.addEventListener('click', (e)=>{
         if(occupyObject.talk1.show && occupyObject.talk1Chk){
             if(!occupyObject.talk1Chk) return
             if(x>=occupyObject.talk1.position.x && x<=occupyObject.talk1.position.x + occupyObject.talk1.oldWidth && y>=occupyObject.talk1.position.y && y<=occupyObject.talk1.position.y + occupyObject.talk1.oldHeight){
+                clickVedioPlay('talk')
                 occupyObject.response2.show = true
                 occupyObject.talk1Chk = false
                 occupyObject.talk1.enlarge = false
@@ -782,6 +823,7 @@ canvas.addEventListener('click', (e)=>{
         if((occupyObject.talk3A.show && occupyObject.talk3B.show && occupyObject.talk3Chk)){
             if(!occupyObject.talk3Chk) return
             if(x>=occupyObject.talk3A.position.x && x<=occupyObject.talk3A.position.x + occupyObject.talk3A.oldWidth && y>=occupyObject.talk3A.position.y && y<=occupyObject.talk3A.position.y + occupyObject.talk3A.oldHeight){
+                clickVedioPlay('talk')
                 occupyObject.response4.show = true
                 occupyObject.response2.show = false
                 occupyObject.talk3Chk = false
@@ -806,6 +848,7 @@ canvas.addEventListener('click', (e)=>{
             }
 
             if(x>=occupyObject.talk3B.position.x && x<=occupyObject.talk3B.position.x + occupyObject.talk3B.oldWidth && y>=occupyObject.talk3B.position.y && y<=occupyObject.talk3B.position.y + occupyObject.talk3B.oldHeight){
+                clickVedioPlay('talk')
                 occupyObject.response4.show = true
                 occupyObject.response2.show = false
                 occupyObject.talk3Chk = false
@@ -836,8 +879,7 @@ canvas.addEventListener('click', (e)=>{
         if((occupyObject.talk5A.show && occupyObject.talk5B.show && occupyObject.talk5Chk)){
             if(!occupyObject.talk5Chk) return
             if(x>=occupyObject.talk5A.position.x && x<=occupyObject.talk5A.position.x + occupyObject.talk5A.oldWidth && y>=occupyObject.talk5A.position.y && y<=occupyObject.talk5A.position.y + occupyObject.talk5A.oldHeight){
-
-                console.log('chk5');
+                clickVedioPlay('talk')
                 occupyObject.response6A.show = true
                 occupyObject.response4.show = false
                 occupyObject.talk5Chk = false
@@ -858,7 +900,7 @@ canvas.addEventListener('click', (e)=>{
 
             }
             if(x>=occupyObject.talk5B.position.x && x<=occupyObject.talk5B.position.x + occupyObject.talk5B.oldWidth && y>=occupyObject.talk5B.position.y && y<=occupyObject.talk5B.position.y + occupyObject.talk5B.oldHeight){
-                console.log('chk5');
+                clickVedioPlay('talk')
                 occupyObject.response6B.show = true
                 occupyObject.response4.show = false
                 occupyObject.talk5Chk = false
@@ -885,7 +927,7 @@ canvas.addEventListener('click', (e)=>{
         if(occupyObject.talk7.show && occupyObject.talk7Chk){
             if(!occupyObject.talk7Chk) return
             if(x>=occupyObject.talk7.position.x && x<=occupyObject.talk7.position.x + occupyObject.talk7.oldWidth && y>=occupyObject.talk7.position.y && y<=occupyObject.talk7.position.y + occupyObject.talk7.oldHeight){
-                console.log('chk7');
+                clickVedioPlay('talk')
                 occupyObject.response8.show = true
                 occupyObject.response6A.show = false
                 occupyObject.response6B.show = false
@@ -903,7 +945,7 @@ canvas.addEventListener('click', (e)=>{
 
         if(occupyObject.response9.show && occupyObject.chk.show){
             if(x>=occupyObject.chk.position.x && x<=occupyObject.chk.position.x + occupyObject.chk.oldWidth && y>=occupyObject.chk.position.y && y<=occupyObject.chk.position.y + occupyObject.chk.oldHeight){
-
+                clickVedioPlay('btn')
                 occupyObject.response8.show = false
                 occupyObject.response9.show = false
                 occupyObject.chk.show = false
@@ -912,6 +954,7 @@ canvas.addEventListener('click', (e)=>{
 
                 occupys.forEach(occupy=>{
                     if(occupy.name === null){
+                        clickVedioPlay('obj')
                         occupy.dragging = true
                         occupy.enlarge = true
                     }
@@ -924,6 +967,7 @@ canvas.addEventListener('click', (e)=>{
         if(occupyObject.talk10A.show && occupyObject.talk10B.show && occupyObject.talk10C.show && occupyObject.talk10Chk){
             if(!occupyObject.talk10Chk) return
             if(x>=occupyObject.talk10A.position.x && x<=occupyObject.talk10A.position.x + occupyObject.talk10A.oldWidth && y>=occupyObject.talk10A.position.y && y<=occupyObject.talk10A.position.y + occupyObject.talk10A.oldHeight){
+                clickVedioPlay('talk')
                 occupyObject.talk10Chk = false
                 occupyObject.talk10A.enlarge = false
                 occupyObject.talk10B.enlarge = false
@@ -933,6 +977,7 @@ canvas.addEventListener('click', (e)=>{
                 }
             }
             if(x>=occupyObject.talk10B.position.x && x<=occupyObject.talk10B.position.x + occupyObject.talk10B.oldWidth && y>=occupyObject.talk10B.position.y && y<=occupyObject.talk10B.position.y + occupyObject.talk10B.oldHeight){
+                clickVedioPlay('talk')
                 occupyObject.talk10Chk = false
                 occupyObject.talk10A.enlarge = false
                 occupyObject.talk10B.enlarge = false
@@ -942,6 +987,7 @@ canvas.addEventListener('click', (e)=>{
                 }
             }
             if(x>=occupyObject.talk10C.position.x && x<=occupyObject.talk10C.position.x + occupyObject.talk10C.oldWidth && y>=occupyObject.talk10C.position.y && y<=occupyObject.talk10C.position.y + occupyObject.talk10C.oldHeight){
+                clickVedioPlay('talk')
                 occupyObject.talk10Chk = false
                 occupyObject.talk10A.enlarge = false
                 occupyObject.talk10B.enlarge = false
@@ -956,14 +1002,18 @@ canvas.addEventListener('click', (e)=>{
                 if(!CG.occupy.isPeace){
                     occupyObject.end.image.src = occupyObject.end.image.src.replace('good', 'bad');
                     getCG.occupy.push(0)
+                    stopBgm()
+                    audioBadend.play()
                 }else{
                     getCG.occupy.push(1)
+                    stopBgm()
+                    audioGoodend.play()
                 }
                 occupyObject.end.show = true
                 occupyObject.talk10A.show = false
                 occupyObject.talk10B.show = false
                 occupyObject.talk10C.show = false
-            }, 1000)
+            }, 200)
         }
         
     }
@@ -971,6 +1021,7 @@ canvas.addEventListener('click', (e)=>{
         if(hoardObject.talk1.show && hoardObject.talk1Chk){
             if(!hoardObject.talk1Chk) return
             if(x>=hoardObject.talk1.position.x && x<=hoardObject.talk1.position.x + hoardObject.talk1.width && y>=hoardObject.talk1.position.y && y<=hoardObject.talk1.position.y+hoardObject.talk1.height){
+                clickVedioPlay('talk')
                 hoardObject.talk1Chk = false
                 hoardObject.talk1.show = false
                 hoardObject.talk1.enlarge = false
@@ -986,6 +1037,7 @@ canvas.addEventListener('click', (e)=>{
         if(hoardObject.talk2.show && hoardObject.talk2Chk){
             if(!hoardObject.talk2Chk) return
             if(x>=hoardObject.chk.position.x && x<=hoardObject.chk.position.x + hoardObject.chk.width && y>=hoardObject.chk.position.y && y<=hoardObject.chk.position.y+hoardObject.chk.height){
+                clickVedioPlay('btn')
                 hoardObject.talk2Chk = false
                 hoardObject.talk2.show = false
                 hoardObject.chk.show = false
@@ -1000,6 +1052,7 @@ canvas.addEventListener('click', (e)=>{
         if(hoardObject.removeInterObj){
             if(hoardObject.removeInterObj && hoardObject.s1.show && hoardObject.s1.enlarge){
                 if(x>=hoardObject.s1.position.x && x<=hoardObject.s1.position.x + hoardObject.s1.width && y>=hoardObject.s1.position.y && y<=hoardObject.s1.position.y+hoardObject.s1.height){
+                    clickVedioPlay('obj')
                     hoardObject.removeInterObj = false
 
                     hoardObject.s1.show = false
@@ -1022,6 +1075,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.removeInterObj && hoardObject.a1.show && hoardObject.a1.enlarge){
                 if(x>=hoardObject.a1.position.x && x<=hoardObject.a1.position.x + hoardObject.a1.width && y>=hoardObject.a1.position.y && y<=hoardObject.a1.position.y+hoardObject.a1.height){
+                    clickVedioPlay('obj')
                     hoardObject.a1.show = false
                     hoardObject.a1.enlarge = false
                     hoardTimer.timer5 = setTimeout(()=>{
@@ -1031,6 +1085,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.removeInterObj && hoardObject.b1.show && hoardObject.b1.enlarge){
                 if(x>=hoardObject.b1.position.x && x<=hoardObject.b1.position.x + hoardObject.b1.width && y>=hoardObject.b1.position.y && y<=hoardObject.b1.position.y+hoardObject.b1.height){
+                    clickVedioPlay('obj')
                     hoardObject.b1.show = false
                     hoardObject.b1.enlarge = false
     
@@ -1041,6 +1096,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.removeInterObj && hoardObject.c1.show && hoardObject.c1.enlarge){
                 if(x>=hoardObject.c1.position.x && x<=hoardObject.c1.position.x + hoardObject.c1.width && y>=hoardObject.c1.position.y && y<=hoardObject.c1.position.y+hoardObject.c1.height){
+                    clickVedioPlay('obj')
                     hoardObject.c1.show = false
                     hoardObject.c1.enlarge = false
     
@@ -1051,6 +1107,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.removeInterObj && hoardObject.d1.show && hoardObject.d1.enlarge){
                 if(x>=hoardObject.d1.position.x && x<=hoardObject.d1.position.x + hoardObject.d1.width && y>=hoardObject.d1.position.y && y<=hoardObject.d1.position.y+hoardObject.d1.height){
+                    clickVedioPlay('obj')
                     hoardObject.d1.show = false
                     hoardObject.d1.enlarge = false
     
@@ -1061,6 +1118,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.removeInterObj && hoardObject.e1.show && hoardObject.e1.enlarge){
                 if(x>=hoardObject.e1.position.x && x<=hoardObject.e1.position.x + hoardObject.e1.width && y>=hoardObject.e1.position.y && y<=hoardObject.e1.position.y+hoardObject.e1.height){
+                    clickVedioPlay('obj')
                     hoardObject.e1.show = false
                     hoardObject.e1.enlarge = false
     
@@ -1071,6 +1129,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.removeInterObj && hoardObject.f1.show && hoardObject.f1.enlarge){
                 if(x>=hoardObject.f1.position.x && x<=hoardObject.f1.position.x + hoardObject.f1.width && y>=hoardObject.f1.position.y && y<=hoardObject.f1.position.y+hoardObject.f1.height){
+                    clickVedioPlay('obj')
                     hoardObject.f1.show = false
                     hoardObject.f1.enlarge = false
     
@@ -1081,6 +1140,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.removeInterObj && hoardObject.g1.show && hoardObject.g1.enlarge){
                 if(x>=hoardObject.g1.position.x && x<=hoardObject.g1.position.x + hoardObject.g1.width && y>=hoardObject.g1.position.y && y<=hoardObject.g1.position.y+hoardObject.g1.height){
+                    clickVedioPlay('obj')
                     hoardObject.g1.show = false
                     hoardObject.g1.enlarge = false
     
@@ -1091,6 +1151,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.removeInterObj && hoardObject.h1.show && hoardObject.h1.enlarge ){
                 if(x>=hoardObject.h1.position.x && x<=hoardObject.h1.position.x + hoardObject.h1.width && y>=hoardObject.h1.position.y && y<=hoardObject.h1.position.y+hoardObject.h1.height){
+                    clickVedioPlay('obj')
                     hoardObject.h1.show = false
                     hoardObject.h1.enlarge = false
     
@@ -1104,6 +1165,7 @@ canvas.addEventListener('click', (e)=>{
         if(hoardObject.talk4.show && hoardObject.talk4Chk){
             if(!hoardObject.talk4Chk) return
             if(x>=hoardObject.talk4.position.x && x<=hoardObject.talk4.position.x + hoardObject.talk4.width && y>=hoardObject.talk4.position.y && y<=hoardObject.talk4.position.y+hoardObject.talk4.height){
+                clickVedioPlay('talk')
                 hoardObject.talk4Chk = false
                 hoardObject.talk4.enlarge = false
                 hoardObject.response3.show = false
@@ -1123,6 +1185,7 @@ canvas.addEventListener('click', (e)=>{
         if(hoardObject.talk6A.show && hoardObject.talk6B.show && hoardObject.talk6Chk){
             if(!hoardObject.talk6Chk) return
             if(x>=hoardObject.talk6A.position.x && x<=hoardObject.talk6A.position.x + hoardObject.talk6A.width && y>=hoardObject.talk6A.position.y && y<=hoardObject.talk6A.position.y+hoardObject.talk6A.height){
+                clickVedioPlay('talk')
                 hoardObject.talk6Chk = false
                 hoardObject.talk6A.enlarge = false
                 hoardObject.talk6B.enlarge = false
@@ -1143,6 +1206,7 @@ canvas.addEventListener('click', (e)=>{
                 }, hoardObject.response7.text.split('').length*10 + 1500)
             }
             if(x>=hoardObject.talk6B.position.x && x<=hoardObject.talk6B.position.x + hoardObject.talk6B.width && y>=hoardObject.talk6B.position.y && y<=hoardObject.talk6B.position.y+hoardObject.talk6B.height){
+                clickVedioPlay('talk')
                 if(hoardObject.people.image.src.includes('people1')){
                     hoardObject.people.image.src = hoardObject.people.image.src.replace('people1', 'people2')
                 }
@@ -1166,6 +1230,7 @@ canvas.addEventListener('click', (e)=>{
         if(hoardObject.talk8.show && hoardObject.talk8Chk){
             if(!hoardObject.talk8Chk) return
             if(x>=hoardObject.talk8.position.x && x<=hoardObject.talk8.position.x + hoardObject.talk8.width && y>=hoardObject.talk8.position.y && y<=hoardObject.talk8.position.y+hoardObject.talk8.height){
+                clickVedioPlay('talk')
                 hoardObject.talk8Chk = false
                 hoardObject.talk8.enlarge  = false
                 hoardObject.response7.show = false
@@ -1186,6 +1251,7 @@ canvas.addEventListener('click', (e)=>{
         if(hoardObject.talk10A.show && hoardObject.talk10B.show && hoardObject.talk10Chk){
             if(!hoardObject.talk10Chk) return
             if(x>=hoardObject.talk10A.position.x && x<=hoardObject.talk10A.position.x + hoardObject.talk10A.width && y>=hoardObject.talk10A.position.y && y<=hoardObject.talk10A.position.y+hoardObject.talk10A.height){
+                clickVedioPlay('talk')
                 if(hoardObject.people.image.src.includes('people1')){
                     hoardObject.people.image.src = hoardObject.people.image.src.replace('people1', 'people3')
                 }else if(hoardObject.people.image.src.includes('people2')){
@@ -1208,6 +1274,7 @@ canvas.addEventListener('click', (e)=>{
                 }, hoardObject.response11.text.split('').length*10 + 2000)
             }
             if(x>=hoardObject.talk10B.position.x && x<=hoardObject.talk10B.position.x + hoardObject.talk10B.width && y>=hoardObject.talk10B.position.y && y<=hoardObject.talk10B.position.y+hoardObject.talk10B.height){
+                clickVedioPlay('talk')
                 if(hoardObject.people.image.src.includes('people1')){
                     hoardObject.people.image.src = hoardObject.people.image.src.replace('people1', 'people2')
                 }else if(hoardObject.people.image.src.includes('people3')){
@@ -1233,6 +1300,7 @@ canvas.addEventListener('click', (e)=>{
         if(hoardObject.talk12.show && hoardObject.talk12Chk){
             if(!hoardObject.talk12Chk) return
             if(x>=hoardObject.talk12.position.x && x<=hoardObject.talk12.position.x + hoardObject.talk12.width && y>=hoardObject.talk12.position.y && y<=hoardObject.talk12.position.y+hoardObject.talk12.height){
+                clickVedioPlay('talk')
                 hoardObject.talk12Chk = false
                 hoardObject.talk12.enlarge  = false
                 hoardObject.response11.show = false
@@ -1252,6 +1320,7 @@ canvas.addEventListener('click', (e)=>{
         if(hoardObject.talk14.show && hoardObject.talk14Chk){
             if(!hoardObject.talk14Chk) return
             if(x>=hoardObject.chk.position.x && x<=hoardObject.chk.position.x + hoardObject.chk.width && y>=hoardObject.chk.position.y && y<=hoardObject.chk.position.y+hoardObject.chk.height){
+                clickVedioPlay('talk')
                 hoardObject.talk14Chk = false
 
                 hoardObject.response13.show = false
@@ -1278,6 +1347,7 @@ canvas.addEventListener('click', (e)=>{
         if(hoardObject.startInter){
             if(hoardObject.inter1.enlarge && !hoardObject.inter1Ok.show){
                 if(x>=hoardObject.inter1.position.x && x<=hoardObject.inter1.position.x + hoardObject.inter1.width && y>=hoardObject.inter1.position.y && y<=hoardObject.inter1.position.y+hoardObject.inter1.height){
+                    clickVedioPlay('btn')
                     hoardObject.inter1Ok.show = true
                     hoardObject.inter1.enlarge = false
                     hoardObject.interNum ++
@@ -1285,6 +1355,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.inter2.enlarge && !hoardObject.inter2Ok.show){
                 if(x>=hoardObject.inter2.position.x && x<=hoardObject.inter2.position.x + hoardObject.inter2.width && y>=hoardObject.inter2.position.y && y<=hoardObject.inter2.position.y+hoardObject.inter2.height){
+                    clickVedioPlay('btn')
                     hoardObject.inter2Ok.show = true
                     hoardObject.inter2.enlarge = false
                     hoardObject.interNum ++
@@ -1292,6 +1363,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.inter3.enlarge && !hoardObject.inter3Ok.show){
                 if(x>=hoardObject.inter3.position.x && x<=hoardObject.inter3.position.x + hoardObject.inter3.width && y>=hoardObject.inter3.position.y && y<=hoardObject.inter3.position.y+hoardObject.inter3.height){
+                    clickVedioPlay('btn')
                     hoardObject.inter3Ok.show = true
                     hoardObject.inter3.enlarge = false
                     hoardObject.interNum ++
@@ -1299,6 +1371,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.inter4.enlarge && !hoardObject.inter4Ok.show){
                 if(x>=hoardObject.inter4.position.x && x<=hoardObject.inter4.position.x + hoardObject.inter4.width && y>=hoardObject.inter4.position.y && y<=hoardObject.inter4.position.y+hoardObject.inter4.height){
+                    clickVedioPlay('btn')
                     hoardObject.inter4Ok.show = true
                     hoardObject.inter4.enlarge = false
                     hoardObject.interNum ++
@@ -1306,6 +1379,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.inter5.enlarge && !hoardObject.inter5Ok.show){
                 if(x>=hoardObject.inter5.position.x && x<=hoardObject.inter5.position.x + hoardObject.inter5.width && y>=hoardObject.inter5.position.y && y<=hoardObject.inter5.position.y+hoardObject.inter5.height){
+                    clickVedioPlay('btn')
                     hoardObject.inter5Ok.show = true
                     hoardObject.inter5.enlarge = false
                     hoardObject.interNum ++
@@ -1313,6 +1387,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.inter6.enlarge && !hoardObject.inter6Ok.show){
                 if(x>=hoardObject.inter6.position.x && x<=hoardObject.inter6.position.x + hoardObject.inter6.width && y>=hoardObject.inter6.position.y && y<=hoardObject.inter6.position.y+hoardObject.inter6.height){
+                    clickVedioPlay('btn')
                     hoardObject.inter6Ok.show = true
                     hoardObject.inter6.enlarge = false
                     hoardObject.interNum ++
@@ -1320,6 +1395,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.inter7.enlarge && !hoardObject.inter7Ok.show){
                 if(x>=hoardObject.inter7.position.x && x<=hoardObject.inter7.position.x + hoardObject.inter7.width && y>=hoardObject.inter7.position.y && y<=hoardObject.inter7.position.y+hoardObject.inter7.height){
+                    clickVedioPlay('btn')
                     hoardObject.inter7Ok.show = true
                     hoardObject.inter7.enlarge = false
                     hoardObject.interNum ++
@@ -1327,6 +1403,7 @@ canvas.addEventListener('click', (e)=>{
             }
             if(hoardObject.inter8.enlarge && !hoardObject.inter8Ok.show){
                 if(x>=hoardObject.inter8.position.x && x<=hoardObject.inter8.position.x + hoardObject.inter8.width && y>=hoardObject.inter8.position.y && y<=hoardObject.inter8.position.y+hoardObject.inter8.height){
+                    clickVedioPlay('btn')
                     hoardObject.inter8Ok.show = true
                     hoardObject.inter8.enlarge = false
                     hoardObject.interNum ++
@@ -1347,6 +1424,7 @@ canvas.addEventListener('click', (e)=>{
         if(hoardObject.finishChk && hoardObject.finish.show){
             if(!hoardObject.finishChk) return
             if(x>=hoardObject.chk2.position.x && x<=hoardObject.chk2.position.x + hoardObject.chk2.width && y>=hoardObject.chk2.position.y && y<=hoardObject.chk2.position.y+hoardObject.chk2.height){
+                clickVedioPlay('btn')
                 hoardObject.finishChk = false
 
                 hoardObject.finish.show = false
@@ -1395,6 +1473,7 @@ canvas.addEventListener('click', (e)=>{
         if(hoardObject.talk16A.show && hoardObject.talk16B.show && hoardObject.talk16C.show && hoardObject.talk16Chk){
             if(!hoardObject.talk16Chk) return
             if(x>=hoardObject.talk16A.position.x && x<=hoardObject.talk16A.position.x + hoardObject.talk16A.width && y>=hoardObject.talk16A.position.y && y<=hoardObject.talk16A.position.y+hoardObject.talk16A.height){
+                clickVedioPlay('talk')
                 hoardObject.talk16Chk = false
                 hoardObject.response15.show = false
                 hoardObject.talk16A.show = false
@@ -1411,14 +1490,18 @@ canvas.addEventListener('click', (e)=>{
                         hoardObject.people.image.src = hoardObject.people.image.src.replace('people3', 'people2')
                     }
                     getCG.hoard.push(0)
+                    stopBgm()
+                    audioBadend.play()
                     hoardObject.end.image.src = hoardObject.end.image.src.replace('good', 'bad')
                 }else{
+                    stopBgm()
+                    audioGoodend.play()
                     getCG.hoard.push(1)
                 }
                 hoardObject.end.show = true
             }
             if(x>=hoardObject.talk16B.position.x && x<=hoardObject.talk16B.position.x + hoardObject.talk16B.width && y>=hoardObject.talk16B.position.y && y<=hoardObject.talk16B.position.y+hoardObject.talk16B.height){
-                
+                clickVedioPlay('talk')
                 hoardObject.talk16Chk = false
                 hoardObject.response15.show = false
                 hoardObject.talk16A.show = false
@@ -1435,13 +1518,18 @@ canvas.addEventListener('click', (e)=>{
                         hoardObject.people.image.src = hoardObject.people.image.src.replace('people3', 'people2')
                     }
                     getCG.hoard.push(0)
+                    stopBgm()
+                    audioBadend.play()
                     hoardObject.end.image.src = hoardObject.end.image.src.replace('good', 'bad')
                 }else{
+                    stopBgm()
+                    audioGoodend.play()
                     getCG.hoard.push(1)
                 }
                 hoardObject.end.show = true
             }
             if(x>=hoardObject.talk16C.position.x && x<=hoardObject.talk16C.position.x + hoardObject.talk16C.width && y>=hoardObject.talk16C.position.y && y<=hoardObject.talk16C.position.y+hoardObject.talk16C.height){
+                clickVedioPlay('talk')
                 CG.hoard.isPeace = false
                 
                 hoardObject.talk16Chk = false
@@ -1460,9 +1548,13 @@ canvas.addEventListener('click', (e)=>{
                         hoardObject.people.image.src = hoardObject.people.image.src.replace('people3', 'people2')
                     }
                     getCG.hoard.push(0)
+                    stopBgm()
+                    audioBadend.play()
                     hoardObject.end.image.src = hoardObject.end.image.src.replace('good', 'bad')
                 }else{
                     getCG.hoard.push(1)
+                    stopBgm()
+                    audioGoodend.play()
                 }
                 hoardObject.end.show = true
             }
@@ -1478,6 +1570,7 @@ canvas.addEventListener('click', (e)=>{
         }
         if(interaction.name === 'cool'){
             if(isRoomOpen) return
+            clickVedioPlay('inRoom')
             roomOpen.cool = true
             isRoomOpen = true
             player.move = true
@@ -1497,10 +1590,12 @@ canvas.addEventListener('click', (e)=>{
             
         }else if(interaction.name === 'occupy'){
             if(isRoomOpen) return
+            clickVedioPlay('inRoom')
             roomOpen.occupy = true
             isRoomOpen = true
         }else if(interaction.name === 'hoard'){
             if(isRoomOpen) return
+            clickVedioPlay('inRoom')
             roomOpen.hoard = true
             isRoomOpen = true
         }
@@ -1517,6 +1612,7 @@ canvas.addEventListener('click', (e)=>{
                 starts.filter(start=> start.name === 'start01' )[0].show = false
                 starts.filter(start=> start.name === 'start01Btn' )[0].show = false
                 starts.filter(start=> start.name === 'start02' )[0].show = true
+                clickVedioPlay('btn')
                 setTimeout(()=>{
                     globalClick = true
                     starts.filter(start=> start.name === 'chk2' )[0].show = true
@@ -1533,6 +1629,7 @@ canvas.addEventListener('click', (e)=>{
             let chk = starts.filter(start=> start.name === 'chk2' )[0]
             let bool = x >= chk.position.x && x <= chk.position.x + chk.width && y>=chk.position.y && y<=chk.position.y + chk.height
             if(bool){
+                clickVedioPlay('btn')
                 globalClick = false
                 starts.filter(start=> start.name === 'start02' )[0].show = false
                 starts.filter(start=> start.name === 'skip' )[0].show = false
@@ -1549,6 +1646,7 @@ canvas.addEventListener('click', (e)=>{
             
         }
         if(startNav && globalClick && starts.filter(start=> start.name === 'start03' )[0].show ){
+            clickVedioPlay('btn')
             globalClick = false
             starts.filter(start=> start.name === 'start03' )[0].show = false
             starts.filter(start=> start.name === 'start04' )[0].show = true
@@ -1557,6 +1655,7 @@ canvas.addEventListener('click', (e)=>{
             }, 100)
         }
         if(startNav && globalClick && starts.filter(start=> start.name === 'start04' )[0].show ){
+            clickVedioPlay('btn')
             globalClick = false
             starts.filter(start=> start.name === 'start04' )[0].show = false
             starts.filter(start=> start.name === 'start05' )[0].show = true
@@ -1564,6 +1663,7 @@ canvas.addEventListener('click', (e)=>{
             interactions.filter(interaction=>interaction.name === 'cool')[0].enlarge = true
         }
         if(startNav && globalClick && starts.filter(start=> start.name === 'start07' )[0].show){
+            clickVedioPlay('btn')
             starts.filter(start=> start.name === 'start07' )[0].show = false
     
             setTimeout(()=>{
@@ -1571,6 +1671,7 @@ canvas.addEventListener('click', (e)=>{
             }, 10)
         }
         if(startNav && globalClick && starts.filter(start=> start.name === 'start08' )[0].show){
+            clickVedioPlay('btn')
             starts.filter(start=> start.name === 'start08' )[0].show = false
     
             setTimeout(()=>{
@@ -1578,6 +1679,7 @@ canvas.addEventListener('click', (e)=>{
             }, 10)
         }
         if(startNav && globalClick && starts.filter(start=> start.name === 'start09' )[0].show){
+            clickVedioPlay('btn')
             starts.filter(start=> start.name === 'start09' )[0].show = false
     
             setTimeout(()=>{
@@ -1585,6 +1687,7 @@ canvas.addEventListener('click', (e)=>{
             }, 10)
         }
         if(startNav && globalClick && starts.filter(start=> start.name === 'start10' )[0].show){
+            clickVedioPlay('btn')
             starts.filter(start=> start.name === 'start10' )[0].show = false
             setTimeout(()=>{
                 startNav = false
@@ -1594,6 +1697,7 @@ canvas.addEventListener('click', (e)=>{
                     interactions[interaction].show = true
                     interactions[interaction].enlarge = true
                 })
+                phone.enlarge = true
             }, 10)
         }
         
@@ -1603,6 +1707,7 @@ canvas.addEventListener('click', (e)=>{
         let skip = starts.filter(start=> start.name === 'skip' )[0]
         let bool = x >= skip.position.x && x <= skip.position.x + skip.width && y>=skip.position.y && y<=skip.position.y + skip.height
         if(bool){
+            clickVedioPlay('btn')
             starts.forEach(start=>{
                 start.show = false
                 start.enlarge = false
@@ -1616,6 +1721,7 @@ canvas.addEventListener('click', (e)=>{
             isTeaching = false
             globalClick = false
             player.move = true
+            phone.enlarge = true
         }
     }
 
@@ -1848,4 +1954,29 @@ function initHoardRoom(){
         console.log('有');
         hoardObject.end.image.src = hoardObject.end.image.src.replace('bad', 'good')
     }
+}
+
+
+
+
+function clickVedioPlay(name){
+    if(name == 'talk'){
+        audioTalk.play()
+    }else if(name == 'btn'){
+        audioBtn.play()
+    }else if(name == 'inRoom'){
+        audioInRoom.play()
+    }else if(name == 'obj'){
+        audioObj.play()
+    }
+}
+
+function playBgm(){
+    bgmAudio.loop = true
+    bgmAudio.play();
+    
+}
+function stopBgm(){
+    bgmAudio.pause();
+    bgmAudio.currentTime = 0;
 }

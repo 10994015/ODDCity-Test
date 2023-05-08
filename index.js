@@ -42,7 +42,7 @@ const backgruond = new Backgruond({
     },
     image :createImage('./images/bg.png'),
 })
-const phone = new Interaction({x:1320, y:50, w:308/4.5, h:492/4.5, name:'phone',image: createImage('./images/buttons/phone.png'), multiple:1.05, isShow:true})
+const phone = new Interaction({x:1320, y:50, w:308/4.5, h:492/4.5, name:'phone',image: createImage('./images/buttons/phone.png'), multiple:1.05, isShow:true, isEnlarge:false})
 const interactions = [
     // new Interaction({x:2973, y:481, w:147, h:218, name:'supermarket', isShow:false}),
     new Interaction({x:2973, y:481, w:147, h:218, name:'cool', isShow:false}),
@@ -80,7 +80,7 @@ const starts = [
 
 
     new Interaction({x:3300, y:330, w:6110/13, h:1641/13, name:'start07',image: createImage('./images/starts/talk/07.png'), multiple:1, isShow:false  }),
-    new Interaction({x:3300, y:50, w:6110/13, h:1641/13, name:'start08',image: createImage('./images/starts/talk/08.png'), multiple:1, isShow:false  }),
+    new Interaction({x:3300, y:165, w:6110/13, h:1641/13, name:'start08',image: createImage('./images/starts/talk/08.png'), multiple:1, isShow:false  }),
     new Interaction({x:2900, y:330, w:6110/13, h:1641/13, name:'start09',image: createImage('./images/starts/talk/09.png'), multiple:1, isShow:false  }),
     new Interaction({x:2900, y:330, w:6110/13, h:1641/13, name:'start10',image: createImage('./images/starts/talk/010.png'), multiple:1, isShow:false  }),
 ]
@@ -262,6 +262,7 @@ const keys = {
 let busRun = false;
 let openAnim = null
 let busSpeed = 10
+
 openAnim = setInterval(()=>{
     if(backgruond.position.x <=  -935){
         if(busSpeed > 2 ){
@@ -291,7 +292,10 @@ openAnim = setInterval(()=>{
         startNav = true;
         starts.filter(start=> start.name==='start01')[0].show = true;
         starts.filter(start=> start.name==='start01Btn')[0].show = true;
-        
+        busAudioStart = false
+        busAudio.pause()
+        busAudio.currentTime = 0
+        playBgm()
     }
     if(scrollOffset > -1500){
         busRun = true
@@ -381,7 +385,7 @@ function animate(){
     }
     
 
-    if(getOff && !isTeaching){
+    if(getOff){
         phone.draw() 
     }
 
