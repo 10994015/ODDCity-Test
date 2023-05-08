@@ -12,12 +12,16 @@ const CG = {
     },
     occupy:{
         isPeace:true
+    },
+    hoard:{
+        isPeace:true
     }
 }
 //好:1 壞:0
 const getCG = {
     cool:[],
     occupy:[],
+    hoard:[],
 }
 let occupyInteractiveBtn = false
 
@@ -161,15 +165,24 @@ const occupys = [
 ]
 
 const hoards = [
-    new Shared({x:891, y:549, w:508/2.93, h:372/2.93, image: createImage('./images/hoards/inter/1.png'),}),
-    new Shared({x:373, y:324, w:990/2.9, h:519/2.9, image: createImage('./images/hoards/inter/2.png'),}),
-    new Shared({x:757, y:385, w:312/2.7, h:341/2.7, image: createImage('./images/hoards/inter/3.png'),}),
-    new Shared({x:1107, y:375, w:540/2.8, h:730/2.8, image: createImage('./images/hoards/inter/4.png'),}),
-    new Shared({x:160, y:490, w:1295/2.85, h:647/2.85, image: createImage('./images/hoards/inter/5.png'),}),
-    new Shared({x:615, y:562, w:802/2.9, h:391/2.9, image: createImage('./images/hoards/inter/6.png'),}),
-    new Shared({x:932, y:346, w:518/2.9, h:400/2.9, image: createImage('./images/hoards/inter/7.png'),}),
-    new Shared({x:380, y:117, w:919/2.9, h:208/2.9, image: createImage('./images/hoards/inter/8.png'),}),
+    new Shared({x:891, y:549, w:508/2.93, h:372/2.93, image: createImage('./images/hoards/inter/1.png'), name:'inter1', multiple:1}),
+    new Shared({x:373, y:324, w:990/2.9, h:519/2.9, image: createImage('./images/hoards/inter/2.png'), name:'inter2', multiple:1}),
+    new Shared({x:757, y:385, w:312/2.7, h:341/2.7, image: createImage('./images/hoards/inter/3.png'), name:'inter3', multiple:1}),
+    new Shared({x:1107, y:375, w:540/2.8, h:730/2.8, image: createImage('./images/hoards/inter/4.png'), name:'inter4', multiple:1}),
+    new Shared({x:160, y:490, w:1295/2.85, h:647/2.85, image: createImage('./images/hoards/inter/5.png'), name:'inter5', multiple:1}),
+    new Shared({x:615, y:562, w:802/2.9, h:391/2.9, image: createImage('./images/hoards/inter/6.png'), name:'inter6', multiple:1}),
+    new Shared({x:932, y:346, w:518/2.9, h:400/2.9, image: createImage('./images/hoards/inter/7.png'), name:'inter7', multiple:1}),
+    new Shared({x:380, y:117, w:919/2.9, h:208/2.9, image: createImage('./images/hoards/inter/8.png'), name:'inter8', multiple:1}),
     new Shared({x:765, y:420, w:753/1.8, h:450/1.8, image: createImage('./images/hoards/hold.png'), name:"hold"}),
+
+    new Shared({x:891 + (508/2.93)/2, y:549 + (372/2.93)/2, w:418/9, h:418/9, image: createImage('./images/buttons/ok.png'), name:'ok-inter1', isShow:false,}),
+    new Shared({x:373 + (990/2.9)/2, y:324 + (519/2.9)/2, w:418/9, h:418/9, image: createImage('./images/buttons/ok.png'), name:'ok-inter2', isShow:false,}),
+    new Shared({x:757 + (312/2.7)/2, y:385 + (341/2.7)/2, w:418/9, h:418/9, image: createImage('./images/buttons/ok.png'), name:'ok-inter3', isShow:false,}),
+    new Shared({x:1107 + (540/2.8)/2,y:375 + (730/2.8)/2, w:418/9, h:418/9, image: createImage('./images/buttons/ok.png'), name:'ok-inter4', isShow:false,}),
+    new Shared({x:160 + (1295/2.85)/2, y:490 + (647/2.85)/2, w:418/9, h:418/9, image: createImage('./images/buttons/ok.png'), name:'ok-inter5', isShow:false,}),
+    new Shared({x:615 + (802/2.9)/2, y:562 + (391/2.9)/2, w:418/9, h:418/9, image: createImage('./images/buttons/ok.png'), name:'ok-inter6', isShow:false,}),
+    new Shared({x:932 + (518/2.9)/2, y:346 + (400/2.9)/2, w:418/9, h:418/9, image: createImage('./images/buttons/ok.png'), name:'ok-inter7', isShow:false,}),
+    new Shared({x:380 + (919/2.9)/2, y:117 + (208/2.9)/2, w:418/9, h:418/9, image: createImage('./images/buttons/ok.png'), name:'ok-inter8', isShow:false,}),
 
 
 
@@ -184,15 +197,41 @@ const hoards = [
     new Shared({x:880, y:550, w:69/1.1, h:33/1.1, image: createImage('./images/hoards/h1.png'), name:'h1', isEnlarge:false, multiple:1.05}),
 
 
-    new Shared({x:380, y:420, w:2378/5, h:639/5, image: createImage('./images/hoards/talk/1.png'), isTalk:false, isEnlarge:true, multiple:1.02, name:'1'}),
+    new Shared({x:540, y:420, w:1303/4.6, h:644/4.6, image: createImage('./images/hoards/talk/1.png'), isTalk:false, isEnlarge:true, multiple:1.02, name:'1'}),
     new Shared({x:canvas.width/2 - (3149/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:3149/4.5, h:484/4.5, image: createImage('./images/hoards/talk/2.png'), isTalk:true, isEnlarge:false, multiple:1, name:'2', isShow:false ,}),
 
 
     new Shared({x:840, y:300, w:393/1.9, h:749/1.9, image: createImage('./images/hoards/people1.png'), name:"smallPeople", isEnlarge:false, isShow:false, multiple:1}),
+    new Shared({x:20, y:355, w:393/1.1, h:749/1.1, image: createImage('./images/hoards/people1.png'), isPeople:true, name:'people', isShow:false}),
+
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/4.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'4', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/6A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'6A', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/6B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'6B', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/8.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'8', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/10A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'10A', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/10B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'10B', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/12.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'12', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/16A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'16A', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/16B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'16B', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*3-30, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/16C.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'16C', isShow:false}),
+
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'3', isShow:false, text:"謝謝你！", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'5', isShow:false, text:"我要放箱子的時候不小心摔了一跤...", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'7', isShow:false, text:"這些東西對我來說很重要！", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'9', isShow:false, text:"這些都是我寶貴的回憶!像這件衣服是我太太生前最喜歡的款式,還有這個雜誌和飲料是...", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'11', isShow:false, text:"說實話,我想整理也沒有辦法·東西這麼多我一個人根本收拾不來,只能一直堆積、越來越亂。", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'13', isShow:false, text:"好啊!你可不能偷偷丟掉我的東西。", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/hoards/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'15', isShow:false, text:"Wow!原來我家是長這樣!好久沒有乾淨的床可以睡覺了。", isTypewriter:true }),
+
+    new Shared({x:canvas.width/2 - (3149/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:3149/4.5, h:484/4.5, image: createImage('./images/hoards/talk/14.png'), isTalk:true, isEnlarge:false, multiple:1, name:'14', isShow:false ,}),
+    new Shared({x:canvas.width/2 - (1417/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:1417/4.5, h:484/4.5, image: createImage('./images/hoards/talk/finish.png'), isTalk:true, isEnlarge:false, multiple:1, name:'finish', isShow:false ,}),
+
 
 
     new Shared({x:canvas.width/2 - (112/2)/2 + 300, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
+    new Shared({x:canvas.width/2 - (112/2)/2 + 110, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk2', isShow:false ,}),
 
+    new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
 
 
 ]

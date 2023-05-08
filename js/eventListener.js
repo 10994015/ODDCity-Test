@@ -309,6 +309,24 @@ const coolTimer = {
 }
 
 const hoardObject = {
+    inter1: hoards.filter(hoard=>hoard.name === 'inter1')[0],
+    inter2: hoards.filter(hoard=>hoard.name === 'inter2')[0],
+    inter3: hoards.filter(hoard=>hoard.name === 'inter3')[0],
+    inter4: hoards.filter(hoard=>hoard.name === 'inter4')[0],
+    inter5: hoards.filter(hoard=>hoard.name === 'inter5')[0],
+    inter6: hoards.filter(hoard=>hoard.name === 'inter6')[0],
+    inter7: hoards.filter(hoard=>hoard.name === 'inter7')[0],
+    inter8: hoards.filter(hoard=>hoard.name === 'inter8')[0],
+
+    inter1Ok: hoards.filter(hoard=>hoard.name === 'ok-inter1')[0],
+    inter2Ok: hoards.filter(hoard=>hoard.name === 'ok-inter2')[0],
+    inter3Ok: hoards.filter(hoard=>hoard.name === 'ok-inter3')[0],
+    inter4Ok: hoards.filter(hoard=>hoard.name === 'ok-inter4')[0],
+    inter5Ok: hoards.filter(hoard=>hoard.name === 'ok-inter5')[0],
+    inter6Ok: hoards.filter(hoard=>hoard.name === 'ok-inter6')[0],
+    inter7Ok: hoards.filter(hoard=>hoard.name === 'ok-inter7')[0],
+    inter8Ok: hoards.filter(hoard=>hoard.name === 'ok-inter8')[0],
+
     talk1: hoards.filter(hoard=>hoard.name === '1')[0],
     talk1Chk: true,
     talk2: hoards.filter(hoard=>hoard.name === '2')[0],
@@ -327,9 +345,74 @@ const hoardObject = {
 
     hold: hoards.filter(hoard=>hoard.name === 'hold')[0],
     smallPeople: hoards.filter(hoard=>hoard.name === 'smallPeople')[0],
+    people: hoards.filter(hoard=>hoard.name === 'people')[0],
+    response3: hoards.filter(hoard=>hoard.name === '3')[0],
+    talk4: hoards.filter(hoard=>hoard.name === '4')[0],
+    talk4Chk: false,
+    response5: hoards.filter(hoard=>hoard.name === '5')[0],
 
+    talk6A: hoards.filter(hoard=>hoard.name === '6A')[0],
+    talk6B: hoards.filter(hoard=>hoard.name === '6B')[0],
+    talk6Chk: false,
+    response7: hoards.filter(hoard=>hoard.name === '7')[0],
+
+    talk8: hoards.filter(hoard=>hoard.name === '8')[0],
+    talk8Chk: false,
+
+    response9: hoards.filter(hoard=>hoard.name === '9')[0],
+
+    talk10A:hoards.filter(hoard=>hoard.name === '10A')[0],
+    talk10B:hoards.filter(hoard=>hoard.name === '10B')[0],
+    talk10Chk: false,
+    response11: hoards.filter(hoard=>hoard.name === '11')[0],
+
+    talk12:hoards.filter(hoard=>hoard.name === '12')[0],
+    talk12Chk: false,
+    response13: hoards.filter(hoard=>hoard.name === '13')[0],
+    
+    talk14: hoards.filter(hoard=>hoard.name === '14')[0],
+    talk14Chk: false,
+
+
+    startInter: false,
+    interNum: 0,
+
+    finish: hoards.filter(hoard=>hoard.name === 'finish')[0],
+    finishChk: false,
+
+    talk16A: hoards.filter(hoard=>hoard.name === '16A')[0],
+    talk16B: hoards.filter(hoard=>hoard.name === '16B')[0],
+    talk16C: hoards.filter(hoard=>hoard.name === '16C')[0],
+    talk16Chk: false,
+    response15: hoards.filter(hoard=>hoard.name === '15')[0],
     chk: hoards.filter(hoard=>hoard.name === 'chk')[0],
+    chk2: hoards.filter(hoard=>hoard.name === 'chk2')[0],
+    end: hoards.filter(hoard=>hoard.name === 'end')[0],
+}
 
+const hoardTimer = {
+    timer1:null,
+    timer2:null,
+    timer3:null,
+    timer4:null,
+    timer5:null,
+    timer6:null,
+    timer7:null,
+    timer8:null,
+    timer9:null,
+    timer10:null,
+    timer11:null,
+    timer12:null,
+    timer13:null,
+    timer14:null,
+    timer15:null,
+    timer16:null,
+    timer17:null,
+    timer18:null,
+    timer19:null,
+    timer20:null,
+    timer21:null,
+    timer22:null,
 }
 canvas.addEventListener('click', (e)=>{
     if(!isStart) return
@@ -347,6 +430,8 @@ canvas.addEventListener('click', (e)=>{
                 initCoolRoom(); 
             }else if(roomOpen.occupy){
                 initOccupyRoom()
+            }else if(roomOpen.hoard){
+                initHoardRoom()
             }
 
             Object.keys(roomOpen).forEach(room=>{
@@ -890,7 +975,7 @@ canvas.addEventListener('click', (e)=>{
                 hoardObject.talk1.show = false
                 hoardObject.talk1.enlarge = false
 
-                setTimeout(()=>{
+                hoardTimer.timer1 = setTimeout(()=>{
                     hoardObject.talk2.show = true
                     hoardObject.chk.show = true
                     hoardObject.chk.enlarge = true
@@ -906,7 +991,7 @@ canvas.addEventListener('click', (e)=>{
                 hoardObject.chk.show = false
                 hoardObject.chk.enlarge = false
 
-                setTimeout(()=>{
+                hoardTimer.timer2 = setTimeout(()=>{
                     hoardObject.h1.enlarge = true
                     hoardObject.removeInterObj = true
                 }, 50)
@@ -922,17 +1007,24 @@ canvas.addEventListener('click', (e)=>{
                     
                     hoardObject.hold.show = false
                     hoardObject.hold.enlarge = false
-                    setTimeout(()=>{
-                        console.log('finish!!!');
-                        hoardObject.smallPeople.show = true
-                    }, 10)
+                    hoardObject.smallPeople.show = true
+                    hoardTimer.timer3 = setTimeout(()=>{
+                        hoardObject.smallPeople.show = false
+                        hoardObject.people.show = true
+                        hoardObject.response3.show = true
+                    }, 500)
+                    hoardTimer.timer4 = setTimeout(()=>{
+                        hoardObject.talk4.show = true
+                        hoardObject.talk4.enlarge = true
+                        hoardObject.talk4Chk = true
+                    }, 1500)
                 }
             }
             if(hoardObject.removeInterObj && hoardObject.a1.show && hoardObject.a1.enlarge){
                 if(x>=hoardObject.a1.position.x && x<=hoardObject.a1.position.x + hoardObject.a1.width && y>=hoardObject.a1.position.y && y<=hoardObject.a1.position.y+hoardObject.a1.height){
                     hoardObject.a1.show = false
                     hoardObject.a1.enlarge = false
-                    setTimeout(()=>{
+                    hoardTimer.timer5 = setTimeout(()=>{
                         hoardObject.s1.enlarge = true
                     }, 10)
                 }
@@ -942,7 +1034,7 @@ canvas.addEventListener('click', (e)=>{
                     hoardObject.b1.show = false
                     hoardObject.b1.enlarge = false
     
-                    setTimeout(()=>{
+                    hoardTimer.timer6 = setTimeout(()=>{
                         hoardObject.a1.enlarge = true
                     }, 50)
                 }
@@ -952,7 +1044,7 @@ canvas.addEventListener('click', (e)=>{
                     hoardObject.c1.show = false
                     hoardObject.c1.enlarge = false
     
-                    setTimeout(()=>{
+                    hoardTimer.timer7 = setTimeout(()=>{
                         hoardObject.b1.enlarge = true
                     }, 50)
                 }
@@ -962,7 +1054,7 @@ canvas.addEventListener('click', (e)=>{
                     hoardObject.d1.show = false
                     hoardObject.d1.enlarge = false
     
-                    setTimeout(()=>{
+                    hoardTimer.timer8 = setTimeout(()=>{
                         hoardObject.c1.enlarge = true
                     }, 50)
                 }
@@ -972,7 +1064,7 @@ canvas.addEventListener('click', (e)=>{
                     hoardObject.e1.show = false
                     hoardObject.e1.enlarge = false
     
-                    setTimeout(()=>{
+                    hoardTimer.timer9 = setTimeout(()=>{
                         hoardObject.d1.enlarge = true
                     }, 50)
                 }
@@ -982,7 +1074,7 @@ canvas.addEventListener('click', (e)=>{
                     hoardObject.f1.show = false
                     hoardObject.f1.enlarge = false
     
-                    setTimeout(()=>{
+                    hoardTimer.timer10 = setTimeout(()=>{
                         hoardObject.e1.enlarge = true
                     }, 50)
                 }
@@ -992,7 +1084,7 @@ canvas.addEventListener('click', (e)=>{
                     hoardObject.g1.show = false
                     hoardObject.g1.enlarge = false
     
-                    setTimeout(()=>{
+                    hoardTimer.timer11 = setTimeout(()=>{
                         hoardObject.f1.enlarge = true
                     }, 50)
                 }
@@ -1002,14 +1094,379 @@ canvas.addEventListener('click', (e)=>{
                     hoardObject.h1.show = false
                     hoardObject.h1.enlarge = false
     
-                    setTimeout(()=>{
+                    hoardTimer.timer12 = setTimeout(()=>{
                         hoardObject.g1.enlarge = true
                     }, 50)
                 }
             }
             
         }
-        
+        if(hoardObject.talk4.show && hoardObject.talk4Chk){
+            if(!hoardObject.talk4Chk) return
+            if(x>=hoardObject.talk4.position.x && x<=hoardObject.talk4.position.x + hoardObject.talk4.width && y>=hoardObject.talk4.position.y && y<=hoardObject.talk4.position.y+hoardObject.talk4.height){
+                hoardObject.talk4Chk = false
+                hoardObject.talk4.enlarge = false
+                hoardObject.response3.show = false
+                hoardObject.response5.show = true
+                hoardTimer.timer13 = setTimeout(()=>{
+                    hoardObject.talk4.show = false
+
+                    hoardObject.talk6A.show = true
+                    hoardObject.talk6A.enlarge = true
+                    hoardObject.talk6B.show = true
+                    hoardObject.talk6B.enlarge = true
+
+                    hoardObject.talk6Chk = true
+                }, hoardObject.response5.text.split('').length*10 + 1500)
+            }
+        }
+        if(hoardObject.talk6A.show && hoardObject.talk6B.show && hoardObject.talk6Chk){
+            if(!hoardObject.talk6Chk) return
+            if(x>=hoardObject.talk6A.position.x && x<=hoardObject.talk6A.position.x + hoardObject.talk6A.width && y>=hoardObject.talk6A.position.y && y<=hoardObject.talk6A.position.y+hoardObject.talk6A.height){
+                hoardObject.talk6Chk = false
+                hoardObject.talk6A.enlarge = false
+                hoardObject.talk6B.enlarge = false
+                hoardObject.response5.show = false
+                hoardObject.response7.show = true
+                if(hoardObject.people.image.src.includes('people1')){
+                    hoardObject.people.image.src = hoardObject.people.image.src.replace('people1', 'people3')
+                }
+
+                hoardTimer.timer14 = setTimeout(()=>{
+                    hoardObject.talk6A.show = false
+                    hoardObject.talk6B.show = false
+
+                    hoardObject.talk8.show = true
+                    hoardObject.talk8.enlarge = true
+
+                    hoardObject.talk8Chk = true
+                }, hoardObject.response7.text.split('').length*10 + 1500)
+            }
+            if(x>=hoardObject.talk6B.position.x && x<=hoardObject.talk6B.position.x + hoardObject.talk6B.width && y>=hoardObject.talk6B.position.y && y<=hoardObject.talk6B.position.y+hoardObject.talk6B.height){
+                if(hoardObject.people.image.src.includes('people1')){
+                    hoardObject.people.image.src = hoardObject.people.image.src.replace('people1', 'people2')
+                }
+                hoardObject.talk6Chk = false
+                hoardObject.talk6A.enlarge = false
+                hoardObject.talk6B.enlarge = false
+                hoardObject.response5.show = false
+                hoardObject.response7.show = true
+                CG.hoard.isPeace = false
+                hoardTimer.timer15 = setTimeout(()=>{
+                    hoardObject.talk6A.show = false
+                    hoardObject.talk6B.show = false
+
+                    hoardObject.talk8.show = true
+                    hoardObject.talk8.enlarge = true
+
+                    hoardObject.talk8Chk = true
+                }, hoardObject.response7.text.split('').length*10 + 1500)
+            }
+        }
+        if(hoardObject.talk8.show && hoardObject.talk8Chk){
+            if(!hoardObject.talk8Chk) return
+            if(x>=hoardObject.talk8.position.x && x<=hoardObject.talk8.position.x + hoardObject.talk8.width && y>=hoardObject.talk8.position.y && y<=hoardObject.talk8.position.y+hoardObject.talk8.height){
+                hoardObject.talk8Chk = false
+                hoardObject.talk8.enlarge  = false
+                hoardObject.response7.show = false
+                hoardObject.response9.show = true
+
+                hoardTimer.timer16 = setTimeout(()=>{
+                    hoardObject.talk8.show = false
+
+                    hoardObject.talk10A.show = true
+                    hoardObject.talk10A.enlarge = true
+                    hoardObject.talk10B.show = true
+                    hoardObject.talk10B.enlarge = true
+
+                    hoardObject.talk10Chk = true
+                }, hoardObject.response9.text.split('').length*10 + 2000)
+            }
+        }
+        if(hoardObject.talk10A.show && hoardObject.talk10B.show && hoardObject.talk10Chk){
+            if(!hoardObject.talk10Chk) return
+            if(x>=hoardObject.talk10A.position.x && x<=hoardObject.talk10A.position.x + hoardObject.talk10A.width && y>=hoardObject.talk10A.position.y && y<=hoardObject.talk10A.position.y+hoardObject.talk10A.height){
+                if(hoardObject.people.image.src.includes('people1')){
+                    hoardObject.people.image.src = hoardObject.people.image.src.replace('people1', 'people3')
+                }else if(hoardObject.people.image.src.includes('people2')){
+                    hoardObject.people.image.src = hoardObject.people.image.src.replace('people2', 'people3')
+                }
+                hoardObject.talk10Chk = false
+                hoardObject.talk10A.enlarge = false
+                hoardObject.talk10B.enlarge = false
+                hoardObject.response9.show = false
+                hoardObject.response11.show = true
+                
+                hoardTimer.timer17 = setTimeout(()=>{
+                    hoardObject.talk10A.show = false
+                    hoardObject.talk10B.show = false
+
+                    hoardObject.talk12.show = true
+                    hoardObject.talk12.enlarge = true
+
+                    hoardObject.talk12Chk = true
+                }, hoardObject.response11.text.split('').length*10 + 2000)
+            }
+            if(x>=hoardObject.talk10B.position.x && x<=hoardObject.talk10B.position.x + hoardObject.talk10B.width && y>=hoardObject.talk10B.position.y && y<=hoardObject.talk10B.position.y+hoardObject.talk10B.height){
+                if(hoardObject.people.image.src.includes('people1')){
+                    hoardObject.people.image.src = hoardObject.people.image.src.replace('people1', 'people2')
+                }else if(hoardObject.people.image.src.includes('people3')){
+                    hoardObject.people.image.src = hoardObject.people.image.src.replace('people3', 'people2')
+                }
+                hoardObject.talk10Chk = false
+                hoardObject.talk10A.enlarge = false
+                hoardObject.talk10B.enlarge = false
+                hoardObject.response9.show = false
+                hoardObject.response11.show = true
+                CG.hoard.isPeace = false
+                hoardTimer.timer18 = setTimeout(()=>{
+                    hoardObject.talk10A.show = false
+                    hoardObject.talk10B.show = false
+
+                    hoardObject.talk12.show = true
+                    hoardObject.talk12.enlarge = true
+
+                    hoardObject.talk12Chk = true
+                }, hoardObject.response11.text.split('').length*10 + 2000)
+            }
+        }
+        if(hoardObject.talk12.show && hoardObject.talk12Chk){
+            if(!hoardObject.talk12Chk) return
+            if(x>=hoardObject.talk12.position.x && x<=hoardObject.talk12.position.x + hoardObject.talk12.width && y>=hoardObject.talk12.position.y && y<=hoardObject.talk12.position.y+hoardObject.talk12.height){
+                hoardObject.talk12Chk = false
+                hoardObject.talk12.enlarge  = false
+                hoardObject.response11.show = false
+                hoardObject.response13.show = true
+
+                hoardTimer.timer19 = setTimeout(()=>{
+                    hoardObject.talk12.show = false
+                    hoardObject.talk14.show = true
+                    hoardObject.chk.show = true
+                    hoardObject.chk.enlarge = true
+                    hoardObject.talk14Chk = true
+                    
+                }, hoardObject.response13.text.split('').length*10 + 1500)
+            }
+        }
+
+        if(hoardObject.talk14.show && hoardObject.talk14Chk){
+            if(!hoardObject.talk14Chk) return
+            if(x>=hoardObject.chk.position.x && x<=hoardObject.chk.position.x + hoardObject.chk.width && y>=hoardObject.chk.position.y && y<=hoardObject.chk.position.y+hoardObject.chk.height){
+                hoardObject.talk14Chk = false
+
+                hoardObject.response13.show = false
+
+                hoardObject.talk14.show = false
+                hoardObject.chk.show = false
+                hoardObject.chk.enlarge = false
+                hoardObject.people.show = false
+                hoardTimer.timer20 = setTimeout(()=>{
+                    hoardObject.startInter = true
+
+                    hoardObject.inter1.enlarge = true
+                    hoardObject.inter2.enlarge = true
+                    hoardObject.inter3.enlarge = true
+                    hoardObject.inter4.enlarge = true
+                    hoardObject.inter5.enlarge = true
+                    hoardObject.inter6.enlarge = true
+                    hoardObject.inter7.enlarge = true
+                    hoardObject.inter8.enlarge = true
+                }, 100)
+            }
+        }
+
+        if(hoardObject.startInter){
+            if(hoardObject.inter1.enlarge && !hoardObject.inter1Ok.show){
+                if(x>=hoardObject.inter1.position.x && x<=hoardObject.inter1.position.x + hoardObject.inter1.width && y>=hoardObject.inter1.position.y && y<=hoardObject.inter1.position.y+hoardObject.inter1.height){
+                    hoardObject.inter1Ok.show = true
+                    hoardObject.inter1.enlarge = false
+                    hoardObject.interNum ++
+                }
+            }
+            if(hoardObject.inter2.enlarge && !hoardObject.inter2Ok.show){
+                if(x>=hoardObject.inter2.position.x && x<=hoardObject.inter2.position.x + hoardObject.inter2.width && y>=hoardObject.inter2.position.y && y<=hoardObject.inter2.position.y+hoardObject.inter2.height){
+                    hoardObject.inter2Ok.show = true
+                    hoardObject.inter2.enlarge = false
+                    hoardObject.interNum ++
+                }
+            }
+            if(hoardObject.inter3.enlarge && !hoardObject.inter3Ok.show){
+                if(x>=hoardObject.inter3.position.x && x<=hoardObject.inter3.position.x + hoardObject.inter3.width && y>=hoardObject.inter3.position.y && y<=hoardObject.inter3.position.y+hoardObject.inter3.height){
+                    hoardObject.inter3Ok.show = true
+                    hoardObject.inter3.enlarge = false
+                    hoardObject.interNum ++
+                }
+            }
+            if(hoardObject.inter4.enlarge && !hoardObject.inter4Ok.show){
+                if(x>=hoardObject.inter4.position.x && x<=hoardObject.inter4.position.x + hoardObject.inter4.width && y>=hoardObject.inter4.position.y && y<=hoardObject.inter4.position.y+hoardObject.inter4.height){
+                    hoardObject.inter4Ok.show = true
+                    hoardObject.inter4.enlarge = false
+                    hoardObject.interNum ++
+                }
+            }
+            if(hoardObject.inter5.enlarge && !hoardObject.inter5Ok.show){
+                if(x>=hoardObject.inter5.position.x && x<=hoardObject.inter5.position.x + hoardObject.inter5.width && y>=hoardObject.inter5.position.y && y<=hoardObject.inter5.position.y+hoardObject.inter5.height){
+                    hoardObject.inter5Ok.show = true
+                    hoardObject.inter5.enlarge = false
+                    hoardObject.interNum ++
+                }
+            }
+            if(hoardObject.inter6.enlarge && !hoardObject.inter6Ok.show){
+                if(x>=hoardObject.inter6.position.x && x<=hoardObject.inter6.position.x + hoardObject.inter6.width && y>=hoardObject.inter6.position.y && y<=hoardObject.inter6.position.y+hoardObject.inter6.height){
+                    hoardObject.inter6Ok.show = true
+                    hoardObject.inter6.enlarge = false
+                    hoardObject.interNum ++
+                }
+            }
+            if(hoardObject.inter7.enlarge && !hoardObject.inter7Ok.show){
+                if(x>=hoardObject.inter7.position.x && x<=hoardObject.inter7.position.x + hoardObject.inter7.width && y>=hoardObject.inter7.position.y && y<=hoardObject.inter7.position.y+hoardObject.inter7.height){
+                    hoardObject.inter7Ok.show = true
+                    hoardObject.inter7.enlarge = false
+                    hoardObject.interNum ++
+                }
+            }
+            if(hoardObject.inter8.enlarge && !hoardObject.inter8Ok.show){
+                if(x>=hoardObject.inter8.position.x && x<=hoardObject.inter8.position.x + hoardObject.inter8.width && y>=hoardObject.inter8.position.y && y<=hoardObject.inter8.position.y+hoardObject.inter8.height){
+                    hoardObject.inter8Ok.show = true
+                    hoardObject.inter8.enlarge = false
+                    hoardObject.interNum ++
+                }
+            }
+            if(hoardObject.interNum === 8){
+                hoardObject.startInter = false
+                hoardTimer.timer21 = setTimeout(()=>{
+                    hoardObject.finish.show = true
+                    hoardObject.chk2.show = true
+                    hoardObject.chk2.enlarge = true
+
+                    hoardObject.finishChk = true
+                }, 100)
+            }
+        }
+
+        if(hoardObject.finishChk && hoardObject.finish.show){
+            if(!hoardObject.finishChk) return
+            if(x>=hoardObject.chk2.position.x && x<=hoardObject.chk2.position.x + hoardObject.chk2.width && y>=hoardObject.chk2.position.y && y<=hoardObject.chk2.position.y+hoardObject.chk2.height){
+                hoardObject.finishChk = false
+
+                hoardObject.finish.show = false
+                hoardObject.chk2.show = false
+                hoardObject.chk2.enlarge = false
+
+
+                hoardObject.inter1.show = false
+                hoardObject.inter2.show = false
+                hoardObject.inter3.show = false
+                hoardObject.inter4.show = false
+                hoardObject.inter5.show = false
+                hoardObject.inter6.show = false
+                hoardObject.inter7.show = false
+                hoardObject.inter8.show = false
+                hoardObject.inter1Ok.show = false
+                hoardObject.inter2Ok.show = false
+                hoardObject.inter3Ok.show = false
+                hoardObject.inter4Ok.show = false
+                hoardObject.inter5Ok.show = false
+                hoardObject.inter6Ok.show = false
+                hoardObject.inter7Ok.show = false
+                hoardObject.inter8Ok.show = false
+
+                if(!hoard.image.src.includes('-.png')){
+                    hoard.image.src = hoard.image.src.replace('.png', '-.png')
+                }
+                hoardObject.people.show = true
+                if(hoardObject.people.image.src.includes('people2')){
+                    hoardObject.people.image.src = hoardObject.people.image.src.replace('people2', 'people1')
+                }else if(hoardObject.people.image.src.includes('people3')){
+                    hoardObject.people.image.src = hoardObject.people.image.src.replace('people3', 'people1')
+                }
+                hoardObject.response15.show = true
+                hoardTimer.timer22 = setTimeout(()=>{
+                    hoardObject.talk16A.show = true
+                    hoardObject.talk16A.enlarge = true
+                    hoardObject.talk16B.show = true
+                    hoardObject.talk16B.enlarge = true
+                    hoardObject.talk16C.show = true
+                    hoardObject.talk16C.enlarge = true
+                    hoardObject.talk16Chk = true
+                }, hoardObject.response15.text.split('').length*10 + 1500)
+            }
+        }
+        if(hoardObject.talk16A.show && hoardObject.talk16B.show && hoardObject.talk16C.show && hoardObject.talk16Chk){
+            if(!hoardObject.talk16Chk) return
+            if(x>=hoardObject.talk16A.position.x && x<=hoardObject.talk16A.position.x + hoardObject.talk16A.width && y>=hoardObject.talk16A.position.y && y<=hoardObject.talk16A.position.y+hoardObject.talk16A.height){
+                hoardObject.talk16Chk = false
+                hoardObject.response15.show = false
+                hoardObject.talk16A.show = false
+                hoardObject.talk16B.show = false
+                hoardObject.talk16C.show = false
+                hoardObject.talk16A.enlarge = false
+                hoardObject.talk16B.enlarge = false
+                hoardObject.talk16C.enlarge = false
+
+                if(!CG.hoard.isPeace){
+                    if(hoardObject.people.image.src.includes('people1')){
+                        hoardObject.people.image.src = hoardObject.people.image.src.replace('people1', 'people2')
+                    }else if(hoardObject.people.image.src.includes('people3')){
+                        hoardObject.people.image.src = hoardObject.people.image.src.replace('people3', 'people2')
+                    }
+                    getCG.hoard.push(0)
+                    hoardObject.end.image.src = hoardObject.end.image.src.replace('good', 'bad')
+                }else{
+                    getCG.hoard.push(1)
+                }
+                hoardObject.end.show = true
+            }
+            if(x>=hoardObject.talk16B.position.x && x<=hoardObject.talk16B.position.x + hoardObject.talk16B.width && y>=hoardObject.talk16B.position.y && y<=hoardObject.talk16B.position.y+hoardObject.talk16B.height){
+                
+                hoardObject.talk16Chk = false
+                hoardObject.response15.show = false
+                hoardObject.talk16A.show = false
+                hoardObject.talk16B.show = false
+                hoardObject.talk16C.show = false
+                hoardObject.talk16A.enlarge = false
+                hoardObject.talk16B.enlarge = false
+                hoardObject.talk16C.enlarge = false
+
+                if(!CG.hoard.isPeace){
+                    if(hoardObject.people.image.src.includes('people1')){
+                        hoardObject.people.image.src = hoardObject.people.image.src.replace('people1', 'people2')
+                    }else if(hoardObject.people.image.src.includes('people3')){
+                        hoardObject.people.image.src = hoardObject.people.image.src.replace('people3', 'people2')
+                    }
+                    getCG.hoard.push(0)
+                    hoardObject.end.image.src = hoardObject.end.image.src.replace('good', 'bad')
+                }else{
+                    getCG.hoard.push(1)
+                }
+                hoardObject.end.show = true
+            }
+            if(x>=hoardObject.talk16C.position.x && x<=hoardObject.talk16C.position.x + hoardObject.talk16C.width && y>=hoardObject.talk16C.position.y && y<=hoardObject.talk16C.position.y+hoardObject.talk16C.height){
+                CG.hoard.isPeace = false
+                
+                hoardObject.talk16Chk = false
+                hoardObject.response15.show = false
+                hoardObject.talk16A.show = false
+                hoardObject.talk16B.show = false
+                hoardObject.talk16C.show = false
+                hoardObject.talk16A.enlarge = false
+                hoardObject.talk16B.enlarge = false
+                hoardObject.talk16C.enlarge = false
+
+                if(!CG.hoard.isPeace){
+                    if(hoardObject.people.image.src.includes('people1')){
+                        hoardObject.people.image.src = hoardObject.people.image.src.replace('people1', 'people2')
+                    }else if(hoardObject.people.image.src.includes('people3')){
+                        hoardObject.people.image.src = hoardObject.people.image.src.replace('people3', 'people2')
+                    }
+                    getCG.hoard.push(0)
+                    hoardObject.end.image.src = hoardObject.end.image.src.replace('good', 'bad')
+                }else{
+                    getCG.hoard.push(1)
+                }
+                hoardObject.end.show = true
+            }
+        }
     }
     interactions.forEach(interaction=>{
         let bool = x >= interaction.position.x && x <= interaction.position.x + interaction.width && y>=interaction.position.y && y<=interaction.position.y + interaction.height
@@ -1255,7 +1712,14 @@ function initCoolRoom(){
     })
 
     CG.cool.isPeace = true
-
+    if(coolObject.people.image.src.includes('people2')){
+        coolObject.people.image.src = coolObject.people.image.src.replace('people2', 'people1')
+    }else if(coolObject.people.image.src.includes('people3')){
+        coolObject.people.image.src = coolObject.people.image.src.replace('people3', 'people1')
+    }
+    if(coolObject.end.image.src.includes('bad')){
+        coolObject.end.image.src = coolObject.end.image.src.replace('bad','good')
+    }
     console.log(getCG);
 }
 function initOccupyRoom(){
@@ -1303,6 +1767,85 @@ function initOccupyRoom(){
 
     })
     CG.occupy.isPeace = true
-
+    if(occupyObject.people.image.src.includes('people2')){
+        occupyObject.people.image.src = occupyObject.people.image.src.replace('people2', 'people1')
+    }
+    if(occupyObject.end.image.src.includes('bad')){
+        occupyObject.end.image.src = occupyObject.end.image.src.replace('bad', 'good')
+    }
     console.log(getCG);
+}
+function initHoardRoom(){
+    hoardObject.talk1Chk = true
+    hoardObject.talk2Chk = false
+    hoardObject.removeInterObj = false
+    hoardObject.talk4Chk = false
+    hoardObject.talk6Chk = false
+    hoardObject.talk8Chk = false
+    hoardObject.talk10Chk = false
+    hoardObject.talk12Chk = false
+    hoardObject.talk14Chk = false
+    hoardObject.startInter = false
+    hoardObject.finishChk = false
+    hoardObject.talk16Chk = false
+
+    hoardObject.interNum = 0
+    if(hoard.image.src.includes('-.png')){
+        hoard.image.src = hoard.image.src.replace('-.png', '.png')
+    }
+    
+    Object.keys(hoardTimer).forEach(timer=>{
+        clearTimeout(hoardTimer[timer])
+    })
+
+    hoards.forEach(hoard=>{
+        hoard.enlarge = false
+        if( hoard.name === 'inter1' ||
+            hoard.name === 'inter2' ||
+            hoard.name === 'inter3' ||
+            hoard.name === 'inter4' || 
+            hoard.name === 'inter5' || 
+            hoard.name === 'inter6' || 
+            hoard.name === 'inter7' || 
+            hoard.name === 'inter8' ||
+            hoard.name === 'hold' ||
+            hoard.name === 's1' ||
+            hoard.name === 'a1' ||
+            hoard.name === 'b1' ||
+            hoard.name === 'c1' ||
+            hoard.name === 'd1' ||
+            hoard.name === 'e1' ||
+            hoard.name === 'f1' ||
+            hoard.name === 'g1' ||
+            hoard.name === 'h1' ||
+            hoard.name === '1' ){
+                hoard.show = true
+            }else{
+                hoard.show = false
+            }
+        if(hoard.name === '1'){
+            hoard.enlarge = true
+        }
+
+        if(hoard.talk){
+            hoard.isTypewriter = true
+            if(hoard.image.src.includes('_.png')){
+                hoard.image.src = hoard.image.src.replace('_.png', '.png')
+            }
+        }
+        hoard.num = 0;hoard.step = 0;hoard.twoStep = 25;hoard.threeStep = 50
+
+    })
+    console.log(getCG);
+    CG.hoard.isPeace = true
+    
+    if(hoardObject.people.image.src.includes('people2')){
+        hoardObject.people.image.src = hoardObject.people.image.src.replace('people2', 'people1')
+    }else if(hoardObject.people.image.src.includes('people3')){
+        hoardObject.people.image.src = hoardObject.people.image.src.replace('people3', 'people1')
+    }
+    if(hoardObject.end.image.src.includes('bad')){
+        console.log('有');
+        hoardObject.end.image.src = hoardObject.end.image.src.replace('bad', 'good')
+    }
 }
