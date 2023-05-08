@@ -1598,6 +1598,11 @@ canvas.addEventListener('click', (e)=>{
             clickVedioPlay('inRoom')
             roomOpen.hoard = true
             isRoomOpen = true
+        }else if(interaction.name === 'network'){
+            if(isRoomOpen) return
+            clickVedioPlay('inRoom')
+            roomOpen.network = true
+            isRoomOpen = true
         }
         
     })

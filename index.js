@@ -15,13 +15,17 @@ const CG = {
     },
     hoard:{
         isPeace:true
-    }
+    },
+    network:{
+        isPeace:true
+    },
 }
 //好:1 壞:0
 const getCG = {
     cool:[],
     occupy:[],
     hoard:[],
+    network:[],
 }
 let occupyInteractiveBtn = false
 
@@ -48,6 +52,7 @@ const interactions = [
     new Interaction({x:2973, y:481, w:147, h:218, name:'cool', isShow:false}),
     new Interaction({x:3750, y:450, w:60, h:60, name:'occupy', image: createImage('./images/buttons/in2f.png'), multiple:1.05, isShow:false, }),
     new Interaction({x:4170, y:500, w:455, h:225, name:'hoard', isShow:false}),
+    new Interaction({x:4170, y:200, w:455, h:225, name:'network', isShow:false}),
 ]
 const talks = [
     new Talk({x:3780 -3318/15, y:350, w:3318/15, h:1604/15, name:'occupy', image: createImage('./images/talks/enter2f_.png'),isShow:false, direction:1650}),
@@ -66,6 +71,7 @@ let mesterTalkY = 355
 const occupy = new Room({image:createImage('./images/occupy.png')});
 //hoard
 const hoard = new Room({image:createImage('./images/hoard.png')})
+const network = new Room({image:createImage('./images/network.png')})
 let startNav = true;
 let getOff = false;
 const starts = [
@@ -246,6 +252,7 @@ const roomOpen = {
     cool:false,
     occupy:false,
     hoard:false,
+    network:false,
 }
 
 const keys = {
@@ -295,7 +302,7 @@ openAnim = setInterval(()=>{
         busAudioStart = false
         busAudio.pause()
         busAudio.currentTime = 0
-        playBgm()
+        // playBgm()
     }
     if(scrollOffset > -1500){
         busRun = true
@@ -421,6 +428,18 @@ function animate(){
                 hoard.draw()
             }
         })
+    }
+
+    if(roomOpen.network && isRoomOpen){
+        c.fillStyle = 'rgba(255,255,255,.5)'
+        c.fillRect(0,0,canvas.width, canvas.height)
+        network.draw()
+        buttons.close.draw()
+        // networks.forEach(network=>{
+        //     if(network.show){
+        //         network.draw()
+        //     }
+        // })
     }
 
     // if(isTeaching && getOff){
