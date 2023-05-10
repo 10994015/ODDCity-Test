@@ -200,6 +200,25 @@ canvas.addEventListener('mousemove', (e)=>{
             }
         })
     }
+    if(roomOpen.network && isRoomOpen){
+        networks.some(net=>{
+            if(!net.enlarge) return
+            if(x >= net.position.x && x<=net.position.x+net.width && y>=net.position.y && y<=net.position.y + net.height){
+                net.width = net.bigWidth
+                net.height = net.bigHeight
+                if((!net.image.src.includes('_.png')) && net.talk){
+                    net.image.src = net.image.src.replace('.png', '_.png')
+                }
+                return canvas.style.cursor = "pointer"
+            }
+            net.width = net.oldWidth
+            net.height = net.oldHeight
+            canvas.style.cursor = "default"
+            if(net.image.src.includes('_.png')){
+                net.image.src = net.image.src.replace('_.png', '.png')
+            }
+        })
+    }
     
     if(isDragging && roomOpen.occupy && isRoomOpen){
         occupys[mousedownIdx].position.x = e.offsetX + differX
@@ -304,6 +323,8 @@ const coolObject = {
 
     talk06: cools.filter(cool=>cool.name === '06')[0],
     talk06Chk: false,
+
+   
     
 }
 const coolTimer = {
@@ -427,12 +448,63 @@ const hoardTimer = {
     timer21:null,
     timer22:null,
 }
+
+const netObject = {
+    computer: networks.filter(net=>net.name === 'computer')[0],
+
+    smallPeople: networks.filter(net=>net.name === 'smallPeople')[0],
+    people: networks.filter(net=>net.name === 'people')[0],
+    startChk:true,
+    response1: networks.filter(net=>net.name === '1')[0],
+
+    talk2: networks.filter(net=>net.name === '2')[0],
+    talk2Chk: false,
+    response3: networks.filter(net=>net.name === '3')[0],
+
+    talk4: networks.filter(net=>net.name === '4')[0],
+    talk4Chk: false,
+    response5: networks.filter(net=>net.name === '5')[0],
+
+    talk6: networks.filter(net=>net.name === '6')[0],
+    talk6Chk: false,
+    response7: networks.filter(net=>net.name === '7')[0],
+
+    talk8A: networks.filter(net=>net.name === '8A')[0],
+    talk8B: networks.filter(net=>net.name === '8B')[0],
+    talk8Chk: false,
+    response9A: networks.filter(net=>net.name === '9A')[0],
+    response9B: networks.filter(net=>net.name === '9B')[0],
+
+    talk10: networks.filter(net=>net.name === '10')[0],
+    talk10Chk: false,
+
+    talk11A: networks.filter(net=>net.name === '11A')[0],
+    talk11B: networks.filter(net=>net.name === '11B')[0],
+    talk11Chk: false,
+    response12: networks.filter(net=>net.name === '12')[0],
+
+    talk13A: networks.filter(net=>net.name === '13A')[0],
+    talk13B: networks.filter(net=>net.name === '13B')[0],
+    talk13Chk: false,
+    response14: networks.filter(net=>net.name === '14')[0],
+
+    talk15: networks.filter(net=>net.name === '15')[0],
+    talk15Chk: false,
+
+    webShow:true,
+    web: networks.filter(cool=>cool.name === 'web')[0],
+    left: networks.filter(cool=>cool.name === 'left')[0],
+    right: networks.filter(cool=>cool.name === 'right')[0],
+    webNum: 1,
+
+    chk: networks.filter(net=>net.name === 'chk')[0],
+}
+
 canvas.addEventListener('click', (e)=>{
     if(!isStart) return
     var rect = canvas.getBoundingClientRect();
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
-
     
     if(isRoomOpen){
         let close = buttons.close;
@@ -471,7 +543,6 @@ canvas.addEventListener('click', (e)=>{
             
         }
     }
-
     if(roomOpen.cool && isRoomOpen){
         if(coolObject.talk1.show && coolObject.talk1Chk){
             if(!coolObject.talk1Chk) return
@@ -779,7 +850,6 @@ canvas.addEventListener('click', (e)=>{
             }, 100)
         }
     }
-
     if(roomOpen.occupy && isRoomOpen){
         if(occupyObject.sitdown.show && occupyObject.sitdownChk){
             if(x>=occupyObject.sitdown.position.x && x<=occupyObject.sitdown.position.x + occupyObject.sitdown.oldWidth && y>=occupyObject.sitdown.position.y && y<=occupyObject.sitdown.position.y + occupyObject.sitdown.oldHeight){
@@ -1560,6 +1630,250 @@ canvas.addEventListener('click', (e)=>{
             }
         }
     }
+    
+    if(roomOpen.network && isRoomOpen){
+        if(netObject.smallPeople.show && netObject.startChk){
+            if(!netObject.startChk) return
+            if(x>=netObject.smallPeople.position.x && x<=netObject.smallPeople.position.x + netObject.smallPeople.width && y>=netObject.smallPeople.position.y && y<=netObject.smallPeople.position.y+netObject.smallPeople.height){
+                netObject.startChk = false
+                netObject.smallPeople.show = false
+                netObject.smallPeople.enlarge = false
+
+                netObject.people.show = true
+                netObject.response1.show = true
+
+                setTimeout(()=>{
+                    netObject.talk2Chk = true
+                    netObject.talk2.show = true
+                    netObject.talk2.enlarge = true
+                }, netObject.response1.text.split('').length*10 + 1000)
+            }
+        }
+        if(netObject.talk2.show && netObject.talk2Chk){
+            if(!netObject.talk2Chk) return
+            if(x>=netObject.talk2.position.x && x<=netObject.talk2.position.x + netObject.talk2.width && y>=netObject.talk2.position.y && y<=netObject.talk2.position.y+netObject.talk2.height){
+                netObject.talk2Chk = false
+                netObject.response1.show = false
+                netObject.talk2.enlarge = false
+                netObject.response3.show = true
+
+                setTimeout(()=>{
+                    netObject.talk2.show = false
+                    netObject.talk4.show = true
+                    netObject.talk4.enlarge = true
+                    netObject.talk4Chk = true
+                }, netObject.response3.text.split('').length*10 + 1500)
+            }
+        }
+        if(netObject.talk4.show && netObject.talk4Chk){
+            if(!netObject.talk4Chk) return
+            if(x>=netObject.talk4.position.x && x<=netObject.talk4.position.x + netObject.talk4.width && y>=netObject.talk4.position.y && y<=netObject.talk4.position.y+netObject.talk4.height){
+                netObject.talk4Chk = false
+                netObject.response3.show = false
+                netObject.talk4.enlarge = false
+                netObject.response5.show = true
+
+                setTimeout(()=>{
+                    netObject.talk4.show = false
+                    netObject.talk6.show = true
+                    netObject.talk6.enlarge = true
+                    netObject.talk6Chk = true
+                }, netObject.response5.text.split('').length*10 + 1500)
+            }
+        }
+        if(netObject.talk6.show && netObject.talk6Chk){
+            if(!netObject.talk6Chk) return
+            if(x>=netObject.talk6.position.x && x<=netObject.talk6.position.x + netObject.talk6.width && y>=netObject.talk6.position.y && y<=netObject.talk6.position.y+netObject.talk6.height){
+                netObject.talk6Chk = false
+                netObject.response5.show = false
+                netObject.talk6.enlarge = false
+                netObject.response7.show = true
+
+                setTimeout(()=>{
+                    netObject.talk6.show = false
+                    netObject.talk8A.show = true
+                    netObject.talk8A.enlarge = true
+                    netObject.talk8B.show = true
+                    netObject.talk8B.enlarge = true
+                    netObject.talk8Chk = true
+                }, netObject.response7.text.split('').length*10 + 1500)
+            }
+        }
+        if(netObject.talk8A.show && netObject.talk8B.show && netObject.talk8Chk){
+            if(!netObject.talk8Chk) return
+            if(x>=netObject.talk8A.position.x && x<=netObject.talk8A.position.x + netObject.talk8A.width && y>=netObject.talk8A.position.y && y<=netObject.talk8A.position.y+netObject.talk8A.height){
+                netObject.talk8Chk = false
+                netObject.response7.show = false
+                netObject.talk8A.enlarge = false
+                netObject.talk8B.enlarge = false
+                netObject.response9A.show = true
+
+                setTimeout(()=>{
+                    netObject.talk8A.show = false
+                    netObject.talk8B.show = false
+                    netObject.talk10.show = true
+                    netObject.talk10.enlarge = true
+                    netObject.talk10Chk = true
+                }, netObject.response9A.text.split('').length*10 + 1500)
+            }
+            if(x>=netObject.talk8B.position.x && x<=netObject.talk8B.position.x + netObject.talk8B.width && y>=netObject.talk8B.position.y && y<=netObject.talk8B.position.y+netObject.talk8B.height){
+                netObject.talk8Chk = false
+                netObject.response7.show = false
+                netObject.talk8A.enlarge = false
+                netObject.talk8B.enlarge = false
+                netObject.response9B.show = true
+
+                CG.network.isPeace = false
+
+                setTimeout(()=>{
+                    netObject.talk8A.show = false
+                    netObject.talk8B.show = false
+                    netObject.talk10.show = true
+                    netObject.talk10.enlarge = true
+                    netObject.talk10Chk = true
+                }, netObject.response9B.text.split('').length*10 + 1500)
+            }
+        }
+        if(netObject.talk10.show && netObject.talk10Chk){
+            if(!netObject.talk10Chk) return
+            if(x>=netObject.talk10.position.x && x<=netObject.talk10.position.x + netObject.talk10.width && y>=netObject.talk10.position.y && y<=netObject.talk10.position.y+netObject.talk10.height){
+                netObject.talk10Chk = false
+                netObject.response9A.show = false
+                netObject.response9B.show = false
+                netObject.talk10.enlarge = false
+
+                setTimeout(()=>{
+                    netObject.talk10.show = false
+                    netObject.talk11A.show = true
+                    netObject.talk11A.enlarge = true
+                    netObject.talk11B.show = true
+                    netObject.talk11B.enlarge = true
+                    netObject.talk11Chk = true
+                }, 100)
+            }
+        }
+        if(netObject.talk11A.show && netObject.talk11B.show && netObject.talk11Chk){
+            if(!netObject.talk11Chk) return
+            if(x>=netObject.talk11A.position.x && x<=netObject.talk11A.position.x + netObject.talk11A.width && y>=netObject.talk11A.position.y && y<=netObject.talk11A.position.y+netObject.talk11A.height){
+                netObject.talk11Chk = false
+                netObject.talk11A.enlarge = false
+                netObject.talk11B.enlarge = false
+                netObject.response12.show = true
+
+                setTimeout(()=>{
+                    netObject.talk11A.show = false
+                    netObject.talk11B.show = false
+                    netObject.talk13A.show = true
+                    netObject.talk13A.enlarge = true
+                    netObject.talk13B.show = true
+                    netObject.talk13B.enlarge = true
+                    netObject.talk13Chk = true
+                }, netObject.response12.text.split('').length*10 + 1500)
+            }
+            if(x>=netObject.talk11B.position.x && x<=netObject.talk11B.position.x + netObject.talk11B.width && y>=netObject.talk11B.position.y && y<=netObject.talk11B.position.y+netObject.talk11B.height){
+                netObject.talk11Chk = false
+                netObject.response7.show = false
+                netObject.talk11A.enlarge = false
+                netObject.talk11B.enlarge = false
+                netObject.response12.show = true
+
+                CG.network.isPeace = false
+
+                setTimeout(()=>{
+                    netObject.talk11A.show = false
+                    netObject.talk11B.show = false
+                    netObject.talk13A.show = true
+                    netObject.talk13A.enlarge = true
+                    netObject.talk13B.show = true
+                    netObject.talk13B.enlarge = true
+                    netObject.talk13Chk = true
+                }, netObject.response12.text.split('').length*10 + 1500)
+            }
+        }
+        if(netObject.talk13A.show && netObject.talk13B.show && netObject.talk13Chk){
+            if(!netObject.talk13Chk) return
+            if(x>=netObject.talk13A.position.x && x<=netObject.talk13A.position.x + netObject.talk13A.width && y>=netObject.talk13A.position.y && y<=netObject.talk13A.position.y+netObject.talk13A.height){
+                netObject.talk13Chk = false
+                netObject.response12.show = false
+                netObject.talk13A.enlarge = false
+                netObject.talk13B.enlarge = false
+                netObject.response14.show = true
+
+                setTimeout(()=>{
+                    netObject.talk13A.show = false
+                    netObject.talk13B.show = false
+                    
+                    netObject.talk15.show = true
+                    netObject.chk.show = true
+                    netObject.chk.enlarge = true
+                    netObject.talk15Chk = true
+                }, netObject.response14.text.split('').length*10 + 1500)
+            }
+            if(x>=netObject.talk13B.position.x && x<=netObject.talk13B.position.x + netObject.talk13B.width && y>=netObject.talk13B.position.y && y<=netObject.talk13B.position.y+netObject.talk13B.height){
+                netObject.talk13Chk = false
+                netObject.response12.show = false
+                netObject.talk13A.enlarge = false
+                netObject.talk13B.enlarge = false
+                netObject.response14.show = true
+
+                CG.network.isPeace = false
+
+                setTimeout(()=>{
+                    netObject.talk13A.show = false
+                    netObject.talk13B.show = false
+                    
+                    netObject.talk15.show = true
+                    netObject.chk.show = true
+                    netObject.chk.enlarge = true
+                    netObject.talk15Chk = true
+                }, netObject.response14.text.split('').length*10 + 1500)
+            }
+        }
+        if(netObject.talk15.show && netObject.talk15Chk){
+            if(!netObject.talk15Chk) return
+            if(x>=netObject.chk.position.x && x<=netObject.chk.position.x + netObject.chk.width && y>=netObject.chk.position.y && y<=netObject.chk.position.y+netObject.chk.height){
+                netObject.talk15Chk = false
+                netObject.response14.show = false
+                netObject.chk.enlarge = false
+                netObject.talk15.show = false
+                netObject.chk.show = false
+
+                setTimeout(()=>{
+                    netObject.people.show = false
+                    netObject.computer.enlarge = true
+                }, 100)
+            }
+        }
+        if(netObject.computer.show && netObject.computer.enlarge){
+            if(!netObject.computer.enlarge) return
+            if(x>=netObject.computer.position.x && x<=netObject.computer.position.x + netObject.computer.width && y>=netObject.computer.position.y && y<=netObject.computer.position.y+netObject.computer.height){
+                netObject.computer.enlarge = false
+                netObject.webShow = true
+
+                setTimeout(()=>{
+                    netObject.web.show = true
+                    netObject.left.show = true
+                    netObject.left.enlarge = true
+                    netObject.right.show = true
+                    netObject.right.enlarge = true
+                }, 100)
+            }
+        }
+        if(netObject.web.show && netObject.webShow){
+            if(netObject.left.show && netObject.left.enlarge){
+                if(x>=netObject.left.position.x && x<=netObject.left.position.x + netObject.left.width && y>=netObject.left.position.y && y<=netObject.left.position.y+netObject.left.height){
+                    if(netObject.webNum <= 1 ) return
+                    netObject.webNum --
+                    netObject.web.image.src = `./images/network/web/web${netObject.webNum}.png`
+                }
+                if(x>=netObject.right.position.x && x<=netObject.right.position.x + netObject.right.width && y>=netObject.right.position.y && y<=netObject.right.position.y+netObject.right.height){
+                    if(netObject.webNum >= 6 ) return
+                    netObject.webNum ++
+                    netObject.web.image.src = `./images/network/web/web${netObject.webNum}.png`
+                }
+            }
+        }
+    }
     interactions.forEach(interaction=>{
         let bool = x >= interaction.position.x && x <= interaction.position.x + interaction.width && y>=interaction.position.y && y<=interaction.position.y + interaction.height
         if(!bool) return
@@ -1784,7 +2098,6 @@ canvas.addEventListener('mouseup', ()=>{
     differY = null
 })
 
-
 function initCoolRoom(){
     coolObject.talk1Chk = true
     coolObject.talk2Chk = false
@@ -1960,9 +2273,6 @@ function initHoardRoom(){
         hoardObject.end.image.src = hoardObject.end.image.src.replace('bad', 'good')
     }
 }
-
-
-
 
 function clickVedioPlay(name){
     if(name == 'talk'){

@@ -90,8 +90,6 @@ const starts = [
     new Interaction({x:2900, y:330, w:6110/13, h:1641/13, name:'start09',image: createImage('./images/starts/talk/09.png'), multiple:1, isShow:false  }),
     new Interaction({x:2900, y:330, w:6110/13, h:1641/13, name:'start10',image: createImage('./images/starts/talk/010.png'), multiple:1, isShow:false  }),
 ]
-
-
 // const skip = new Interaction({x:20, y:650, w:333/4.5, h:202/4.5, name:'skip',image: createImage('./images/buttons/Skip.png'), isEnlarge: true, multiple:1.05, isShow:true  })
 const cools = [
     new Shared({x:280, y:190, w:300/2.9, h:125/2.9, image: createImage('./images/cool/cup.png'),name:'cup'}),
@@ -239,6 +237,43 @@ const hoards = [
 
     new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
 
+
+]
+const networks = [
+    new Shared({x:940, y:108, w:751/4.2, h:418/4.2, image: createImage('./images/network/computer.png'), name:'computer', isShow:true, isEnlarge:false, multiple:1}),
+
+    new Shared({x:750, y:150, w:306/1.8, h:860/1.8, image: createImage('./images/network/people1.png'), name:"smallPeople", isEnlarge:true, isShow:true, multiple:1}),
+    new Shared({x:50, y:300, w:306/1.1, h:860/1.1, image: createImage('./images/network/people1.png'), isPeople:true, name:'people', isShow:false}),
+
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/2.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'2', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/4.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'4', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/6.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'6', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/8A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'8A', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/8B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'8B', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/10.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'10', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/11A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'11A', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/11B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'11B', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/13A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'13A', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/13B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'13B', isShow:false}),
+
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'1', isShow:false, text:"...", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'3', isShow:false, text:"看有沒有漏掉的訊息。", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'5', isShow:false, text:"...", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'7', isShow:false, text:"蛤你剛剛說什麼？", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'9A', isShow:false, text:"可是不時常確認手機訊息會讓我很焦慮。", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'9B', isShow:false, text:"社交恐懼並不代表是邊緣人好嗎！", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'11', isShow:false, text:"社交恐懼並不代表是邊緣人好嗎！", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'12', isShow:false, text:"這和使用手機有什麼關係？", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'14', isShow:false, text:"蛤啊！聽起來好恐怖，那該怎麼辦？", isTypewriter:true }),
+
+    new Shared({x:canvas.width/2 - (3149/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:3149/4.5, h:484/4.5, image: createImage('./images/network/talk/15.png'), isTalk:true, isEnlarge:false, multiple:1, name:'15', isShow:false ,}),
+
+    new Shared({x:canvas.width/2 - (1200/1.1)/2, y:canvas.height/2 - (650/1.1)/2, w:1200/1.1, h:650/1.1, image: createImage('./images/network/web/web1.png'), name:'web', isShow:true, isEnlarge:false, multiple:1}),
+    new Shared({x:canvas.width/2 - (1200/1.1)/2 + 25, y:canvas.height/2 - (418/8)/2 + 20, w:418/8, h:418/8, image: createImage('./images/network/left.png'), isEnlarge:true, multiple:1, name:'left', isShow:true ,}),
+    new Shared({x:canvas.width/2 - (1200/1.1)/2 + 1200/1.1 - 25 - (418/8), y:canvas.height/2 - (418/8)/2 + 20, w:418/8, h:418/8, image: createImage('./images/network/right.png'), isEnlarge:true, multiple:1, name:'right', isShow:true ,}),
+    
+    
+    new Shared({x:canvas.width/2 - (112/2)/2 + 300, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
 
 ]
 const buttons = {
@@ -435,11 +470,11 @@ function animate(){
         c.fillRect(0,0,canvas.width, canvas.height)
         network.draw()
         buttons.close.draw()
-        // networks.forEach(network=>{
-        //     if(network.show){
-        //         network.draw()
-        //     }
-        // })
+        networks.forEach(network=>{
+            if(network.show){
+                network.draw()
+            }
+        })
     }
 
     // if(isTeaching && getOff){
