@@ -493,7 +493,12 @@ canvas.addEventListener('click', (e)=>{
             }else if(roomOpen.network){
                 initNetworkRoom()
             }
-            clickVedioPlay('inRoom')
+            if(roomOpen.cool){
+                clickVedioPlay('inCoolRoom')
+            }else{
+                clickVedioPlay('inRoom')
+            }
+                
             stopBgm()
             playBgm()
             audioGoodend.pause()
@@ -2034,7 +2039,7 @@ canvas.addEventListener('click', (e)=>{
         }
         if(interaction.name === 'cool'){
             if(isRoomOpen) return
-            clickVedioPlay('inRoom')
+            clickVedioPlay('inCoolRoom')
             roomOpen.cool = true
             isRoomOpen = true
             player.move = true
@@ -2055,6 +2060,7 @@ canvas.addEventListener('click', (e)=>{
         }else if(interaction.name === 'occupy'){
             if(isRoomOpen) return
             clickVedioPlay('inRoom')
+            audioWhistle.play()
             roomOpen.occupy = true
             isRoomOpen = true
         }else if(interaction.name === 'hoard'){
@@ -2464,6 +2470,8 @@ function clickVedioPlay(name){
         audioInRoom.play()
     }else if(name == 'obj'){
         audioObj.play()
+    }else if(name == 'inCoolRoom'){
+        audioInCoolRoom.play()
     }
 }
 
