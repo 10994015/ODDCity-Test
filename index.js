@@ -243,7 +243,7 @@ const networks = [
     new Shared({x:940, y:108, w:751/4.2, h:418/4.2, image: createImage('./images/network/computer.png'), name:'computer', isShow:true, isEnlarge:false, multiple:1}),
 
     new Shared({x:750, y:150, w:306/1.8, h:860/1.8, image: createImage('./images/network/people1.png'), name:"smallPeople", isEnlarge:true, isShow:true, multiple:1}),
-    new Shared({x:50, y:300, w:306/1.1, h:860/1.1, image: createImage('./images/network/people1.png'), isPeople:true, name:'people', isShow:false}),
+    new Shared({x:0, y:300, w:306/1.1, h:860/1.1, image: createImage('./images/network/people1.png'), isPeople:true, name:'people', isShow:false}),
 
     new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/2.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'2', isShow:false,}),
     new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/4.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'4', isShow:false,}),
@@ -268,12 +268,22 @@ const networks = [
 
     new Shared({x:canvas.width/2 - (3149/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:3149/4.5, h:484/4.5, image: createImage('./images/network/talk/15.png'), isTalk:true, isEnlarge:false, multiple:1, name:'15', isShow:false ,}),
 
-    new Shared({x:canvas.width/2 - (1200/1.1)/2, y:canvas.height/2 - (650/1.1)/2, w:1200/1.1, h:650/1.1, image: createImage('./images/network/web/web1.png'), name:'web', isShow:true, isEnlarge:false, multiple:1}),
-    new Shared({x:canvas.width/2 - (1200/1.1)/2 + 25, y:canvas.height/2 - (418/8)/2 + 20, w:418/8, h:418/8, image: createImage('./images/network/left.png'), isEnlarge:true, multiple:1, name:'left', isShow:true ,}),
-    new Shared({x:canvas.width/2 - (1200/1.1)/2 + 1200/1.1 - 25 - (418/8), y:canvas.height/2 - (418/8)/2 + 20, w:418/8, h:418/8, image: createImage('./images/network/right.png'), isEnlarge:true, multiple:1, name:'right', isShow:true ,}),
+    new Shared({x:canvas.width/2 - (1200/1.1)/2, y:canvas.height/2 - (650/1.1)/2, w:1200/1.1, h:650/1.1, image: createImage('./images/network/web/web1.png'), name:'web', isShow:false, isEnlarge:false, multiple:1}),
+    new Shared({x:canvas.width/2 - (1200/1.1)/2 + 25, y:canvas.height/2 - (418/8)/2 + 20, w:418/8, h:418/8, image: createImage('./images/network/left.png'), isEnlarge:false, multiple:1, name:'left', isShow:false ,}),
+    new Shared({x:canvas.width/2 - (1200/1.1)/2 + 1200/1.1 - 25 - (418/8), y:canvas.height/2 - (418/8)/2 + 20, w:418/8, h:418/8, image: createImage('./images/network/right.png'), isEnlarge:false, multiple:1, name:'right', isShow:false ,}),
     
-    
+    new Shared({x:1060, y:373, w:75/1.2, h:76/1.2, image: createImage('./images/network/web2btn1.png'), isTalk:true, isEnlarge:false, multiple:1, name:'web2btn1', isShow:false ,}),
+    new Shared({x:1060, y:482, w:75/1.2, h:76/1.2, image: createImage('./images/network/web2btn2.png'), isTalk:true, isEnlarge:false, multiple:1, name:'web2btn2', isShow:false ,}),
+    new Shared({x:1060, y:591, w:75/1.2, h:76/1.2, image: createImage('./images/network/web2btn3.png'), isTalk:true, isEnlarge:false, multiple:1, name:'web2btn3', isShow:false ,}),
+    new Shared({x:400, y:521, w:176/1.2, h:58/1.2, image: createImage('./images/network/web3btn.png'), isTalk:true, isEnlarge:false, multiple:1, name:'web3btn', isShow:false ,}),
+    new Shared({x:660, y:501, w:281/1.2, h:89/1.2, image: createImage('./images/network/web4btn.png'), isTalk:true, isEnlarge:false, multiple:1, name:'web4btn', isShow:false ,}),
+    new Shared({x:234, y:455, w:120/1.2, h:53/1.2, image: createImage('./images/network/web5btn.png'), isTalk:true, isEnlarge:false, multiple:1, name:'web5btn', isShow:false ,}),
+    new Shared({x:885, y:370, w:251/1, h:76/1, image: createImage('./images/network/web6btn.png'), isTalk:true, isEnlarge:false, multiple:1, name:'web6btn', isShow:false ,}),
+    new Shared({x:canvas.width/2 - (145/1.2)/2, y:600, w:145/1.2, h:52/1.2, image: createImage('./images/network/goback.png'), isTalk:true, isEnlarge:false, multiple:1, name:'goback', isShow:false ,}),
+
     new Shared({x:canvas.width/2 - (112/2)/2 + 300, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
+
+    new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
 
 ]
 const buttons = {
@@ -337,7 +347,7 @@ openAnim = setInterval(()=>{
         busAudioStart = false
         busAudio.pause()
         busAudio.currentTime = 0
-        // playBgm()
+        playBgm()
     }
     if(scrollOffset > -1500){
         busRun = true
@@ -470,9 +480,9 @@ function animate(){
         c.fillRect(0,0,canvas.width, canvas.height)
         network.draw()
         buttons.close.draw()
-        networks.forEach(network=>{
-            if(network.show){
-                network.draw()
+        networks.forEach(net=>{
+            if(net.show){
+                net.draw()
             }
         })
     }
