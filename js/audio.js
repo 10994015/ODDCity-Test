@@ -10,4 +10,9 @@ let bgmAudio = new Audio('./vedios/bgm.mp3')
 let audioInCoolRoom = new Audio('./vedios/inCoolRoom.mp3')
 let audioWhistle = new Audio('./vedios/whistle.mp3')
 
+let wall1 = new Audio('./vedios/wall1.mp3')
+let wall2 = new Audio('./vedios/wall2.mp3')
+
+let knock = new Audio('./vedios/knock.mp3')
+
 let busAudioStart = true

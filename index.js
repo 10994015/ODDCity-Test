@@ -19,6 +19,9 @@ const CG = {
     network:{
         isPeace:true
     },
+    noisy:{
+        isPeace:true
+    },
 }
 //好:1 壞:0
 const getCG = {
@@ -26,6 +29,7 @@ const getCG = {
     occupy:[],
     hoard:[],
     network:[],
+    noisy:[],
 }
 let occupyInteractiveBtn = false
 
@@ -53,6 +57,7 @@ const interactions = [
     new Interaction({x:3750, y:450, w:60, h:60, name:'occupy', image: createImage('./images/buttons/in2f.png'), multiple:1.05, isShow:false, }),
     new Interaction({x:4170, y:500, w:455, h:225, name:'hoard', isShow:false}),
     new Interaction({x:4170, y:200, w:455, h:225, name:'network', isShow:false}),
+    new Interaction({x:4895, y:200, w:455, h:225, name:'noisy', isShow:false}),
 ]
 const talks = [
     new Talk({x:3780 -3318/15, y:350, w:3318/15, h:1604/15, name:'occupy', image: createImage('./images/talks/enter2f_.png'),isShow:false, direction:1650}),
@@ -62,16 +67,16 @@ const dynamics = [
 ]        
 const bus = new Bus({x:200, y:461, w:1024, h:825/2.7, image:createImage('./images/bus3.png')})
 const cool = new Room({image:createImage('./images/cool.png')});
+const occupy = new Room({image:createImage('./images/occupy.png')});
+const hoard = new Room({image:createImage('./images/hoard.png')})
+const network = new Room({image:createImage('./images/network.png')})
+const noisy = new Room({image:createImage('./images/noisy.png')})
 
 let playerTalkX = canvas.width-(canvas.width-canvas.height*0.8*1.844)/2
 let playerTalkXY= canvas.height-(canvas.height-canvas.height*0.8)/2
 let mesterTalkX = (canvas.width-canvas.height*0.8*1.844)/2 + 100
 let mesterTalkY = 355
-//occupy
-const occupy = new Room({image:createImage('./images/occupy.png')});
-//hoard
-const hoard = new Room({image:createImage('./images/hoard.png')})
-const network = new Room({image:createImage('./images/network.png')})
+
 let startNav = true;
 let getOff = false;
 const starts = [
@@ -286,6 +291,68 @@ const networks = [
     new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
 
 ]
+const noisys = [
+    new Shared({x:440, y:127, w:275/2.9, h:104/2.9, image: createImage('./images/noisy/wall1.png'), name:'wall1', multiple:1, isEnlarge:false}),
+    new Shared({x:543, y:230, w:275/2.9, h:104/2.9, image: createImage('./images/noisy/wall2.png'), name:'wall2', multiple:1, isEnlarge:false}),
+    new Shared({x:595, y:178, w:275/2.9, h:104/2.9, image: createImage('./images/noisy/wall3.png'), name:'wall3', multiple:1, isEnlarge:false}),
+    new Shared({x:750, y:127, w:275/2.9, h:104/2.9, image: createImage('./images/noisy/wall4.png'), name:'wall4', multiple:1, isEnlarge:false}),
+    new Shared({x:750, y:230, w:275/2.9, h:104/2.9, image: createImage('./images/noisy/wall5.png'), name:'wall5', multiple:1, isEnlarge:false}),
+    new Shared({x:1062, y:127, w:275/2.89, h:104/2.89, image: createImage('./images/noisy/wall6.png'), name:'wall6', multiple:1, isEnlarge:false}),
+    new Shared({x:1111, y:178, w:275/2.89, h:104/2.89, image: createImage('./images/noisy/wall7.png'), name:'wall7', multiple:1, isEnlarge:false}),
+
+    new Shared({x:450, y:127 + 104/2.9 +10, w:1882/4, h:518/4, image: createImage('./images/noisy/talk/wall1.png'), name:'walltalk1', multiple:1, isEnlarge:false, isShow:false}),
+    new Shared({x:740, y:127 + 104/2.9 +10 + 518/4/2 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'walltalk1chk', multiple:1.02, isEnlarge:false, isShow:false}),
+    new Shared({x:820, y:127 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'walltalk1cancel', multiple:1.02, isEnlarge:false, isShow:false}),
+
+    new Shared({x:553, y:230 + 104/2.9 +10, w:1882/4, h:518/4, image: createImage('./images/noisy/talk/wall1.png'), name:'walltalk2', multiple:1, isEnlarge:false, isShow:false}),
+    new Shared({x:843, y:230 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'walltalk2chk', multiple:1.02, isEnlarge:false, isShow:false}),
+    new Shared({x:923, y:230 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'walltalk2cancel', multiple:1.02, isEnlarge:false, isShow:false}),
+
+    new Shared({x:605, y:178 + 104/2.9 +10, w:1882/4, h:518/4, image: createImage('./images/noisy/talk/wall1.png'), name:'walltalk3', multiple:1, isEnlarge:false, isShow:false}),
+    new Shared({x:895, y:178 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'walltalk3chk', multiple:1.02, isEnlarge:false, isShow:false}),
+    new Shared({x:975, y:178 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'walltalk3cancel', multiple:1.02, isEnlarge:false, isShow:false}),
+
+    new Shared({x:760, y:127 + 104/2.9 +10, w:1882/4, h:518/4, image: createImage('./images/noisy/talk/wall1.png'), name:'walltalk4', multiple:1, isEnlarge:false, isShow:false}),
+    new Shared({x:1050, y:127 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'walltalk4chk', multiple:1.02, isEnlarge:false, isShow:false}),
+    new Shared({x:1130, y:127 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'walltalk4cancel', multiple:1.02, isEnlarge:false, isShow:false}),
+
+    new Shared({x:760, y:230 + 104/2.9 +10, w:1882/4, h:518/4, image: createImage('./images/noisy/talk/wall1.png'), name:'walltalk5', multiple:1, isEnlarge:false, isShow:false}),
+    new Shared({x:1050, y:230 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'walltalk5chk', multiple:1.02, isEnlarge:false, isShow:false}),
+    new Shared({x:1130, y:230 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'walltalk5cancel', multiple:1.02, isEnlarge:false, isShow:false}),
+
+    new Shared({x:1062 - 1882/4 + 80, y:127 + 104/2.9 +10, w:1882/4, h:518/4, image: createImage('./images/noisy/talk/wall2.png'), name:'walltalk6', multiple:1, isEnlarge:false, isShow:false}),
+    new Shared({x:1062 - 1882/4 + 80 + 290, y:127 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'walltalk6chk', multiple:1.02, isEnlarge:false, isShow:false}),
+    new Shared({x:1062 - 1882/4 + 80 + 370, y:127 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'walltalk6cancel', multiple:1.02, isEnlarge:false, isShow:false}),
+
+    new Shared({x:1111 - 1882/4 + 80, y:178 + 104/2.9 +10, w:1882/4, h:518/4, image: createImage('./images/noisy/talk/wall2.png'), name:'walltalk7', multiple:1, isEnlarge:false, isShow:false}),
+    new Shared({x:1111 - 1882/4 + 80 + 290, y:178 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'walltalk7chk', multiple:1.02, isEnlarge:false, isShow:false}),
+    new Shared({x:1111 - 1882/4 + 80 + 370, y:178 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'walltalk7cancel', multiple:1.02, isEnlarge:false, isShow:false}),
+
+    new Shared({x:1110, y:220, w:518, h:432, image: createImage('./images/noisy/smallPeople.png'), name:"smallPeople", isEnlarge:true, isShow:true, multiple:1, frmaeNum:3}),
+    new Shared({x:0, y:300, w:306/1.1, h:860/1.1, image: createImage('./images/noisy/people1.png'), isPeople:true, name:'people', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/noisy/talk/1A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'1A', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/noisy/talk/1B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'1B', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/noisy/talk/3.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'3', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/noisy/talk/4A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'4A', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/noisy/talk/4B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'4B', isShow:false}),
+    
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'2A', isShow:false, text:"不是我弄的...我一直都很安靜，但周圍總是有咚咚咚的聲音", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'2B', isShow:false, text:"乾你啥事？這是我的房間，我愛幹嘛就幹嘛！", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'5A', isShow:false, text:"原來如此，我馬上處理！", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'5B', isShow:false, text:"所以呢？難道你要幫我處理嗎？", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'7A', isShow:false, text:"這樣我就不會被鄰居投訴了～謝謝你的發現！", isTypewriter:true }),
+    new Shared({x:mesterTalkX, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'7B', isShow:false, text:"謝謝你的雞婆~我是不會付什麼修繕費的喔。", isTypewriter:true }),
+
+    new Shared({x:canvas.width/2 - (3149/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:3149/4.5, h:484/4.5, image: createImage('./images/noisy/talk/6.png'), isTalk:true, isEnlarge:false, multiple:1, name:'6', isShow:false ,}),
+    
+    new Shared({x:canvas.width/2 - (112/2)/2 + 300, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
+
+    // new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/2.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'2', isShow:false,}),
+    new Shared({x:canvas.width/2 - (1485/4)/2 , y:canvas.height/2 - (484/4)/2  , w:1485/4, h:484/4, image: createImage('./images/noisy/talk/A.png'), isEnlarge:false, multiple:1, name:'A', isShow:false,}),
+    new Shared({x:canvas.width/2 - (1485/4)/2 , y:canvas.height/2 - (484/4)/2  , w:1485/4, h:484/4, image: createImage('./images/noisy/talk/B.png'), isEnlarge:false, multiple:1, name:'B', isShow:false,}),
+    new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
+
+]
 const buttons = {
     close: new Button({x:(canvas.width - ( canvas.height*0.8*1.844 ))/2 + canvas.height*0.8*1.844 - 10,y:(canvas.height - canvas.height *0.8)/2 - 50, w:418/9, h:418/9, image: createImage('./images/buttons/close.png'), name:"close", multiple:1.05}),
     // in2f:  new Button({x: 3750, y:450, w:60, h:60, name:'in2f', isMove:true, image: createImage('./images/buttons/in2f.png'),}),
@@ -298,6 +365,7 @@ const roomOpen = {
     occupy:false,
     hoard:false,
     network:false,
+    noisy:false,
 }
 
 const keys = {
@@ -483,6 +551,22 @@ function animate(){
         networks.forEach(net=>{
             if(net.show){
                 net.draw()
+            }
+        })
+    }
+
+    if(roomOpen.noisy && isRoomOpen){
+        c.fillStyle = 'rgba(255,255,255,.5)'
+        c.fillRect(0,0,canvas.width, canvas.height)
+        noisy.draw()
+        buttons.close.draw()
+        noisys.forEach(noisy=>{
+            if(noisy.show){
+                if(noisy.frmaeNum > 1){
+                    noisy.update()
+                }else{
+                    noisy.draw()
+                }
             }
         })
     }

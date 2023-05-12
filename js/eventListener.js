@@ -219,7 +219,25 @@ canvas.addEventListener('mousemove', (e)=>{
             }
         })
     }
-    
+    if(roomOpen.noisy && isRoomOpen){
+        noisys.some(noisy=>{
+            if(!noisy.enlarge) return
+            if(x >= noisy.position.x && x<=noisy.position.x+noisy.width && y>=noisy.position.y && y<=noisy.position.y + noisy.height){
+                noisy.width = noisy.bigWidth
+                noisy.height = noisy.bigHeight
+                if((!noisy.image.src.includes('_.png')) && noisy.talk){
+                    noisy.image.src = noisy.image.src.replace('.png', '_.png')
+                }
+                return canvas.style.cursor = "pointer"
+            }
+            noisy.width = noisy.oldWidth
+            noisy.height = noisy.oldHeight
+            canvas.style.cursor = "default"
+            if(noisy.image.src.includes('_.png')){
+                noisy.image.src = noisy.image.src.replace('_.png', '.png')
+            }
+        })
+    }
     if(isDragging && roomOpen.occupy && isRoomOpen){
         occupys[mousedownIdx].position.x = e.offsetX + differX
         occupys[mousedownIdx].position.y = e.offsetY + differY
@@ -461,7 +479,78 @@ const netObject = {
     
     end: networks.filter(net=>net.name === 'end')[0],
 }
+const noisyObject = {
+    wall1: noisys.filter(noisy=>noisy.name === 'wall1')[0],
+    wall2: noisys.filter(noisy=>noisy.name === 'wall2')[0],
+    wall3: noisys.filter(noisy=>noisy.name === 'wall3')[0],
+    wall4: noisys.filter(noisy=>noisy.name === 'wall4')[0],
+    wall5: noisys.filter(noisy=>noisy.name === 'wall5')[0],
+    wall6: noisys.filter(noisy=>noisy.name === 'wall6')[0],
+    wall7: noisys.filter(noisy=>noisy.name === 'wall7')[0],
 
+    walltalk1: noisys.filter(noisy=>noisy.name === 'walltalk1')[0],
+    walltalk2: noisys.filter(noisy=>noisy.name === 'walltalk2')[0],
+    walltalk3: noisys.filter(noisy=>noisy.name === 'walltalk3')[0],
+    walltalk4: noisys.filter(noisy=>noisy.name === 'walltalk4')[0],
+    walltalk5: noisys.filter(noisy=>noisy.name === 'walltalk5')[0],
+    walltalk6: noisys.filter(noisy=>noisy.name === 'walltalk6')[0],
+    walltalk7: noisys.filter(noisy=>noisy.name === 'walltalk7')[0],
+
+    walltalk1chk: noisys.filter(noisy=>noisy.name === 'walltalk1chk')[0],
+    walltalk2chk: noisys.filter(noisy=>noisy.name === 'walltalk2chk')[0],
+    walltalk3chk: noisys.filter(noisy=>noisy.name === 'walltalk3chk')[0],
+    walltalk4chk: noisys.filter(noisy=>noisy.name === 'walltalk4chk')[0],
+    walltalk5chk: noisys.filter(noisy=>noisy.name === 'walltalk5chk')[0],
+    walltalk6chk: noisys.filter(noisy=>noisy.name === 'walltalk6chk')[0],
+    walltalk7chk: noisys.filter(noisy=>noisy.name === 'walltalk7chk')[0],
+
+    walltalk1cancel: noisys.filter(noisy=>noisy.name === 'walltalk1cancel')[0],
+    walltalk2cancel: noisys.filter(noisy=>noisy.name === 'walltalk2cancel')[0],
+    walltalk3cancel: noisys.filter(noisy=>noisy.name === 'walltalk3cancel')[0],
+    walltalk4cancel: noisys.filter(noisy=>noisy.name === 'walltalk4cancel')[0],
+    walltalk5cancel: noisys.filter(noisy=>noisy.name === 'walltalk5cancel')[0],
+    walltalk6cancel: noisys.filter(noisy=>noisy.name === 'walltalk6cancel')[0],
+    walltalk7cancel: noisys.filter(noisy=>noisy.name === 'walltalk7cancel')[0],
+
+
+    smallPeople: noisys.filter(noisy=>noisy.name === 'smallPeople')[0],
+    people: noisys.filter(noisy=>noisy.name === 'people')[0],
+    startChk: true,
+
+    talk1A: noisys.filter(noisy=>noisy.name === '1A')[0],
+    talk1B: noisys.filter(noisy=>noisy.name === '1B')[0],
+    talk1Chk: false,
+    response2A: noisys.filter(noisy=>noisy.name === '2A')[0],
+    response2B: noisys.filter(noisy=>noisy.name === '2B')[0],
+
+    talk3: noisys.filter(noisy=>noisy.name === '3')[0],
+    talk3Chk: false,
+
+    talk4A: noisys.filter(noisy=>noisy.name === '4A')[0],
+    talk4B: noisys.filter(noisy=>noisy.name === '4B')[0],
+    talk4Chk: false,
+
+    response5A: noisys.filter(noisy=>noisy.name === '5A')[0],
+    response5B: noisys.filter(noisy=>noisy.name === '5B')[0],
+
+    talk6: noisys.filter(noisy=>noisy.name === '6')[0],
+    talk6Chk: false,
+
+    wallChk: false,
+    wallStop: false,
+    chk: noisys.filter(noisy=>noisy.name === 'chk')[0],
+
+    ans:[0,0,0,0,0,0,1],
+    idx:0,
+
+    A: noisys.filter(noisy=>noisy.name === 'A')[0],
+    B: noisys.filter(noisy=>noisy.name === 'B')[0],
+
+    response7A: noisys.filter(noisy=>noisy.name === '7A')[0],
+    response7B: noisys.filter(noisy=>noisy.name === '7B')[0],
+    
+    end: noisys.filter(noisy=>noisy.name === 'end')[0],
+}
 
 canvas.addEventListener('click', (e)=>{
     if(!isStart) return
@@ -492,6 +581,8 @@ canvas.addEventListener('click', (e)=>{
                 initHoardRoom()
             }else if(roomOpen.network){
                 initNetworkRoom()
+            }else if(roomOpen.noisy){
+                initNoisyRoom()
             }
             if(roomOpen.cool){
                 clickVedioPlay('inCoolRoom')
@@ -755,8 +846,31 @@ canvas.addEventListener('click', (e)=>{
                     coolObject.talkPeople.image.src = './images/cool/people3.png'
                     coolObject.response11B.show = false
 
-                    coolObject.cup.enlarge = true
-                    coolObject.cupChk = true
+                    if(CG.cool.isPeace){
+                        coolObject.talkPeople.show = false
+                        coolObject.cup.enlarge = true
+                        coolObject.cupChk = true
+                    }else{
+                        coolObject.end.image.src = coolObject.end.image.src.replace('good', 'bad')
+                        getCG.cool.push(0)
+                        stopBgm()
+                        audioBadend.play()
+                        coolObject.people.show = true
+                        coolObject.talkPeople.show = false
+                        coolObject.end.show = true
+                        if(isTeaching){
+                            coolObject.talk005.show = true
+                        }
+
+                        globalClick = true
+                        setTimeout(()=>{
+                            if(!isRoomOpen) return
+                            coolObject.talk005Chk = true
+                            
+                        },100)
+                    }
+
+                    
                 }, coolObject.response11B.text.split('').length*10 + 2500)
             }
 
@@ -2029,6 +2143,686 @@ canvas.addEventListener('click', (e)=>{
             }
         }
     }
+
+    if(roomOpen.noisy && isRoomOpen){
+        if(noisyObject.smallPeople.show && noisyObject.startChk){
+            if(!noisyObject.startChk) return
+            if(x>=noisyObject.smallPeople.position.x && x<=noisyObject.smallPeople.position.x + noisyObject.smallPeople.width && y>=noisyObject.smallPeople.position.y && y<=noisyObject.smallPeople.position.y+noisyObject.smallPeople.height){
+                clickVedioPlay('btn')
+                noisyObject.startChk = false
+                noisyObject.smallPeople.show = false
+                noisyObject.smallPeople.enlarge = false
+
+                noisyObject.people.show = true
+                stopKnock()
+                setTimeout(()=>{
+                    if(!isRoomOpen) return
+                    noisyObject.talk1Chk = true
+                    noisyObject.talk1A.show = true
+                    noisyObject.talk1A.enlarge = true
+                    noisyObject.talk1B.show = true
+                    noisyObject.talk1B.enlarge = true
+                }, 10)
+            }
+        }
+        if(noisyObject.talk1A.show && noisyObject.talk1B.show && noisyObject.talk1Chk){
+            if(!noisyObject.talk1Chk) return
+            if(x>=noisyObject.talk1A.position.x && x<=noisyObject.talk1A.position.x + noisyObject.talk1A.width && y>=noisyObject.talk1A.position.y && y<=noisyObject.talk1A.position.y+noisyObject.talk1A.height){
+                clickVedioPlay('talk')
+                noisyObject.talk1Chk = false
+                noisyObject.talk1A.enlarge = false
+                noisyObject.talk1B.enlarge = false
+                noisyObject.response2A.show = true
+
+                setTimeout(()=>{
+                    if(!isRoomOpen) return
+                    noisyObject.talk1A.show = false
+                    noisyObject.talk1B.show = false
+                    noisyObject.talk3.show = true
+                    noisyObject.talk3.enlarge = true
+                    noisyObject.talk3Chk = true
+                }, noisyObject.response2A.text.split('').length*10 + 1500)
+            }
+            if(x>=noisyObject.talk1B.position.x && x<=noisyObject.talk1B.position.x + noisyObject.talk1B.width && y>=noisyObject.talk1B.position.y && y<=noisyObject.talk1B.position.y+noisyObject.talk1B.height){
+                clickVedioPlay('talk')
+                noisyObject.talk1Chk = false
+                noisyObject.talk1A.enlarge = false
+                noisyObject.talk1B.enlarge = false
+                noisyObject.response2B.show = true
+                CG.noisy.isPeace = false
+                setTimeout(()=>{
+                    if(!isRoomOpen) return
+                    noisyObject.talk1A.show = false
+                    noisyObject.talk1B.show = false
+                    noisyObject.talk3.show = true
+                    noisyObject.talk3.enlarge = true
+                    noisyObject.talk3Chk = true
+                }, noisyObject.response2B.text.split('').length*10 + 1500)
+            }
+        }
+        if(noisyObject.talk3.show && noisyObject.talk3Chk){
+            if(!noisyObject.talk3Chk) return
+            if(x>=noisyObject.talk3.position.x && x<=noisyObject.talk3.position.x + noisyObject.talk3.width && y>=noisyObject.talk3.position.y && y<=noisyObject.talk3.position.y+noisyObject.talk3.height){
+                clickVedioPlay('talk')
+                noisyObject.talk3Chk = false
+
+                noisyObject.response2A.show = false
+                noisyObject.response2B.show = false
+                noisyObject.talk3.enlarge = false
+
+                setTimeout(()=>{
+                    if(!isRoomOpen) return
+                    noisyObject.talk3.show = false
+                    noisyObject.talk4A.show = true
+                    noisyObject.talk4A.enlarge = true
+                    noisyObject.talk4B.show = true
+                    noisyObject.talk4B.enlarge = true
+                    noisyObject.talk4Chk = true
+                }, 100)
+            }
+
+        }
+        if(noisyObject.talk4A.show && noisyObject.talk4B.show &&  noisyObject.talk4Chk){
+            if(!noisyObject.talk4Chk) return
+            if(x>=noisyObject.talk4A.position.x && x<=noisyObject.talk4A.position.x + noisyObject.talk4A.width && y>=noisyObject.talk4A.position.y && y<=noisyObject.talk4A.position.y+noisyObject.talk4A.height){
+                clickVedioPlay('talk')
+                noisyObject.talk4Chk = false
+                noisyObject.response2A.show = false
+                noisyObject.response2B.show = false
+                noisyObject.talk4A.enlarge = false
+                noisyObject.talk4B.enlarge = false
+                noisyObject.response5A.show = true
+
+                setTimeout(()=>{
+                    if(!isRoomOpen) return
+                    noisyObject.talk4A.show = false
+                    noisyObject.talk4B.show = false
+                    noisyObject.response5A.show = false
+                    noisyObject.response5B.show = false
+                    //互動提示
+                    noisyObject.talk6.show = true
+                    noisyObject.talk6Chk = true
+                    noisyObject.chk.show = true
+                    noisyObject.chk.enlarge = true
+                }, noisyObject.response5A.text.split('').length*10 + 1500)
+            }
+            if(x>=noisyObject.talk4B.position.x && x<=noisyObject.talk4B.position.x + noisyObject.talk4B.width && y>=noisyObject.talk4B.position.y && y<=noisyObject.talk4B.position.y+noisyObject.talk4B.height){
+                clickVedioPlay('talk')
+                noisyObject.talk4Chk = false
+                noisyObject.response2A.show = false
+                noisyObject.response2B.show = false
+                noisyObject.talk4A.enlarge = false
+                noisyObject.talk4B.enlarge = false
+                noisyObject.response5B.show = true
+                CG.noisy.isPeace = false
+                setTimeout(()=>{
+                    if(!isRoomOpen) return
+                    noisyObject.talk4A.show = false
+                    noisyObject.talk4B.show = false
+                    noisyObject.response5A.show = false
+                    noisyObject.response5B.show = false
+                    //互動提示
+                    noisyObject.talk6.show = true
+                    noisyObject.talk6Chk = true
+                    noisyObject.chk.show = true
+                    noisyObject.chk.enlarge = true
+                }, noisyObject.response5B.text.split('').length*10 + 1500)
+            }
+        }
+        if(noisyObject.talk6.show && noisyObject.talk6Chk){
+            if(!noisyObject.talk6Chk) return
+            if(x>=noisyObject.chk.position.x && x<=noisyObject.chk.position.x + noisyObject.chk.width && y>=noisyObject.chk.position.y && y<=noisyObject.chk.position.y+noisyObject.chk.height){
+                clickVedioPlay('btn')
+                noisyObject.talk6Chk = false
+                noisyObject.talk6.show = false
+                noisyObject.chk.show = false
+                noisyObject.chk.enlarge = false
+
+                setTimeout(()=>{
+                    noisyObject.wallChk = true
+                    noisyObject.people.show = false
+                    noisyObject.wall1.enlarge = true
+                    noisyObject.wall2.enlarge = true
+                    noisyObject.wall3.enlarge = true
+                    noisyObject.wall4.enlarge = true
+                    noisyObject.wall5.enlarge = true
+                    noisyObject.wall6.enlarge = true
+                    noisyObject.wall7.enlarge = true
+                }, 100)
+            }
+        }
+        const initWall = ()=>{
+            noisyObject.wallStop = true
+            noisyObject.wall1.enlarge = false
+            noisyObject.wall2.enlarge = false
+            noisyObject.wall3.enlarge = false
+            noisyObject.wall4.enlarge = false
+            noisyObject.wall5.enlarge = false
+            noisyObject.wall6.enlarge = false
+            noisyObject.wall7.enlarge = false
+        }
+        const cancelWall = ()=>{
+            clickVedioPlay('btn')
+            noisyObject.wallStop = false
+            noisyObject.wall1.enlarge = true
+            noisyObject.wall2.enlarge = true
+            noisyObject.wall3.enlarge = true
+            noisyObject.wall4.enlarge = true
+            noisyObject.wall5.enlarge = true
+            noisyObject.wall6.enlarge = true
+            noisyObject.wall7.enlarge = true
+        }
+        const chkWall = ()=>{
+            noisyObject.wallStop = false
+            noisyObject.wall1.enlarge = true
+            noisyObject.wall2.enlarge = true
+            noisyObject.wall3.enlarge = true
+            noisyObject.wall4.enlarge = true
+            noisyObject.wall5.enlarge = true
+            noisyObject.wall6.enlarge = true
+            noisyObject.wall7.enlarge = true
+        }
+        if(noisyObject.wallChk){
+            if(noisyObject.wall1.enlarge){
+                if(x>=noisyObject.wall1.position.x && x<=noisyObject.wall1.position.x + noisyObject.wall1.width && y>=noisyObject.wall1.position.y && y<=noisyObject.wall1.position.y+noisyObject.wall1.height){
+                    initWall()
+                    if(noisyObject.ans[0]==0){
+                        wall1.play()
+                    }else{
+                        wall2.play()
+                    }
+                    noisyObject.walltalk1.show = true
+                    noisyObject.walltalk1chk.show = true
+                    noisyObject.walltalk1chk.enlarge = true
+                    noisyObject.walltalk1cancel.show = true
+                    noisyObject.walltalk1cancel.enlarge = true
+                }
+            }
+            if(noisyObject.wall2.enlarge){
+                if(x>=noisyObject.wall2.position.x && x<=noisyObject.wall2.position.x + noisyObject.wall2.width && y>=noisyObject.wall2.position.y && y<=noisyObject.wall2.position.y+noisyObject.wall2.height){
+                    initWall()
+                    if(noisyObject.ans[1]==0){
+                        wall1.play()
+                    }else{
+                        wall2.play()
+                    }
+                    noisyObject.walltalk2.show = true
+                    noisyObject.walltalk2chk.show = true
+                    noisyObject.walltalk2chk.enlarge = true
+                    noisyObject.walltalk2cancel.show = true
+                    noisyObject.walltalk2cancel.enlarge = true
+                }
+            }
+            if(noisyObject.wall3.enlarge){
+                if(x>=noisyObject.wall3.position.x && x<=noisyObject.wall3.position.x + noisyObject.wall3.width && y>=noisyObject.wall3.position.y && y<=noisyObject.wall3.position.y+noisyObject.wall3.height){
+                    initWall()
+                    if(noisyObject.ans[2]==0){
+                        wall1.play()
+                    }else{
+                        wall2.play()
+                    }
+                    noisyObject.walltalk3.show = true
+                    noisyObject.walltalk3chk.show = true
+                    noisyObject.walltalk3chk.enlarge = true
+                    noisyObject.walltalk3cancel.show = true
+                    noisyObject.walltalk3cancel.enlarge = true
+                }
+            }
+            if(noisyObject.wall4.enlarge){
+                if(x>=noisyObject.wall4.position.x && x<=noisyObject.wall4.position.x + noisyObject.wall4.width && y>=noisyObject.wall4.position.y && y<=noisyObject.wall4.position.y+noisyObject.wall4.height){
+                    initWall()
+                    if(noisyObject.ans[3]==0){
+                        wall1.play()
+                    }else{
+                        wall2.play()
+                    }
+                    noisyObject.walltalk4.show = true
+                    noisyObject.walltalk4chk.show = true
+                    noisyObject.walltalk4chk.enlarge = true
+                    noisyObject.walltalk4cancel.show = true
+                    noisyObject.walltalk4cancel.enlarge = true
+                }
+            }
+            if(noisyObject.wall5.enlarge){
+                if(x>=noisyObject.wall5.position.x && x<=noisyObject.wall5.position.x + noisyObject.wall5.width && y>=noisyObject.wall5.position.y && y<=noisyObject.wall5.position.y+noisyObject.wall5.height){
+                    initWall()
+                    if(noisyObject.ans[4]==0){
+                        wall1.play()
+                    }else{
+                        wall2.play()
+                    }
+                    noisyObject.walltalk5.show = true
+                    noisyObject.walltalk5chk.show = true
+                    noisyObject.walltalk5chk.enlarge = true
+                    noisyObject.walltalk5cancel.show = true
+                    noisyObject.walltalk5cancel.enlarge = true
+                }
+            }
+            if(noisyObject.wall6.enlarge){
+                if(x>=noisyObject.wall6.position.x && x<=noisyObject.wall6.position.x + noisyObject.wall6.width && y>=noisyObject.wall6.position.y && y<=noisyObject.wall6.position.y+noisyObject.wall6.height){
+                    initWall()
+                    if(noisyObject.ans[5]==0){
+                        wall1.play()
+                    }else{
+                        wall2.play()
+                    }
+                    noisyObject.walltalk6.show = true
+                    noisyObject.walltalk6chk.show = true
+                    noisyObject.walltalk6chk.enlarge = true
+                    noisyObject.walltalk6cancel.show = true
+                    noisyObject.walltalk6cancel.enlarge = true
+                }
+            }
+            if(noisyObject.wall7.enlarge){
+                if(x>=noisyObject.wall7.position.x && x<=noisyObject.wall7.position.x + noisyObject.wall7.width && y>=noisyObject.wall7.position.y && y<=noisyObject.wall7.position.y+noisyObject.wall7.height){
+                    initWall()
+                    if(noisyObject.ans[6]==0){
+                        wall1.play()
+                    }else{
+                        wall2.play()
+                    }
+                    noisyObject.walltalk7.show = true
+                    noisyObject.walltalk7chk.show = true
+                    noisyObject.walltalk7chk.enlarge = true
+                    noisyObject.walltalk7cancel.show = true
+                    noisyObject.walltalk7cancel.enlarge = true
+                }
+            }
+        }
+        if(noisyObject.wallStop){
+            if(noisyObject.walltalk1.show){
+                if(x>=noisyObject.walltalk1cancel.position.x && x<=noisyObject.walltalk1cancel.position.x + noisyObject.walltalk1cancel.width && y>=noisyObject.walltalk1cancel.position.y && y<=noisyObject.walltalk1cancel.position.y+noisyObject.walltalk1cancel.height){
+                    cancelWall()
+                    noisyObject.walltalk1.show = false
+                    noisyObject.walltalk1chk.show = false
+                    noisyObject.walltalk1chk.enlarge = false
+                    noisyObject.walltalk1cancel.show = false
+                    noisyObject.walltalk1cancel.enlarge = false
+                }
+                if(x>=noisyObject.walltalk1chk.position.x && x<=noisyObject.walltalk1chk.position.x + noisyObject.walltalk1chk.width && y>=noisyObject.walltalk1chk.position.y && y<=noisyObject.walltalk1chk.position.y+noisyObject.walltalk1chk.height){
+                    noisyObject.walltalk1.show = false
+                    noisyObject.walltalk1chk.show = false
+                    noisyObject.walltalk1chk.enlarge = false
+                    noisyObject.walltalk1cancel.show = false
+                    noisyObject.walltalk1cancel.enlarge = false
+                    if(noisyObject.idx != 1){
+                        noisyObject.A.show = true
+                        setTimeout(()=>{
+                            noisyObject.A.show = false
+                            noisyObject.B.show = false
+                            chkWall()
+                        }, 1000)
+                    }else{
+                        noisyObject.B.show = true
+                        setTimeout(()=>{
+                            noisyObject.A.show = false
+                            noisyObject.B.show = false
+                            chkWall()
+                            noisyObject.people.show = true
+                            if(CG.noisy.isPeace){
+                                noisyObject.response7A.show = true
+                            }else{
+                                noisyObject.response7B.show = true
+                                
+                            }
+                            setTimeout(()=>{
+                                noisyObject.response7A.show = false
+                                noisyObject.response7B.show = false
+                                noisyObject.people.show = false
+                                if(!CG.noisy.isPeace){
+                                    if(noisyObject.end.image.src.includes('good')){
+                                        noisyObject.end.image.src = noisyObject.end.image.src.replace('good', 'bad')
+                                    }
+                                    audioBadend.play()
+                                    getCG.noisy.push(0)
+                                }else{
+                                    audioGoodend.play()
+                                    getCG.noisy.push(1)
+                                }
+                                noisyObject.end.show = true
+                            }, 1500)
+
+                        }, 1000)
+                    }
+                }
+            }
+            if(noisyObject.walltalk2.show){
+                if(x>=noisyObject.walltalk2cancel.position.x && x<=noisyObject.walltalk2cancel.position.x + noisyObject.walltalk2cancel.width && y>=noisyObject.walltalk2cancel.position.y && y<=noisyObject.walltalk2cancel.position.y+noisyObject.walltalk2cancel.height){
+                    cancelWall()
+                    noisyObject.walltalk2.show = false
+                    noisyObject.walltalk2chk.show = false
+                    noisyObject.walltalk2chk.enlarge = false
+                    noisyObject.walltalk2cancel.show = false
+                    noisyObject.walltalk2cancel.enlarge = false
+                }
+                if(x>=noisyObject.walltalk2chk.position.x && x<=noisyObject.walltalk2chk.position.x + noisyObject.walltalk2chk.width && y>=noisyObject.walltalk2chk.position.y && y<=noisyObject.walltalk2chk.position.y+noisyObject.walltalk2chk.height){
+                    noisyObject.walltalk2.show = false
+                    noisyObject.walltalk2chk.show = false
+                    noisyObject.walltalk2chk.enlarge = false
+                    noisyObject.walltalk2cancel.show = false
+                    noisyObject.walltalk2cancel.enlarge = false
+                    if(noisyObject.idx != 2){
+                        noisyObject.A.show = true
+                        setTimeout(()=>{
+                            noisyObject.A.show = false
+                            noisyObject.B.show = false
+                            chkWall()
+                        }, 1000)
+                    }else{
+                        noisyObject.B.show = true
+                        setTimeout(()=>{
+                            noisyObject.A.show = false
+                            noisyObject.B.show = false
+                            chkWall()
+                            noisyObject.people.show = true
+                            if(CG.noisy.isPeace){
+                                noisyObject.response7A.show = true
+                            }else{
+                                noisyObject.response7B.show = true
+                                
+                            }
+                            setTimeout(()=>{
+                                noisyObject.response7A.show = false
+                                noisyObject.response7B.show = false
+                                noisyObject.people.show = false
+                                if(!CG.noisy.isPeace){
+                                    if(noisyObject.end.image.src.includes('good')){
+                                        noisyObject.end.image.src = noisyObject.end.image.src.replace('good', 'bad')
+                                    }
+                                    audioBadend.play()
+                                    getCG.noisy.push(0)
+                                }else{
+                                    audioGoodend.play()
+                                    getCG.noisy.push(1)
+                                }
+                                noisyObject.end.show = true
+                            }, 1500)
+
+                        }, 1000)
+                    }
+                }
+            }
+            if(noisyObject.walltalk3.show){
+                if(x>=noisyObject.walltalk3cancel.position.x && x<=noisyObject.walltalk3cancel.position.x + noisyObject.walltalk3cancel.width && y>=noisyObject.walltalk3cancel.position.y && y<=noisyObject.walltalk3cancel.position.y+noisyObject.walltalk3cancel.height){
+                    cancelWall()
+                    noisyObject.walltalk3.show = false
+                    noisyObject.walltalk3chk.show = false
+                    noisyObject.walltalk3chk.enlarge = false
+                    noisyObject.walltalk3cancel.show = false
+                    noisyObject.walltalk3cancel.enlarge = false
+                }
+                if(x>=noisyObject.walltalk3chk.position.x && x<=noisyObject.walltalk3chk.position.x + noisyObject.walltalk3chk.width && y>=noisyObject.walltalk3chk.position.y && y<=noisyObject.walltalk3chk.position.y+noisyObject.walltalk3chk.height){
+                    noisyObject.walltalk3.show = false
+                    noisyObject.walltalk3chk.show = false
+                    noisyObject.walltalk3chk.enlarge = false
+                    noisyObject.walltalk3cancel.show = false
+                    noisyObject.walltalk3cancel.enlarge = false
+                    if(noisyObject.idx != 3){
+                        noisyObject.A.show = true
+                        setTimeout(()=>{
+                            noisyObject.A.show = false
+                            noisyObject.B.show = false
+                            chkWall()
+                        }, 1000)
+                    }else{
+                        noisyObject.B.show = true
+                        setTimeout(()=>{
+                            noisyObject.A.show = false
+                            noisyObject.B.show = false
+                            chkWall()
+                            noisyObject.people.show = true
+                            if(CG.noisy.isPeace){
+                                noisyObject.response7A.show = true
+                            }else{
+                                noisyObject.response7B.show = true
+                                
+                            }
+                            setTimeout(()=>{
+                                noisyObject.response7A.show = false
+                                noisyObject.response7B.show = false
+                                noisyObject.people.show = false
+                                if(!CG.noisy.isPeace){
+                                    if(noisyObject.end.image.src.includes('good')){
+                                        noisyObject.end.image.src = noisyObject.end.image.src.replace('good', 'bad')
+                                    }
+                                    audioBadend.play()
+                                    getCG.noisy.push(0)
+                                }else{
+                                    audioGoodend.play()
+                                    getCG.noisy.push(1)
+                                }
+                                noisyObject.end.show = true
+                            }, 1500)
+
+                        }, 1000)
+                    }
+                }
+            }
+            if(noisyObject.walltalk4.show){
+                if(x>=noisyObject.walltalk4cancel.position.x && x<=noisyObject.walltalk4cancel.position.x + noisyObject.walltalk4cancel.width && y>=noisyObject.walltalk4cancel.position.y && y<=noisyObject.walltalk4cancel.position.y+noisyObject.walltalk4cancel.height){
+                    cancelWall()
+                    noisyObject.walltalk4.show = false
+                    noisyObject.walltalk4chk.show = false
+                    noisyObject.walltalk4chk.enlarge = false
+                    noisyObject.walltalk4cancel.show = false
+                    noisyObject.walltalk4cancel.enlarge = false
+                }
+                if(x>=noisyObject.walltalk4chk.position.x && x<=noisyObject.walltalk4chk.position.x + noisyObject.walltalk4chk.width && y>=noisyObject.walltalk4chk.position.y && y<=noisyObject.walltalk4chk.position.y+noisyObject.walltalk4chk.height){
+                    noisyObject.walltalk4.show = false
+                    noisyObject.walltalk4chk.show = false
+                    noisyObject.walltalk4chk.enlarge = false
+                    noisyObject.walltalk4cancel.show = false
+                    noisyObject.walltalk4cancel.enlarge = false
+                    if(noisyObject.idx != 4){
+                        noisyObject.A.show = true
+                        setTimeout(()=>{
+                            noisyObject.A.show = false
+                            noisyObject.B.show = false
+                            chkWall()
+                        }, 1000)
+                    }else{
+                        noisyObject.B.show = true
+                        setTimeout(()=>{
+                            noisyObject.A.show = false
+                            noisyObject.B.show = false
+                            chkWall()
+                            noisyObject.people.show = true
+                            if(CG.noisy.isPeace){
+                                noisyObject.response7A.show = true
+                            }else{
+                                noisyObject.response7B.show = true
+                                
+                            }
+                            setTimeout(()=>{
+                                noisyObject.response7A.show = false
+                                noisyObject.response7B.show = false
+                                noisyObject.people.show = false
+                                if(!CG.noisy.isPeace){
+                                    if(noisyObject.end.image.src.includes('good')){
+                                        noisyObject.end.image.src = noisyObject.end.image.src.replace('good', 'bad')
+                                    }
+                                    audioBadend.play()
+                                    getCG.noisy.push(0)
+                                }else{
+                                    audioGoodend.play()
+                                    getCG.noisy.push(1)
+                                }
+                                noisyObject.end.show = true
+                            }, 1500)
+
+                        }, 1000)
+                    }
+                }
+            }
+            if(noisyObject.walltalk5.show){
+                if(x>=noisyObject.walltalk5cancel.position.x && x<=noisyObject.walltalk5cancel.position.x + noisyObject.walltalk5cancel.width && y>=noisyObject.walltalk5cancel.position.y && y<=noisyObject.walltalk5cancel.position.y+noisyObject.walltalk5cancel.height){
+                    cancelWall()
+                    noisyObject.walltalk5.show = false
+                    noisyObject.walltalk5chk.show = false
+                    noisyObject.walltalk5chk.enlarge = false
+                    noisyObject.walltalk5cancel.show = false
+                    noisyObject.walltalk5cancel.enlarge = false
+                }
+                if(x>=noisyObject.walltalk5chk.position.x && x<=noisyObject.walltalk5chk.position.x + noisyObject.walltalk5chk.width && y>=noisyObject.walltalk5chk.position.y && y<=noisyObject.walltalk5chk.position.y+noisyObject.walltalk5chk.height){
+                    noisyObject.walltalk5.show = false
+                    noisyObject.walltalk5chk.show = false
+                    noisyObject.walltalk5chk.enlarge = false
+                    noisyObject.walltalk5cancel.show = false
+                    noisyObject.walltalk5cancel.enlarge = false
+                    if(noisyObject.idx != 5){
+                        noisyObject.A.show = true
+                        setTimeout(()=>{
+                            noisyObject.A.show = false
+                            noisyObject.B.show = false
+                            chkWall()
+                        }, 1000)
+                    }else{
+                        noisyObject.B.show = true
+                        setTimeout(()=>{
+                            noisyObject.A.show = false
+                            noisyObject.B.show = false
+                            chkWall()
+                            noisyObject.people.show = true
+                            if(CG.noisy.isPeace){
+                                noisyObject.response7A.show = true
+                            }else{
+                                noisyObject.response7B.show = true
+                                
+                            }
+                            setTimeout(()=>{
+                                noisyObject.response7A.show = false
+                                noisyObject.response7B.show = false
+                                noisyObject.people.show = false
+                                if(!CG.noisy.isPeace){
+                                    if(noisyObject.end.image.src.includes('good')){
+                                        noisyObject.end.image.src = noisyObject.end.image.src.replace('good', 'bad')
+                                    }
+                                    audioBadend.play()
+                                    getCG.noisy.push(0)
+                                }else{
+                                    audioGoodend.play()
+                                    getCG.noisy.push(1)
+                                }
+                                noisyObject.end.show = true
+                            }, 1500)
+
+                        }, 1000)
+                    }
+                }
+            }
+            if(noisyObject.walltalk6.show){
+                if(x>=noisyObject.walltalk6cancel.position.x && x<=noisyObject.walltalk6cancel.position.x + noisyObject.walltalk6cancel.width && y>=noisyObject.walltalk6cancel.position.y && y<=noisyObject.walltalk6cancel.position.y+noisyObject.walltalk6cancel.height){
+                    cancelWall()
+                    noisyObject.walltalk6.show = false
+                    noisyObject.walltalk6chk.show = false
+                    noisyObject.walltalk6chk.enlarge = false
+                    noisyObject.walltalk6cancel.show = false
+                    noisyObject.walltalk6cancel.enlarge = false
+                }
+                if(x>=noisyObject.walltalk6chk.position.x && x<=noisyObject.walltalk6chk.position.x + noisyObject.walltalk6chk.width && y>=noisyObject.walltalk6chk.position.y && y<=noisyObject.walltalk6chk.position.y+noisyObject.walltalk6chk.height){
+                    noisyObject.walltalk6.show = false
+                    noisyObject.walltalk6chk.show = false
+                    noisyObject.walltalk6chk.enlarge = false
+                    noisyObject.walltalk6cancel.show = false
+                    noisyObject.walltalk6cancel.enlarge = false
+                    if(noisyObject.idx != 6){
+                        noisyObject.A.show = true
+                        setTimeout(()=>{
+                            noisyObject.A.show = false
+                            noisyObject.B.show = false
+                            chkWall()
+                        }, 1000)
+                    }else{
+                        noisyObject.B.show = true
+                        setTimeout(()=>{
+                            noisyObject.A.show = false
+                            noisyObject.B.show = false
+                            chkWall()
+                            noisyObject.people.show = true
+                            if(CG.noisy.isPeace){
+                                noisyObject.response7A.show = true
+                            }else{
+                                noisyObject.response7B.show = true
+                                
+                            }
+                            setTimeout(()=>{
+                                noisyObject.response7A.show = false
+                                noisyObject.response7B.show = false
+                                noisyObject.people.show = false
+                                if(!CG.noisy.isPeace){
+                                    if(noisyObject.end.image.src.includes('good')){
+                                        noisyObject.end.image.src = noisyObject.end.image.src.replace('good', 'bad')
+                                    }
+                                    audioBadend.play()
+                                    getCG.noisy.push(0)
+                                }else{
+                                    audioGoodend.play()
+                                    getCG.noisy.push(1)
+                                }
+                                noisyObject.end.show = true
+                            }, 1500)
+                        }, 1000)
+                    }
+                }
+            }
+            if(noisyObject.walltalk7.show){
+                if(x>=noisyObject.walltalk7cancel.position.x && x<=noisyObject.walltalk7cancel.position.x + noisyObject.walltalk7cancel.width && y>=noisyObject.walltalk7cancel.position.y && y<=noisyObject.walltalk7cancel.position.y+noisyObject.walltalk7cancel.height){
+                    cancelWall()
+                    noisyObject.walltalk7.show = false
+                    noisyObject.walltalk7chk.show = false
+                    noisyObject.walltalk7chk.enlarge = false
+                    noisyObject.walltalk7cancel.show = false
+                    noisyObject.walltalk7cancel.enlarge = false
+                }
+                if(x>=noisyObject.walltalk7chk.position.x && x<=noisyObject.walltalk7chk.position.x + noisyObject.walltalk7chk.width && y>=noisyObject.walltalk7chk.position.y && y<=noisyObject.walltalk7chk.position.y+noisyObject.walltalk7chk.height){
+                    noisyObject.walltalk7.show = false
+                    noisyObject.walltalk7chk.show = false
+                    noisyObject.walltalk7chk.enlarge = false
+                    noisyObject.walltalk7cancel.show = false
+                    noisyObject.walltalk7cancel.enlarge = false
+                    if(noisyObject.idx != 7){
+                        noisyObject.A.show = true
+                        setTimeout(()=>{
+                            noisyObject.A.show = false
+                            noisyObject.B.show = false
+                            chkWall()
+                        }, 1000)
+                    }else{
+                        noisyObject.B.show = true
+                        setTimeout(()=>{
+                            noisyObject.A.show = false
+                            noisyObject.B.show = false
+                            chkWall()
+                            noisyObject.people.show = true
+                            if(CG.noisy.isPeace){
+                                noisyObject.response7A.show = true
+                            }else{
+                                noisyObject.response7B.show = true
+                                
+                            }
+                            setTimeout(()=>{
+                                noisyObject.response7A.show = false
+                                noisyObject.response7B.show = false
+                                noisyObject.people.show = false
+                                if(!CG.noisy.isPeace){
+                                    if(noisyObject.end.image.src.includes('good')){
+                                        noisyObject.end.image.src = noisyObject.end.image.src.replace('good', 'bad')
+                                    }
+                                    audioBadend.play()
+                                    getCG.noisy.push(0)
+                                }else{
+                                    audioGoodend.play()
+                                    getCG.noisy.push(1)
+                                }
+                                noisyObject.end.show = true
+                            }, 1500)
+                        }, 1000)
+                    }
+                }
+            }
+            
+        }
+    }
     interactions.forEach(interaction=>{
         let bool = x >= interaction.position.x && x <= interaction.position.x + interaction.width && y>=interaction.position.y && y<=interaction.position.y + interaction.height
         if(!bool) return
@@ -2073,6 +2867,15 @@ canvas.addEventListener('click', (e)=>{
             clickVedioPlay('inRoom')
             roomOpen.network = true
             isRoomOpen = true
+        }else if(interaction.name === 'noisy'){
+            if(isRoomOpen) return
+            clickVedioPlay('inRoom')
+            roomOpen.noisy = true
+            isRoomOpen = true
+            noisyObject.ans = noisyObject.ans.sort(() => Math.random() - 0.5);
+            noisyObject.idx = noisyObject.ans.indexOf(1) + 1
+
+            playKnock();
         }
         
     })
@@ -2460,7 +3263,44 @@ function initNetworkRoom(){
         netObject.end.image.src = netObject.end.image.src.replace('bad', 'good')
     }
 }
+function initNoisyRoom(){
+    stopKnock()
+    noisyObject.startChk = true
+    noisyObject.talk1Chk = false
+    noisyObject.talk3Chk = false
+    noisyObject.talk4Chk = false
+    noisyObject.talk6Chk = false
+    noisyObject.wallChk = false
+    noisyObject.wallStop = false
+    
+    noisys.forEach(noisy=>{
+        if(noisy.name === 'smallPeople'){
+            noisy.show = true
+            noisy.enlarge = true
+        }else if(noisy.name === 'wall1' || noisy.name === 'wall2' || noisy.name === 'wall3' || noisy.name === 'wall4' || noisy.name === 'wall5' || noisy.name === 'wall6' || noisy.name === 'wall7'){
+            noisy.show = true
+            noisy.enlarge = false
+        }
+        else{
+            noisy.show = false
+            noisy.enlarge = false
+            if(noisy.talk){
+                noisy.isTypewriter = true
+                if(noisy.image.src.includes('_.png')){
+                    noisy.image.src = noisy.image.src.replace('_.png', '.png')
+                }
+            }
+            
+            noisy.num = 0;noisy.step = 0;noisy.twoStep = 25;noisy.threeStep = 50
+        }
+    })
 
+    CG.noisy.isPeace = true
+
+    if(noisyObject.end.image.src.includes('bad')){
+        noisyObject.end.image.src = noisyObject.end.image.src.replace('bad', 'good')
+    }
+}
 function clickVedioPlay(name){
     if(name == 'talk'){
         audioTalk.play()
@@ -2483,4 +3323,14 @@ function playBgm(){
 function stopBgm(){
     bgmAudio.pause();
     bgmAudio.currentTime = 0;
+}
+
+function playKnock(){
+    knock.loop = true
+    knock.play()
+}
+
+function stopKnock(){
+    knock.pause();
+    knock.currentTime = 0;
 }

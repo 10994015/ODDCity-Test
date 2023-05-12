@@ -130,7 +130,7 @@ class Bus{
 }
 
 class Shared{
-    constructor({x, y, w, h, image, isPeople=false, isEnlarge=false, isShow=true, isTalk=false,multiple=1.1, name=null, text="", color="#000", isTypewriter=false,}){
+    constructor({x, y, w, h, image, isPeople=false, isEnlarge=false, isShow=true, isTalk=false,multiple=1.1, name=null, text="", color="#000", isTypewriter=false,frmaeNum=1}){
         this.oldPosition = {
             x, y
         },
@@ -164,7 +164,10 @@ class Shared{
         this.twoStep = 25
         this.threeStep = 50
         this.color = color
-
+        this.frmaeNum = frmaeNum
+        this.frames = 0
+        this.currentCropWidth = w/frmaeNum
+        this.calc = 0;
         if(this.text.split('').length <=24){
             this.addHeight = 45
         }else if(this.text.split('').length <=48){
@@ -175,11 +178,15 @@ class Shared{
 
         
     }
+
     draw(){
         if(!this.loaded) return
-      
-        c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
-      
+        if(this.frmaeNum > 1){
+            c.drawImage(this.image, this.currentCropWidth*this.frames, 0, this.currentCropWidth, this.height, this.position.x, this.position.y, this.width/2.6, this.height/1)
+        }else{
+            c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
+        }
+        
         if(!this.talk) return
         
         if(this.isTypewriter){
@@ -217,6 +224,18 @@ class Shared{
             let three_showText = three_text.join('')
             c.fillText(three_showText, this.position.x+30, this.position.y+this.addHeight+46) 
         }
+    }
+    update(){
+        this.calc++
+
+        if(this.calc % 20 === 0){
+            this.frames ++
+        }
+        if(this.frames >= 3 ){
+            this.frames = 0
+        }
+        
+        this.draw();
     }
 }
 
