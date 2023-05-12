@@ -355,6 +355,8 @@ const hoardObject = {
     inter7Ok: hoards.filter(hoard=>hoard.name === 'ok-inter7')[0],
     inter8Ok: hoards.filter(hoard=>hoard.name === 'ok-inter8')[0],
 
+    interOkNum: 0,
+
     talk1: hoards.filter(hoard=>hoard.name === '1')[0],
     talk1Chk: true,
     talk2: hoards.filter(hoard=>hoard.name === '2')[0],
@@ -1217,7 +1219,15 @@ canvas.addEventListener('click', (e)=>{
 
                 setTimeout(()=>{
                     if(!isRoomOpen) return
+                    hoardObject.a1.enlarge = true
+                    hoardObject.b1.enlarge = true
+                    hoardObject.c1.enlarge = true
+                    hoardObject.d1.enlarge = true
+                    hoardObject.e1.enlarge = true
+                    hoardObject.f1.enlarge = true
+                    hoardObject.g1.enlarge = true
                     hoardObject.h1.enlarge = true
+                    hoardObject.s1.enlarge = true
                     hoardObject.removeInterObj = true
                 }, 50)
             }
@@ -1226,26 +1236,11 @@ canvas.addEventListener('click', (e)=>{
             if(hoardObject.removeInterObj && hoardObject.s1.show && hoardObject.s1.enlarge){
                 if(x>=hoardObject.s1.position.x && x<=hoardObject.s1.position.x + hoardObject.s1.width && y>=hoardObject.s1.position.y && y<=hoardObject.s1.position.y+hoardObject.s1.height){
                     clickVedioPlay('obj')
-                    hoardObject.removeInterObj = false
-
                     hoardObject.s1.show = false
                     hoardObject.s1.enlarge = false
+                    hoardObject.interOkNum ++
+
                     
-                    hoardObject.hold.show = false
-                    hoardObject.hold.enlarge = false
-                    hoardObject.smallPeople.show = true
-                    setTimeout(()=>{
-                        if(!isRoomOpen) return
-                        hoardObject.smallPeople.show = false
-                        hoardObject.people.show = true
-                        hoardObject.response3.show = true
-                    }, 500)
-                    setTimeout(()=>{
-                        if(!isRoomOpen) return
-                        hoardObject.talk4.show = true
-                        hoardObject.talk4.enlarge = true
-                        hoardObject.talk4Chk = true
-                    }, 1500)
                 }
             }
             if(hoardObject.removeInterObj && hoardObject.a1.show && hoardObject.a1.enlarge){
@@ -1253,10 +1248,7 @@ canvas.addEventListener('click', (e)=>{
                     clickVedioPlay('obj')
                     hoardObject.a1.show = false
                     hoardObject.a1.enlarge = false
-                    setTimeout(()=>{
-                        if(!isRoomOpen) return
-                        hoardObject.s1.enlarge = true
-                    }, 10)
+                    hoardObject.interOkNum ++
                 }
             }
             if(hoardObject.removeInterObj && hoardObject.b1.show && hoardObject.b1.enlarge){
@@ -1264,11 +1256,7 @@ canvas.addEventListener('click', (e)=>{
                     clickVedioPlay('obj')
                     hoardObject.b1.show = false
                     hoardObject.b1.enlarge = false
-    
-                    setTimeout(()=>{
-                        if(!isRoomOpen) return
-                        hoardObject.a1.enlarge = true
-                    }, 50)
+                    hoardObject.interOkNum ++
                 }
             }
             if(hoardObject.removeInterObj && hoardObject.c1.show && hoardObject.c1.enlarge){
@@ -1276,11 +1264,7 @@ canvas.addEventListener('click', (e)=>{
                     clickVedioPlay('obj')
                     hoardObject.c1.show = false
                     hoardObject.c1.enlarge = false
-    
-                    setTimeout(()=>{
-                        if(!isRoomOpen) return
-                        hoardObject.b1.enlarge = true
-                    }, 50)
+                    hoardObject.interOkNum ++
                 }
             }
             if(hoardObject.removeInterObj && hoardObject.d1.show && hoardObject.d1.enlarge){
@@ -1288,11 +1272,8 @@ canvas.addEventListener('click', (e)=>{
                     clickVedioPlay('obj')
                     hoardObject.d1.show = false
                     hoardObject.d1.enlarge = false
-    
-                    setTimeout(()=>{
-                        if(!isRoomOpen) return
-                        hoardObject.c1.enlarge = true
-                    }, 50)
+                    hoardObject.interOkNum ++
+
                 }
             }
             if(hoardObject.removeInterObj && hoardObject.e1.show && hoardObject.e1.enlarge){
@@ -1300,11 +1281,7 @@ canvas.addEventListener('click', (e)=>{
                     clickVedioPlay('obj')
                     hoardObject.e1.show = false
                     hoardObject.e1.enlarge = false
-    
-                    setTimeout(()=>{
-                        if(!isRoomOpen) return
-                        hoardObject.d1.enlarge = true
-                    }, 50)
+                    hoardObject.interOkNum ++
                 }
             }
             if(hoardObject.removeInterObj && hoardObject.f1.show && hoardObject.f1.enlarge){
@@ -1312,11 +1289,7 @@ canvas.addEventListener('click', (e)=>{
                     clickVedioPlay('obj')
                     hoardObject.f1.show = false
                     hoardObject.f1.enlarge = false
-    
-                    setTimeout(()=>{
-                        if(!isRoomOpen) return
-                        hoardObject.e1.enlarge = true
-                    }, 50)
+                    hoardObject.interOkNum ++
                 }
             }
             if(hoardObject.removeInterObj && hoardObject.g1.show && hoardObject.g1.enlarge){
@@ -1324,11 +1297,7 @@ canvas.addEventListener('click', (e)=>{
                     clickVedioPlay('obj')
                     hoardObject.g1.show = false
                     hoardObject.g1.enlarge = false
-    
-                    setTimeout(()=>{
-                        if(!isRoomOpen) return
-                        hoardObject.f1.enlarge = true
-                    }, 50)
+                    hoardObject.interOkNum ++
                 }
             }
             if(hoardObject.removeInterObj && hoardObject.h1.show && hoardObject.h1.enlarge ){
@@ -1336,12 +1305,36 @@ canvas.addEventListener('click', (e)=>{
                     clickVedioPlay('obj')
                     hoardObject.h1.show = false
                     hoardObject.h1.enlarge = false
-    
-                    setTimeout(()=>{
-                        if(!isRoomOpen) return
-                        hoardObject.g1.enlarge = true
-                    }, 50)
+                    hoardObject.interOkNum ++
                 }
+            }
+            if(hoardObject.interOkNum >= 8 &&
+                !hoardObject.s1.show && 
+                !hoardObject.a1.show && 
+                !hoardObject.b1.show && 
+                !hoardObject.c1.show && 
+                !hoardObject.d1.show && 
+                !hoardObject.e1.show && 
+                !hoardObject.f1.show && 
+                !hoardObject.g1.show && 
+                !hoardObject.h1.show  
+                 ){
+                hoardObject.removeInterObj = false
+                hoardObject.hold.show = false
+                hoardObject.hold.enlarge = false
+                hoardObject.smallPeople.show = true
+                setTimeout(()=>{
+                    if(!isRoomOpen) return
+                    hoardObject.smallPeople.show = false
+                    hoardObject.people.show = true
+                    hoardObject.response3.show = true
+                }, 500)
+                setTimeout(()=>{
+                    if(!isRoomOpen) return
+                    hoardObject.talk4.show = true
+                    hoardObject.talk4.enlarge = true
+                    hoardObject.talk4Chk = true
+                }, 1500)
             }
             
         }
@@ -3165,6 +3158,7 @@ function initHoardRoom(){
     hoardObject.finishChk = false
     hoardObject.talk16Chk = false
 
+    hoardObject.interOkNum = 0
     hoardObject.interNum = 0
     if(hoard.image.src.includes('-.png')){
         hoard.image.src = hoard.image.src.replace('-.png', '.png')
