@@ -58,6 +58,8 @@ const interactions = [
     new Interaction({x:4170, y:500, w:455, h:225, name:'hoard', isShow:false}),
     new Interaction({x:4170, y:200, w:455, h:225, name:'network', isShow:false}),
     new Interaction({x:4895, y:200, w:455, h:225, name:'noisy', isShow:false}),
+    new Interaction({x:4895, y:500, w:455, h:225, name:'delay', isShow:false}),
+
 ]
 const talks = [
     new Talk({x:3780 -3318/15, y:350, w:3318/15, h:1604/15, name:'occupy', image: createImage('./images/talks/enter2f_.png'),isShow:false, direction:1650}),

@@ -17,15 +17,15 @@ window.addEventListener("keydown", ({keyCode})=>{
         case 68:
             if(!isRoomOpen){
                 keys.right.pressed = true
-                audioWalk.loop = true
-                audioWalk.play()
+                audioRunning.loop = true
+                audioRunning.play()
             }
             break;
         case 65:
             if(!isRoomOpen){
                 keys.left.pressed = true
-                audioWalk.loop = true
-                audioWalk.play()
+                audioRunning.loop = true
+                audioRunning.play()
             }
             break;
     }
@@ -38,13 +38,13 @@ window.addEventListener("keyup", ({keyCode})=>{
     switch (keyCode){
         case 68:
             keys.right.pressed = false
-            audioWalk.pause()
-            audioWalk.currentTime = 0
+            audioRunning.pause()
+            audioRunning.currentTime = 0
             break;
         case 65:
             keys.left.pressed = false
-            audioWalk.pause()
-            audioWalk.currentTime = 0
+            audioRunning.pause()
+            audioRunning.currentTime = 0
             break;
         case 27:
             if(isRoomOpen){
@@ -824,8 +824,29 @@ canvas.addEventListener('click', (e)=>{
                     coolObject.talkPeople.image.src = './images/cool/people1.png'
                     coolObject.response11A.show = false
 
-                    coolObject.cup.enlarge = true
-                    coolObject.cupChk = true
+                    if(CG.cool.isPeace){
+                        coolObject.talkPeople.show = false
+                        coolObject.cup.enlarge = true
+                        coolObject.cupChk = true
+                    }else{
+                        coolObject.end.image.src = coolObject.end.image.src.replace('good', 'bad')
+                        getCG.cool.push(0)
+                        stopBgm()
+                        audioBadend.play()
+                        coolObject.people.show = true
+                        coolObject.talkPeople.show = false
+                        coolObject.end.show = true
+                        if(isTeaching){
+                            coolObject.talk005.show = true
+                        }
+
+                        globalClick = true
+                        setTimeout(()=>{
+                            if(!isRoomOpen) return
+                            coolObject.talk005Chk = true
+                            
+                        },100)
+                    }
                 }, coolObject.response11A.text.split('').length*10 + 2500)
             }
             if(x>=coolObject.talk10B.position.x && x<=coolObject.talk10B.position.x + coolObject.talk10B.width && y>=coolObject.talk10B.position.y && y<=coolObject.talk10B.position.y+coolObject.talk10B.height){

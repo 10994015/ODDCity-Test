@@ -14,5 +14,6 @@ let wall1 = new Audio('./vedios/wall1.mp3')
 let wall2 = new Audio('./vedios/wall2.mp3')
 
 let knock = new Audio('./vedios/knock.mp3')
+let audioRunning = new Audio('./vedios/running.mp3')
 
 let busAudioStart = true
