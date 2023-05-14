@@ -107,6 +107,7 @@ class Bus{
         this.run = true
         this.divisor = 5
         this.currentCropWidth = 10752/4
+        this.start = false
     }
     draw(){
         if(!this.loaded) return
@@ -182,7 +183,7 @@ class Shared{
     draw(){
         if(!this.loaded) return
         if(this.frmaeNum > 1){
-            c.drawImage(this.image, this.currentCropWidth*this.frames, 0, this.currentCropWidth, this.height, this.position.x, this.position.y, this.width/2.6, this.height/1)
+            c.drawImage(this.image, this.currentCropWidth*this.frames, 0, this.currentCropWidth, this.height, this.position.x, this.position.y, this.width/2.6, this.height/0.9)
         }else{
             c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height)
         }

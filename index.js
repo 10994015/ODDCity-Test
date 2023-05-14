@@ -22,6 +22,9 @@ const CG = {
     noisy:{
         isPeace:true
     },
+    delay:{
+        isPeace:true
+    },
 }
 //好:1 壞:0
 const getCG = {
@@ -30,6 +33,7 @@ const getCG = {
     hoard:[],
     network:[],
     noisy:[],
+    delay:[],
 }
 let occupyInteractiveBtn = false
 
@@ -67,12 +71,14 @@ const talks = [
 const dynamics = [
     
 ]        
+let gameStart = false
 const bus = new Bus({x:200, y:461, w:1024, h:825/2.7, image:createImage('./images/bus3.png')})
 const cool = new Room({image:createImage('./images/cool.png')});
 const occupy = new Room({image:createImage('./images/occupy.png')});
 const hoard = new Room({image:createImage('./images/hoard.png')})
 const network = new Room({image:createImage('./images/network.png')})
 const noisy = new Room({image:createImage('./images/noisy.png')})
+const delay = new Room({image:createImage('./images/delay.png')})
 
 let playerTalkX = canvas.width-(canvas.width-canvas.height*0.8*1.844)/2
 let playerTalkXY= canvas.height-(canvas.height-canvas.height*0.8)/2
@@ -330,7 +336,7 @@ const noisys = [
     new Shared({x:1111 - 1882/4 + 80 + 290, y:178 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'walltalk7chk', multiple:1.02, isEnlarge:false, isShow:false}),
     new Shared({x:1111 - 1882/4 + 80 + 370, y:178 + 104/2.9 +10 + 518/4/2, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'walltalk7cancel', multiple:1.02, isEnlarge:false, isShow:false}),
 
-    new Shared({x:1110, y:220, w:518, h:432, image: createImage('./images/noisy/smallPeople.png'), name:"smallPeople", isEnlarge:true, isShow:true, multiple:1, frmaeNum:3}),
+    new Shared({x:1110, y:200, w:518, h:432, image: createImage('./images/noisy/smallPeople.png'), name:"smallPeople", isEnlarge:true, isShow:true, multiple:1, frmaeNum:3}),
     new Shared({x:0, y:300, w:306/1.1, h:860/1.1, image: createImage('./images/noisy/people1.png'), isPeople:true, name:'people', isShow:false}),
     new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/noisy/talk/1A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'1A', isShow:false,}),
     new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/noisy/talk/1B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'1B', isShow:false}),
@@ -355,19 +361,75 @@ const noisys = [
     new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
 
 ]
+const delays = [
+    new Shared({x:150, y:670, w:300/3.5, h:137/3.5, image: createImage('./images/delays/talk/0-4.png'), name:'count', multiple:1, isEnlarge:false, isShow:false}),
+    new Shared({x:155, y:100, w:147/1.9, h:182/1.9, image: createImage('./images/delays/CG1.png'), name:'CG1', multiple:1.2, isEnlarge:false, isShow:false}),
+    new Shared({x:830, y:140, w:164/1.9, h:207/1.9, image: createImage('./images/delays/CG2.png'), name:'CG2', multiple:1.2, isEnlarge:false, isShow:false}),
+    new Shared({x:170, y:549, w:70/1.8, h:26/1.8, image: createImage('./images/delays/battery1.png'), name:'battery1', multiple:1.2, isEnlarge:false, isShow:false}),
+    new Shared({x:500, y:591,  w:97/1.8, h:34/1.8, image: createImage('./images/delays/battery2.png'), name:'battery2', multiple:1.2, isEnlarge:false, isShow:false}),
+    new Shared({x:815, y:620,  w:97/1.8, h:36/1.8, image: createImage('./images/delays/battery3.png'), name:'battery3', multiple:1.2, isEnlarge:false, isShow:false}),
+    new Shared({x:1135, y:635,  w:77/1.8, h:29/1.8, image: createImage('./images/delays/battery4.png'), name:'battery4', multiple:1.2, isEnlarge:false, isShow:false}),
+    new Shared({x:400, y:560,  w:529/1.8, h:176/1.8, image: createImage('./images/delays/a1.png'), name:'a1', multiple:1.05, isEnlarge:false, isShow:false}),
+    new Shared({x:795, y:585,  w:149/1.8, h:112/1.8, image: createImage('./images/delays/b1.png'), name:'b1', multiple:1.05, isEnlarge:false, isShow:false}),
+    new Shared({x:1172, y:578,  w:152/1.8, h:138/1.8, image: createImage('./images/delays/c1.png'), name:'c1', multiple:1.05, isEnlarge:false, isShow:false}),
+    new Shared({x:795, y:522,  w:146/1.8, h:114/1.8, image: createImage('./images/delays/d1.png'), name:'d1', multiple:1.05, isEnlarge:false, isShow:false}),
+    new Shared({x:760, y:335,  w:512/1.9, h:165/1.9, image: createImage('./images/delays/a2.png'), name:'a2', multiple:1.05, isEnlarge:false, isShow:false}),
+    new Shared({x:1135, y:209,  w:108/2.05, h:143/2.05, image: createImage('./images/delays/b2.png'), name:'b2', multiple:1.05, isEnlarge:false, isShow:false}),
+    new Shared({x:1195, y:209,  w:113/2.05, h:142/2.05, image: createImage('./images/delays/d2.png'), name:'d2', multiple:1.05, isEnlarge:false, isShow:false}),
+    new Shared({x:345, y:209,  w:113/1.9, h:148/1.9, image: createImage('./images/delays/c2.png'), name:'c2', multiple:1.05, isEnlarge:false, isShow:false}),
+
+
+    new Shared({x:0, y:300, w:394/1.1, h:840/1.1, image: createImage('./images/delays/people1.png'), isPeople:true, name:'people', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/delays/talk/1.png'), isTalk:true, isEnlarge:true, multiple:1.02, name:'1', isShow:true,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/delays/talk/4.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'4', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/delays/talk/6.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'6', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/delays/talk/8A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'8A', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/delays/talk/8B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'8B', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*3-30, w:2378/4.5, h:630/4.5, image: createImage('./images/delays/talk/8C.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'8C', isShow:false}),
+
+    new Shared({x:canvas.width/2 - (3149/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:3149/4.5, h:484/4.5, image: createImage('./images/delays/talk/9.png'), isTalk:true, isEnlarge:false, multiple:1, name:'9', isShow:false ,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/delays/talk/11.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'11', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/delays/talk/13A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'13A', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/delays/talk/13B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'13B', isShow:false}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/delays/talk/16A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'16A', isShow:false,}),
+    new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/delays/talk/16B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'16B', isShow:false}),
+
+
+
+    new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'2', isShow:false, text:"我馬上就到了！等我一下！", isTypewriter:true }),
+    new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'3', isShow:false, text:"(又過了五分鐘)", isTypewriter:true }),
+    new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'5', isShow:false, text:"抱歉阿，今天路上剛好塞車。", isTypewriter:true }),
+    new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'7', isShow:false, text:"(又過了一下子)", isTypewriter:true }),
+    new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'10', isShow:false, text:"啊！你怎麼在這？", isTypewriter:true }),
+    new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'12', isShow:false, text:"喔...", isTypewriter:true }),
+    new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'14A', isShow:false, text:"對不起！我怕你覺得我不守時，就撒了謊...", isTypewriter:true }),
+    new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'14B', isShow:false, text:"你就多等我一會啦！又不會少塊肉...", isTypewriter:true }),
+    new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'15', isShow:false, text:"原諒我好嗎？", isTypewriter:true }),
+    new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'17A', isShow:false, text:"我會的！非常抱歉！", isTypewriter:true }),
+    new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'17B', isShow:false, text:"(聳肩)真小氣...", isTypewriter:true }),
+
+
+
+    new Shared({x:canvas.width/2 - (112/2)/2 + 300, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
+
+    new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
+
+    new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
+
+]
 const buttons = {
     close: new Button({x:(canvas.width - ( canvas.height*0.8*1.844 ))/2 + canvas.height*0.8*1.844 - 10,y:(canvas.height - canvas.height *0.8)/2 - 50, w:418/9, h:418/9, image: createImage('./images/buttons/close.png'), name:"close", multiple:1.05}),
     // in2f:  new Button({x: 3750, y:450, w:60, h:60, name:'in2f', isMove:true, image: createImage('./images/buttons/in2f.png'),}),
 }
 
 let isRoomOpen = false;
-
 const roomOpen = {
     cool:false,
     occupy:false,
     hoard:false,
     network:false,
     noisy:false,
+    delay:false,
 }
 
 const keys = {
@@ -384,58 +446,65 @@ const keys = {
 let busRun = false;
 let openAnim = null
 let busSpeed = 10
+const beginning = [
 
-openAnim = setInterval(()=>{
-    if(backgruond.position.x <=  -935){
-        if(busSpeed > 2 ){
-            busSpeed = busSpeed - 0.05
+]
+startFn()
+function startFn(){
+    bus.start = true
+    busAudio.loop = true
+    busAudio.play()
+    openAnim = setInterval(()=>{
+        if(backgruond.position.x <=  -935){
+            if(busSpeed > 2 ){
+                busSpeed = busSpeed - 0.05
+            }
         }
-    }
-    scrollOffset += busSpeed
-    backgruond.position.x -= busSpeed
-    
-    player.position.x -= busSpeed
-    interactions.forEach(item=>{
-        item.position.x -= busSpeed
-    })
-    talks.forEach(talk=>{
-        talk.position.x -= busSpeed
-    })
-    starts.forEach(start=>{
-        start.position.x -= busSpeed
-    })
-    if(backgruond.position.x <= -2400){
-        clearInterval(openAnim)
-        scrollOffset = 0
-        isStart = true
-        bus.run = false
-
-        // 顯示第一句對話
-        startNav = true;
-        starts.filter(start=> start.name==='start01')[0].show = true;
-        starts.filter(start=> start.name==='start01Btn')[0].show = true;
-        busAudioStart = false
-        busAudio.pause()
-        busAudio.currentTime = 0
-        playBgm()
-    }
-    if(scrollOffset > -1500){
-        busRun = true
-        if(scrollOffset > -500){
-            bus.divisor = 40
-        }else{
-            bus.divisor = 15
-        }
+        scrollOffset += busSpeed
+        backgruond.position.x -= busSpeed
         
-    }
-  
-}, 0)
+        player.position.x -= busSpeed
+        interactions.forEach(item=>{
+            item.position.x -= busSpeed
+        })
+        talks.forEach(talk=>{
+            talk.position.x -= busSpeed
+        })
+        starts.forEach(start=>{
+            start.position.x -= busSpeed
+        })
+        if(backgruond.position.x <= -2400){
+            clearInterval(openAnim)
+            scrollOffset = 0
+            isStart = true
+            bus.run = false
+    
+            // 顯示第一句對話
+            startNav = true;
+            starts.filter(start=> start.name==='start01')[0].show = true;
+            starts.filter(start=> start.name==='start01Btn')[0].show = true;
+            busAudioStart = false
+            busAudio.pause()
+            busAudio.currentTime = 0
+            playBgm()
+        }
+        if(scrollOffset > -1500){
+            busRun = true
+            if(scrollOffset > -500){
+                bus.divisor = 40
+            }else{
+                bus.divisor = 15
+            }
+        }
+    }, 0)
+}
 
 let busPos = 1.5
 function animate(){
     window.requestAnimationFrame(animate)
+    
     backgruond.draw()
-
+   
     player.velocity.x = 0
     if((keys.right.pressed && player.position.x < 600) || (keys.right.pressed && scrollOffset>= 15400)){
         if(player.position.x < 1295){
@@ -493,14 +562,17 @@ function animate(){
         })
     }
     
-
-    bus.update()
-    if(busRun){
-       if(bus.position.x > -600){
-        bus.position.x -= 1.6
-       }
-        
+    if(bus.start){
+        bus.update()
+        if(busRun){
+           if(bus.position.x > -600){
+            bus.position.x -= 1.6
+           }
+        }
+    }else{
+        bus.draw()
     }
+    
     if(getOff ){
         player.draw()
         player.update()
@@ -572,11 +644,22 @@ function animate(){
             }
         })
     }
+    if(roomOpen.delay && isRoomOpen){
+        c.fillStyle = 'rgba(255,255,255,.5)'
+        c.fillRect(0,0,canvas.width, canvas.height)
+        delay.draw()
+        buttons.close.draw()
+        delays.forEach(delay=>{
+            if(delay.show){
+                delay.draw()
+            }
+        })
+    }
 
-    // if(isTeaching && getOff){
-    //     skip.draw()
-    // }
-
+    if(!bus.start){
+        c.fillStyle = 'rgba(255,255,255,.5)'
+        c.fillRect(0,0,canvas.width, canvas.height)
+    }
     
 }
 

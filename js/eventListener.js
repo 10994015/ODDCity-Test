@@ -58,9 +58,6 @@ window.addEventListener("keyup", ({keyCode})=>{
 //talk
 // let talk_occupy = talks.filter(talk=>talk.name === 'occupy')[0]
 canvas.addEventListener('mousemove', (e)=>{
-    if(busAudioStart){
-        busAudio.play()
-    }
     busAudioStart = false
     if(!isStart) return
     var rect = canvas.getBoundingClientRect();
@@ -235,6 +232,25 @@ canvas.addEventListener('mousemove', (e)=>{
             canvas.style.cursor = "default"
             if(noisy.image.src.includes('_.png')){
                 noisy.image.src = noisy.image.src.replace('_.png', '.png')
+            }
+        })
+    }
+    if(roomOpen.delay && isRoomOpen){
+        delays.some(delay=>{
+            if(!delay.enlarge) return
+            if(x >= delay.position.x && x<=delay.position.x+delay.width && y>=delay.position.y && y<=delay.position.y + delay.height){
+                delay.width = delay.bigWidth
+                delay.height = delay.bigHeight
+                if((!delay.image.src.includes('_.png')) && delay.talk){
+                    delay.image.src = delay.image.src.replace('.png', '_.png')
+                }
+                return canvas.style.cursor = "pointer"
+            }
+            delay.width = delay.oldWidth
+            delay.height = delay.oldHeight
+            canvas.style.cursor = "default"
+            if(delay.image.src.includes('_.png')){
+                delay.image.src = delay.image.src.replace('_.png', '.png')
             }
         })
     }
@@ -553,7 +569,69 @@ const noisyObject = {
     
     end: noisys.filter(noisy=>noisy.name === 'end')[0],
 }
+const delayObject = {
+    people: delays.filter(delay=>delay.name === 'people')[0],
+    talk1: delays.filter(delay=>delay.name === '1')[0],
+    talk1Chk: true,
+    response2: delays.filter(delay=>delay.name === '2')[0],
+    response3: delays.filter(delay=>delay.name === '3')[0],
 
+    talk4: delays.filter(delay=>delay.name === '4')[0],
+    talk4Chk: false,
+    response5: delays.filter(delay=>delay.name === '5')[0],
+
+    talk6: delays.filter(delay=>delay.name === '6')[0],
+    talk6Chk: false,
+    response7: delays.filter(delay=>delay.name === '7')[0],
+
+    talk8A: delays.filter(delay=>delay.name === '8A')[0],
+    talk8B: delays.filter(delay=>delay.name === '8B')[0],
+    talk8C: delays.filter(delay=>delay.name === '8C')[0],
+    talk8Chk: false,
+
+    talk9: delays.filter(delay=>delay.name === '9')[0],
+    talk9Chk: false,
+
+    CG1: delays.filter(delay=>delay.name === 'CG1')[0],
+    CG2: delays.filter(delay=>delay.name === 'CG2')[0],
+    battery1: delays.filter(delay=>delay.name === 'battery1')[0],
+    battery2: delays.filter(delay=>delay.name === 'battery2')[0],
+    battery3: delays.filter(delay=>delay.name === 'battery3')[0],
+    battery4: delays.filter(delay=>delay.name === 'battery4')[0],
+    a1: delays.filter(delay=>delay.name === 'a1')[0],
+    b1: delays.filter(delay=>delay.name === 'b1')[0],
+    c1: delays.filter(delay=>delay.name === 'c1')[0],
+    d1: delays.filter(delay=>delay.name === 'd1')[0],
+    a2: delays.filter(delay=>delay.name === 'a2')[0],
+    b2: delays.filter(delay=>delay.name === 'b2')[0],
+    c2: delays.filter(delay=>delay.name === 'c2')[0],
+    d2: delays.filter(delay=>delay.name === 'd2')[0],
+    chk: delays.filter(delay=>delay.name === 'chk')[0],
+    count: delays.filter(delay=>delay.name === 'count')[0],
+    startInter: false,
+    batteryNum:0,
+
+    response10: delays.filter(delay=>delay.name === '10')[0],
+    talk11: delays.filter(delay=>delay.name === '11')[0],
+    talk11Chk: false,
+    response12: delays.filter(delay=>delay.name === '12')[0],
+    talk13A: delays.filter(delay=>delay.name === '13A')[0],
+    talk13B: delays.filter(delay=>delay.name === '13B')[0],
+    talk13Chk: false,
+
+    response14A: delays.filter(delay=>delay.name === '14A')[0],
+    response14B: delays.filter(delay=>delay.name === '14B')[0],
+    response15: delays.filter(delay=>delay.name === '15')[0],
+
+    talk16A: delays.filter(delay=>delay.name === '16A')[0],
+    talk16B: delays.filter(delay=>delay.name === '16B')[0],
+    talk16Chk: false,
+    response17A: delays.filter(delay=>delay.name === '17A')[0],
+    response17B: delays.filter(delay=>delay.name === '17B')[0],
+
+    end: delays.filter(delay=>delay.name === 'end')[0],
+
+}
 canvas.addEventListener('click', (e)=>{
     if(!isStart) return
     var rect = canvas.getBoundingClientRect();
@@ -585,6 +663,8 @@ canvas.addEventListener('click', (e)=>{
                 initNetworkRoom()
             }else if(roomOpen.noisy){
                 initNoisyRoom()
+            }else if(roomOpen.delay){
+                initDelayRoom()
             }
             if(roomOpen.cool){
                 clickVedioPlay('inCoolRoom')
@@ -2837,6 +2917,397 @@ canvas.addEventListener('click', (e)=>{
             
         }
     }
+    if(roomOpen.delay && isRoomOpen){
+        if(delayObject.talk1.show && delayObject.talk1Chk){
+            if(!delayObject.talk1Chk) return
+            if(x>=delayObject.talk1.position.x && x<=delayObject.talk1.position.x + delayObject.talk1.width && y>=delayObject.talk1.position.y && y<=delayObject.talk1.position.y+delayObject.talk1.height){
+                clickVedioPlay('talk')
+                delayObject.talk1Chk = false
+                delayObject.talk1.enlarge = false
+                delayObject.people.show = true
+                delayObject.response2.show = true
+
+                setTimeout(()=>{
+                    if(!isRoomOpen) return
+                    delayObject.talk1.show = false
+
+                    delayObject.response2.show = false
+                    delayObject.response3.show = true
+                    setTimeout(() => {
+                        if(!isRoomOpen) return
+                        delayObject.talk4Chk = true
+                        delayObject.talk4.show = true
+                        delayObject.talk4.enlarge = true
+                    }, 1500);
+                }, delayObject.response2.text.split('').length*10 + 1000)
+            }
+        }
+
+        if(delayObject.talk4.show && delayObject.talk4Chk){
+            if(!delayObject.talk4Chk) return
+            if(x>=delayObject.talk4.position.x && x<=delayObject.talk4.position.x + delayObject.talk4.width && y>=delayObject.talk4.position.y && y<=delayObject.talk4.position.y+delayObject.talk4.height){
+                clickVedioPlay('talk')
+                delayObject.talk4Chk = false
+                delayObject.response3.show = false
+                delayObject.talk4.enlarge = false
+                delayObject.response5.show = true
+
+                setTimeout(() => {
+                    if(!isRoomOpen) return
+                    delayObject.talk4.show = false
+                    delayObject.talk6Chk = true
+                    delayObject.talk6.show = true
+                    delayObject.talk6.enlarge = true
+                }, 1500);
+            }
+        }
+        if(delayObject.talk6.show && delayObject.talk6Chk){
+            if(!delayObject.talk6Chk) return
+            if(x>=delayObject.talk6.position.x && x<=delayObject.talk6.position.x + delayObject.talk6.width && y>=delayObject.talk6.position.y && y<=delayObject.talk6.position.y+delayObject.talk6.height){
+                clickVedioPlay('talk')
+                delayObject.talk6Chk = false
+                delayObject.response5.show = false
+                delayObject.talk6.enlarge = false
+                delayObject.response7.show = true
+                setTimeout(() => {
+                    if(!isRoomOpen) return
+                    delayObject.talk6.show = false
+                    delayObject.talk8Chk = true
+                    delayObject.talk8A.show = true
+                    delayObject.talk8A.enlarge = true
+                    delayObject.talk8B.show = true
+                    delayObject.talk8B.enlarge = true
+                    delayObject.talk8C.show = true
+                    delayObject.talk8C.enlarge = true
+                }, 1500);
+            }
+        }
+        if(delayObject.talk8A.show && delayObject.talk8B.show && delayObject.talk8C.show && delayObject.talk8Chk){
+            if(!delayObject.talk8Chk) return
+            if(x>=delayObject.talk8A.position.x && x<=delayObject.talk8A.position.x + delayObject.talk8A.width && y>=delayObject.talk8A.position.y && y<=delayObject.talk8A.position.y+delayObject.talk8A.height){
+                clickVedioPlay('talk')
+                delayObject.talk8Chk = false
+                delayObject.response7.show = false
+                delayObject.talk8A.enlarge = false
+                delayObject.talk8A.show = false
+                delayObject.talk8B.show = false
+                delayObject.talk8B.enlarge = false
+                delayObject.talk8C.show = false
+                delayObject.talk8C.enlarge = false
+                delay.image.src = delay.image.src.replace('.png', '2.png')
+                delayObject.people.show = false
+                setTimeout(()=>{
+                    if(!isRoomOpen) return
+                    delayObject.talk9.show = true
+                    delayObject.talk9Chk = true
+                    delayObject.chk.show = true
+                    delayObject.chk.enlarge = true
+                }, 500)
+            }
+            if(x>=delayObject.talk8B.position.x && x<=delayObject.talk8B.position.x + delayObject.talk8B.width && y>=delayObject.talk8B.position.y && y<=delayObject.talk8B.position.y+delayObject.talk8B.height){
+                clickVedioPlay('talk')
+                delayObject.talk8Chk = false
+                delayObject.response7.show = false
+                delayObject.talk8A.enlarge = false
+                delayObject.talk8A.show = false
+                delayObject.talk8B.show = false
+                delayObject.talk8B.enlarge = false
+                delayObject.talk8C.show = false
+                delayObject.talk8C.enlarge = false
+                delay.image.src = delay.image.src.replace('.png', '2.png')
+                delayObject.people.show = false
+                CG.delay.isPeace = false
+                setTimeout(()=>{
+                    if(!isRoomOpen) return
+                    delayObject.talk9.show = true
+                    delayObject.talk9Chk = true
+                    delayObject.chk.show = true
+                    delayObject.chk.enlarge = true
+                }, 500)
+            }
+            if(x>=delayObject.talk8C.position.x && x<=delayObject.talk8C.position.x + delayObject.talk8C.width && y>=delayObject.talk8C.position.y && y<=delayObject.talk8C.position.y+delayObject.talk8C.height){
+                clickVedioPlay('talk')
+                delayObject.talk8Chk = false
+                delayObject.response7.show = false
+                delayObject.talk8A.enlarge = false
+                delayObject.talk8A.show = false
+                delayObject.talk8B.show = false
+                delayObject.talk8B.enlarge = false
+                delayObject.talk8C.show = false
+                delayObject.talk8C.enlarge = false
+                delay.image.src = delay.image.src.replace('.png', '2.png')
+                delayObject.people.show = false
+                CG.delay.isPeace = false
+                setTimeout(()=>{
+                    if(!isRoomOpen) return
+                    delayObject.talk9.show = true
+                    delayObject.talk9Chk = true
+                    delayObject.chk.show = true
+                    delayObject.chk.enlarge = true
+                }, 500)
+            }
+        }
+        if(delayObject.talk9.show && delayObject.talk9Chk){
+            if(!delayObject.talk9Chk) return
+            if(x>=delayObject.chk.position.x && x<=delayObject.chk.position.x + delayObject.chk.width && y>=delayObject.chk.position.y && y<=delayObject.chk.position.y+delayObject.chk.height){
+                clickVedioPlay('btn')
+                delayObject.talk9Chk = false
+                delayObject.talk9.show = false
+                delayObject.chk.show = false
+                delayObject.chk.enlarge = false
+                delay.image.src = delay.image.src.replace('2.png', '3.png')
+
+                delayObject.battery1.show = true
+                delayObject.battery2.show = true
+                delayObject.battery3.show = true
+                delayObject.battery4.show = true
+                delayObject.battery1.enlarge = true
+                delayObject.battery4.enlarge = true
+                
+                delayObject.a1.show = true
+                delayObject.b1.show = true
+                delayObject.c1.show = true
+                delayObject.d1.show = true
+                delayObject.a1.enlarge = true
+                delayObject.c1.enlarge = true
+                delayObject.d1.enlarge = true
+                delayObject.count.show = true
+                setTimeout(()=>{
+                    delayObject.startInter = true
+                }, 100)
+            }
+        }
+        if(delayObject.talk11.show && delayObject.talk11Chk){
+            if(!delayObject.talk11Chk) return
+            if(x>=delayObject.talk11.position.x && x<=delayObject.talk11.position.x + delayObject.talk11.width && y>=delayObject.talk11.position.y && y<=delayObject.talk11.position.y+delayObject.talk11.height){
+                clickVedioPlay('talk')
+                delayObject.talk11Chk = false
+                delayObject.response10.show = false
+                delayObject.talk11.enlarge = false
+                delayObject.response12.show = true
+
+                setTimeout(()=>{
+                    delayObject.talk11.show = false
+                    delayObject.talk13A.show = true
+                    delayObject.talk13A.enlarge = true
+                    delayObject.talk13B.show = true
+                    delayObject.talk13B.enlarge = true
+                    delayObject.talk13Chk = true
+                }, 1000)
+            }
+        }
+        if(delayObject.talk13A.show && delayObject.talk13B.show && delayObject.talk13Chk){
+            if(!delayObject.talk13Chk) return
+            if(x>=delayObject.talk13A.position.x && x<=delayObject.talk13A.position.x + delayObject.talk13A.width && y>=delayObject.talk13A.position.y && y<=delayObject.talk13A.position.y+delayObject.talk13A.height){
+                clickVedioPlay('talk')
+                delayObject.talk13Chk = false
+                delayObject.response12.show = false
+                delayObject.talk13A.enlarge = false
+                delayObject.talk13B.enlarge = false
+                delayObject.response14A.show = true
+                
+                setTimeout(()=>{
+                    delayObject.response14A.show = false
+                    delayObject.response14B.show = false
+                    delayObject.talk13A.show = false
+                    delayObject.talk13B.show = false
+                    delayObject.response15.show = true
+                }, delayObject.response14A.text.split('').length*10 + 1500)
+                setTimeout(()=>{
+                    delayObject.talk16A.show = true
+                    delayObject.talk16A.enlarge = true
+                    delayObject.talk16B.show = true
+                    delayObject.talk16B.enlarge = true
+                    delayObject.talk16Chk = true
+                }, delayObject.response14A.text.split('').length*10 + 3000)
+            }
+            if(x>=delayObject.talk13B.position.x && x<=delayObject.talk13B.position.x + delayObject.talk13B.width && y>=delayObject.talk13B.position.y && y<=delayObject.talk13B.position.y+delayObject.talk13B.height){
+                clickVedioPlay('talk')
+                delayObject.talk13Chk = false
+                delayObject.response12.show = false
+                delayObject.talk13A.enlarge = false
+                delayObject.talk13B.enlarge = false
+                delayObject.response14B.show = true
+                CG.delay.isPeace = false
+                setTimeout(()=>{
+                    delayObject.response14A.show = false
+                    delayObject.response14B.show = false
+                    delayObject.talk13A.show = false
+                    delayObject.talk13B.show = false
+                    delayObject.response15.show = true
+                }, delayObject.response14B.text.split('').length*10 + 1500)
+                setTimeout(()=>{
+                    delayObject.talk16A.show = true
+                    delayObject.talk16A.enlarge = true
+                    delayObject.talk16B.show = true
+                    delayObject.talk16B.enlarge = true
+                    delayObject.talk16Chk = true
+                }, delayObject.response14A.text.split('').length*10 + 3000)
+            }
+        }
+        if(delayObject.talk16A.show && delayObject.talk16B.show && delayObject.talk16Chk){
+            if(!delayObject.talk16Chk) return
+            if(x>=delayObject.talk16A.position.x && x<=delayObject.talk16A.position.x + delayObject.talk16A.width && y>=delayObject.talk16A.position.y && y<=delayObject.talk16A.position.y+delayObject.talk16A.height){
+                clickVedioPlay('talk')
+                delayObject.talk16Chk = false
+                delayObject.talk16A.enlarge = false
+                delayObject.talk16B.enlarge = false
+                delayObject.response15.show = false
+                delayObject.response17A.show = true
+                setTimeout(()=>{
+                    if(!CG.delay.isPeace){
+                        delayObject.end.image.src = delayObject.end.image.src.replace('good', 'bad')
+                        audioBadend.play()
+                        getCG.delay.push(0)
+                    }else{
+                        audioGoodend.play()
+                        getCG.delay.push(1)
+                    }
+                    delayObject.talk16A.show = false
+                    delayObject.talk16B.show = false
+                    delayObject.response17A.show = false
+                    delayObject.response17B.show = false
+                    delayObject.people.show = false
+                    delayObject.end.show = true
+                }, 1500)
+            }
+            if(x>=delayObject.talk16B.position.x && x<=delayObject.talk16B.position.x + delayObject.talk16B.width && y>=delayObject.talk16B.position.y && y<=delayObject.talk16B.position.y+delayObject.talk16B.height){
+                clickVedioPlay('talk')
+                delayObject.talk16Chk = false
+                delayObject.talk16A.enlarge = false
+                delayObject.talk16B.enlarge = false
+                delayObject.response15.show = false
+                delayObject.response17B.show = true
+                CG.delay.isPeace = false
+                setTimeout(()=>{
+                    if(!CG.delay.isPeace){
+                        delayObject.end.image.src = delayObject.end.image.src.replace('good', 'bad')
+                        audioBadend.play()
+                        getCG.delay.push(0)
+                    }else{
+                        audioGoodend.play()
+                        getCG.delay.push(1)
+                    }
+                    delayObject.talk16A.show = false
+                    delayObject.talk16B.show = false
+                    delayObject.response17A.show = false
+                    delayObject.response17B.show = false
+                    delayObject.people.show = false
+                    delayObject.end.show = true
+                }, 1500)
+            }
+        }
+        if(delayObject.startInter){
+            if(delayObject.battery1.enlarge){
+                if(x>=delayObject.battery1.position.x && x<=delayObject.battery1.position.x + delayObject.battery1.width && y>=delayObject.battery1.position.y && y<=delayObject.battery1.position.y+delayObject.battery1.height){
+                    clickVedioPlay('obj')
+                    delayObject.battery1.enlarge = false
+                    delayObject.battery1.show = false
+                    delayObject.batteryNum++
+                }
+            }
+            if(delayObject.battery2.enlarge){
+                if(x>=delayObject.battery2.position.x && x<=delayObject.battery2.position.x + delayObject.battery2.width && y>=delayObject.battery2.position.y && y<=delayObject.battery2.position.y+delayObject.battery2.height){
+                    clickVedioPlay('obj')
+                    delayObject.battery2.enlarge = false
+                    delayObject.battery2.show = false
+                    delayObject.batteryNum++
+                }
+            }
+            if(delayObject.battery3.enlarge){
+                if(x>=delayObject.battery3.position.x && x<=delayObject.battery3.position.x + delayObject.battery3.width && y>=delayObject.battery3.position.y && y<=delayObject.battery3.position.y+delayObject.battery3.height){
+                    clickVedioPlay('obj')
+                    delayObject.battery3.enlarge = false
+                    delayObject.battery3.show = false
+                    delayObject.batteryNum++
+                }
+            }
+            if(delayObject.battery4.enlarge){
+                if(x>=delayObject.battery4.position.x && x<=delayObject.battery4.position.x + delayObject.battery4.width && y>=delayObject.battery4.position.y && y<=delayObject.battery4.position.y+delayObject.battery4.height){
+                    clickVedioPlay('obj')
+                    delayObject.battery4.enlarge = false
+                    delayObject.battery4.show = false
+                    delayObject.batteryNum++
+                }
+            }
+            if(delayObject.a1.enlarge && !delayObject.a2.show){
+                if(x>=delayObject.a1.position.x && x<=delayObject.a1.position.x + delayObject.a1.width && y>=delayObject.a1.position.y && y<=delayObject.a1.position.y+delayObject.a1.height){
+                    clickVedioPlay('obj')
+                    delayObject.a1.enlarge = false
+                    delayObject.a1.show = false
+                    delayObject.a2.show = true
+                    setTimeout(()=>{
+                        delayObject.battery2.enlarge = true
+                    }, 100)
+                }
+                
+            }
+            if(delayObject.b1.enlarge && !delayObject.b2.show){
+                if(x>=delayObject.b1.position.x && x<=delayObject.b1.position.x + delayObject.b1.width && y>=delayObject.b1.position.y && y<=delayObject.b1.position.y+delayObject.b1.height){
+                    clickVedioPlay('obj')
+                    delayObject.b1.enlarge = false
+                    delayObject.b1.show = false
+                    delayObject.b2.show = true
+                    setTimeout(()=>{
+                        delayObject.battery3.enlarge = true
+                    }, 100)
+                }
+            }
+            if(delayObject.c1.enlarge && !delayObject.c2.show){
+                if(x>=delayObject.c1.position.x && x<=delayObject.c1.position.x + delayObject.c1.width && y>=delayObject.c1.position.y && y<=delayObject.c1.position.y+delayObject.c1.height){
+                    clickVedioPlay('obj')
+                    delayObject.c1.enlarge = false
+                    delayObject.c1.show = false
+                    delayObject.c2.show = true
+                }
+            }
+            if(delayObject.d1.enlarge && !delayObject.d2.show){
+                if(x>=delayObject.d1.position.x && x<=delayObject.d1.position.x + delayObject.d1.width && y>=delayObject.d1.position.y && y<=delayObject.d1.position.y+delayObject.d1.height){
+                    clickVedioPlay('obj')
+                    delayObject.d1.enlarge = false
+                    delayObject.d1.show = false
+                    delayObject.d2.show = true
+                    setTimeout(()=>{
+                        if(!isRoomOpen) return
+                        delayObject.b1.enlarge = true
+                    }, 100)
+                }
+                
+            }
+            if(delayObject.batteryNum === 1){
+                delayObject.count.image.src = "./images/delays/talk/1-4.png"
+            }else if(delayObject.batteryNum === 2){
+                delayObject.count.image.src = "./images/delays/talk/2-4.png"
+            }else if(delayObject.batteryNum === 3){
+                delayObject.count.image.src = "./images/delays/talk/3-4.png"
+            }else if(delayObject.batteryNum === 4){
+                delayObject.count.image.src = "./images/delays/talk/4-4.png"
+                delayObject.a1.enlarge = false
+                delayObject.b1.enlarge = false
+                delayObject.c1.enlarge = false
+                delayObject.d1.enlarge = false
+                delayObject.a1.show = false
+                delayObject.b1.show = false
+                delayObject.c1.show = false
+                delayObject.d1.show = false
+                delayObject.a2.show = false
+                delayObject.b2.show = false
+                delayObject.c2.show = false
+                delayObject.d2.show = false
+                delay.image.src = delay.image.src.replace('3.png', '4.png')
+                if(!isRoomOpen) return
+                delayObject.response10.show = true
+                delayObject.people.show = true
+                delayObject.startInter = false
+                setTimeout(()=>{
+                    if(!isRoomOpen) return
+                    delayObject.talk11.show = true
+                    delayObject.talk11.enlarge = true
+                    delayObject.talk11Chk = true
+                }, 1000)
+            }
+        }
+    }
     interactions.forEach(interaction=>{
         let bool = x >= interaction.position.x && x <= interaction.position.x + interaction.width && y>=interaction.position.y && y<=interaction.position.y + interaction.height
         if(!bool) return
@@ -2890,6 +3361,11 @@ canvas.addEventListener('click', (e)=>{
             noisyObject.idx = noisyObject.ans.indexOf(1) + 1
 
             playKnock();
+        }else if(interaction.name === 'delay'){
+            if(isRoomOpen) return
+            clickVedioPlay('inRoom')
+            roomOpen.delay = true
+            isRoomOpen = true
         }
         
     })
@@ -3315,6 +3791,46 @@ function initNoisyRoom(){
     if(noisyObject.end.image.src.includes('bad')){
         noisyObject.end.image.src = noisyObject.end.image.src.replace('bad', 'good')
     }
+}
+function initDelayRoom(){
+    delay.image.src = "./images/delay.png"
+    delayObject.talk1Chk = true
+    delayObject.talk4Chk = false
+    delayObject.talk6Chk = false
+    delayObject.talk8Chk = false
+    delayObject.talk9Chk = false
+    delayObject.startInter = false
+    delayObject.talk11Chk = false
+    delayObject.talk13Chk = false
+    delayObject.talk16Chk = false
+
+    delayObject.batteryNum = 0
+
+    delays.forEach(delay=>{
+        if(delay.name === '1'){
+            delay.show = true
+            delay.enlarge = true
+        }
+        else{
+            delay.show = false
+            delay.enlarge = false
+            if(delay.talk){
+                delay.isTypewriter = true
+                if(delay.image.src.includes('_.png')){
+                    delay.image.src = delay.image.src.replace('_.png', '.png')
+                }
+            }
+            if(delay.name === 'count'){
+                delay.image.src = './images/delays/talk/0-4.png'
+            }
+            delay.num = 0;delay.step = 0;delay.twoStep = 25;delay.threeStep = 50
+        }
+        CG.delay.isPeace = true
+
+        if(delayObject.end.image.src.includes('bad')){
+            delayObject.end.image.src = delayObject.end.image.src.replace('bad', 'good')
+        }
+    })
 }
 function clickVedioPlay(name){
     if(name == 'talk'){
