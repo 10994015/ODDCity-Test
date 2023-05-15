@@ -55,16 +55,33 @@ window.addEventListener("keyup", ({keyCode})=>{
             }
     }
 })
-//talk
-// let talk_occupy = talks.filter(talk=>talk.name === 'occupy')[0]
+
 canvas.addEventListener('mousemove', (e)=>{
     busAudioStart = false
-    if(!isStart) return
     var rect = canvas.getBoundingClientRect();
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
-   
-    
+    if(!bus.start && beginningBool){
+        beginnings.some(beginning=>{
+            if(!beginning.enlarge) return
+            if(x >= beginning.position.x && x<=beginning.position.x+beginning.width && y>=beginning.position.y && y<=beginning.position.y + beginning.height){
+                // beginning.width = beginning.bigWidth
+                // beginning.height = beginning.bigHeight
+                if((!beginning.image.src.includes('_.png')) && beginning.talk){
+                    beginning.image.src = beginning.image.src.replace('.png', '_.png')
+                }
+                return canvas.style.cursor = "pointer"
+            }
+            // beginning.width = beginning.oldWidth
+            // beginning.height = beginning.oldHeight
+            canvas.style.cursor = "default"
+            if(beginning.image.src.includes('_.png')){
+                beginning.image.src = beginning.image.src.replace('_.png', '.png')
+            }
+        })
+    }
+    if(!isStart) return
+
     if(phone.show && phone.enlarge && !isRoomOpen){
         if( x > phone.position.x && x < (phone.position.x + phone.width) && y > phone.position.y && y < (phone.position.y + phone.height)){
             phone.width = phone.bigWidth
@@ -254,6 +271,7 @@ canvas.addEventListener('mousemove', (e)=>{
             }
         })
     }
+    
     if(isDragging && roomOpen.occupy && isRoomOpen){
         occupys[mousedownIdx].position.x = e.offsetX + differX
         occupys[mousedownIdx].position.y = e.offsetY + differY
@@ -632,11 +650,98 @@ const delayObject = {
     end: delays.filter(delay=>delay.name === 'end')[0],
 
 }
+
+
+const beginningObject = {
+    model: beginnings.filter(beginning=>beginning.name === 'model')[0],
+    model1Chk: true,
+    chk1: beginnings.filter(beginning=>beginning.name === 'chk1')[0],
+    chk2: beginnings.filter(beginning=>beginning.name === 'chk2')[0],
+    selectPeople:true,
+    model2Chk: false,
+    people1: beginnings.filter(beginning=>beginning.name === 'people1')[0],
+    people2: beginnings.filter(beginning=>beginning.name === 'people2')[0],
+    people1Selected: false,
+    people2Selected: false,
+
+}
 canvas.addEventListener('click', (e)=>{
-    if(!isStart) return
     var rect = canvas.getBoundingClientRect();
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
+    if(!bus.start && beginningBool){
+        if(beginningObject.model1Chk && beginningObject.chk1.show){
+            if(!beginningObject.model1Chk) return
+            if(x>=beginningObject.chk1.position.x && x<=beginningObject.chk1.position.x + beginningObject.chk1.width && y>=beginningObject.chk1.position.y && y<=beginningObject.chk1.position.y+beginningObject.chk1.height){
+                clickVedioPlay('btn')
+                beginningObject.model1Chk = false
+                beginningObject.model.image.src = './images/beginning/model2.png'
+                beginningObject.chk1.show = false
+                beginningObject.chk1.enlarge = false
+                setTimeout(()=>{
+                    beginningObject.selectPeople = true
+                    beginningObject.people1.show = true
+                    beginningObject.people1.enlarge = true
+                    beginningObject.people2.show = true
+                    beginningObject.people2.enlarge = true
+                }, 100)
+            }
+        }
+        if(beginningObject.selectPeople){
+            if(!beginningObject.selectPeople) return
+            if(x>=beginningObject.people1.position.x && x<=beginningObject.people1.position.x + beginningObject.people1.width && y>=beginningObject.people1.position.y && y<=beginningObject.people1.position.y+beginningObject.people1.height){
+                clickVedioPlay('btn')
+                beginningObject.people1Selected = !beginningObject.people1Selected
+                if(beginningObject.people1Selected){
+                    if(beginningObject.people2Selected){
+                        beginningObject.people2Selected = false
+                        beginningObject.people2.width = beginningObject.people2.oldWidth
+                        beginningObject.people2.height = beginningObject.people2.oldHeight
+                    }
+                    beginningObject.people1.width = beginningObject.people1.bigWidth 
+                    beginningObject.people1.height = beginningObject.people1.bigHeight 
+                }else{
+                    beginningObject.people1.width = beginningObject.people1.oldWidth
+                    beginningObject.people1.height = beginningObject.people1.oldHeight
+     
+                }
+            }
+            if(x>=beginningObject.people2.position.x && x<=beginningObject.people2.position.x + beginningObject.people2.width && y>=beginningObject.people2.position.y && y<=beginningObject.people2.position.y+beginningObject.people2.height){
+                clickVedioPlay('btn')
+                beginningObject.people2Selected = !beginningObject.people2Selected
+                if(beginningObject.people2Selected){
+                    if(beginningObject.people1Selected){
+                        beginningObject.people1Selected = false
+                        beginningObject.people1.width = beginningObject.people1.oldWidth
+                        beginningObject.people1.height = beginningObject.people1.oldHeight
+                    }
+                    beginningObject.people2.width = beginningObject.people2.bigWidth 
+                    beginningObject.people2.height = beginningObject.people2.bigHeight 
+                }else{
+                    beginningObject.people2.width = beginningObject.people2.oldWidth
+                    beginningObject.people2.height = beginningObject.people2.oldHeight
+     
+                }
+            }
+            if(beginningObject.people1Selected || beginningObject.people2Selected){
+                beginningObject.chk2.show = true
+                beginningObject.chk2.enlarge = true
+                beginningObject.model2Chk = true
+            }else{
+                beginningObject.chk2.show = false
+                beginningObject.chk2.enlarge = false
+                beginningObject.model2Chk = false
+            }
+        }
+        if(beginningObject.model2Chk && beginningObject.chk2.show){
+            if(x>=beginningObject.chk1.position.x && x<=beginningObject.chk1.position.x + beginningObject.chk1.width && y>=beginningObject.chk1.position.y && y<=beginningObject.chk1.position.y+beginningObject.chk1.height){
+                clickVedioPlay('btn')
+                startFn()
+            }
+        }
+    }
+    if(!isStart) return
+    
     
     if(isRoomOpen){
         let close = buttons.close;
@@ -683,6 +788,7 @@ canvas.addEventListener('click', (e)=>{
             })
         }
     }
+    
     if(roomOpen.cool && isRoomOpen){
         if(coolObject.talk1.show && coolObject.talk1Chk){
             if(!coolObject.talk1Chk) return

@@ -446,10 +446,15 @@ const keys = {
 let busRun = false;
 let openAnim = null
 let busSpeed = 10
-const beginning = [
-
+let beginningBool = true
+const beginnings = [
+    new Shared({x:canvas.width/2 - (2078/5)/2, y:canvas.height/2 - (2121/5)/2, w:2078/5, h:2121/5, image: createImage('./images/beginning/model1.png'), isTalk:true, isEnlarge:false, multiple:1, name:'model', isShow:true ,}),
+    new Shared({x:canvas.width/2 - (112/2)/2, y:canvas.height/2 + 150, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:true, multiple:1.05, name:'chk1', isShow:true ,}),
+    new Shared({x:canvas.width/2 - (112/2)/2, y:canvas.height/2 + 150, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1.05, name:'chk2', isShow:false ,}),
+    new Shared({x:350, y:280, w:624/2.8, h:1603/2.8, image: createImage('./images/beginning/people2.png'), isPeople:true, name:'people2', isShow:false, multiple:1.1}),
+    new Shared({x:860, y:280, w:669/2.8, h:1567/2.8, image: createImage('./images/beginning/people1.png'), isPeople:true, name:'people1', isShow:false, multiple:1.1}),
 ]
-startFn()
+// startFn()
 function startFn(){
     bus.start = true
     busAudio.loop = true
@@ -478,7 +483,6 @@ function startFn(){
             scrollOffset = 0
             isStart = true
             bus.run = false
-    
             // 顯示第一句對話
             startNav = true;
             starts.filter(start=> start.name==='start01')[0].show = true;
@@ -527,6 +531,9 @@ function animate(){
             starts.forEach(start=>{
                 start.position.x -= player.speed *0.66
             })
+            beginnings.forEach(beginning=>{
+                beginning.position.x -= player.speed *0.66
+            })
             
         }else if(keys.left.pressed){
             if(scrollOffset > 0){
@@ -541,6 +548,9 @@ function animate(){
                 })
                 starts.forEach(start=>{
                     start.position.x += player.speed *0.66
+                })
+                beginnings.forEach(beginning=>{
+                    beginning.position.x += player.speed *0.66
                 })
             }
         }
@@ -659,6 +669,11 @@ function animate(){
     if(!bus.start){
         c.fillStyle = 'rgba(255,255,255,.5)'
         c.fillRect(0,0,canvas.width, canvas.height)
+        beginnings.forEach(beginning=>{
+            if(beginning.show){
+                beginning.draw()
+            }
+        })
     }
     
 }

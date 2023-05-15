@@ -138,6 +138,7 @@ class Shared{
         this.position = {
            x,y
         }
+        this.multiple = multiple
         this.image = image
         this.bigWidth = w*multiple
         this.oldWidth = w
