@@ -62,24 +62,25 @@ canvas.addEventListener('mousemove', (e)=>{
     var x = e.clientX - rect.left;
     var y = e.clientY - rect.top;
     if(!bus.start && beginningBool){
-        beginnings.some(beginning=>{
-            if(!beginning.enlarge) return
-            if(x >= beginning.position.x && x<=beginning.position.x+beginning.width && y>=beginning.position.y && y<=beginning.position.y + beginning.height){
-                // beginning.width = beginning.bigWidth
-                // beginning.height = beginning.bigHeight
-                if((!beginning.image.src.includes('_.png')) && beginning.talk){
-                    beginning.image.src = beginning.image.src.replace('.png', '_.png')
+        Object.keys(beginnings).some(beginning=>{
+            if(!beginnings[beginning].enlarge) return
+            if(x >= beginnings[beginning].position.x && x<=beginnings[beginning].position.x+beginnings[beginning].width && y>=beginnings[beginning].position.y && y<=beginnings[beginning].position.y + beginnings[beginning].height){
+                // beginnings[beginning].width = beginnings[beginning].bigWidth
+                // beginnings[beginning].height = beginnings[beginning].bigHeight
+                if((!beginnings[beginning].image.src.includes('_.png')) && beginnings[beginning].talk){
+                    beginnings[beginning].image.src = beginnings[beginning].image.src.replace('.png', '_.png')
                 }
                 return canvas.style.cursor = "pointer"
             }
-            // beginning.width = beginning.oldWidth
-            // beginning.height = beginning.oldHeight
+            // beginnings[beginning].width = beginnings[beginning].oldWidth
+            // beginnings[beginning].height = beginnings[beginning].oldHeight
             canvas.style.cursor = "default"
-            if(beginning.image.src.includes('_.png')){
-                beginning.image.src = beginning.image.src.replace('_.png', '.png')
+            if(beginnings[beginning].image.src.includes('_.png')){
+                beginnings[beginning].image.src = beginnings[beginning].image.src.replace('_.png', '.png')
             }
         })
     }
+    
     if(!isStart) return
 
     if(phone.show && phone.enlarge && !isRoomOpen){
@@ -127,19 +128,19 @@ canvas.addEventListener('mousemove', (e)=>{
             canvas.style.cursor = "default"
         }
     })
-    
-    starts.some(start=>{
-        if(!(start.show && start.enlarge)) return 
-        if(startNav && x > start.position.x && x < (start.position.x + start.width) && y > start.position.y && y < (start.position.y + start.height)){
-            start.width = start.bigWidth
-            start.height = start.bigHeight
+    Object.keys(starts).some(start=>{
+        if(!(starts[start].show && starts[start].enlarge)) return 
+        if(startNav && x > starts[start].position.x && x < (starts[start].position.x + starts[start].width) && y > starts[start].position.y && y < (starts[start].position.y + starts[start].height)){
+            starts[start].width = starts[start].bigWidth
+            starts[start].height = starts[start].bigHeight
             return canvas.style.cursor = "pointer"
         }else{
-            start.width = start.oldWidth
-            start.height = start.oldHeight
+            starts[start].width = starts[start].oldWidth
+            starts[start].height = starts[start].oldHeight
             canvas.style.cursor = "default"
         }
     })
+    
     if(isRoomOpen){
         let close = buttons.close;
         if(x >= close.position.x && x<=close.position.x+close.width && y>=close.position.y && y<=close.position.y + close.height && close.enlarge){
@@ -153,121 +154,120 @@ canvas.addEventListener('mousemove', (e)=>{
         }
     }
     if(roomOpen.cool && isRoomOpen){
-        cools.some(cool=>{
-            if(!cool.enlarge) return
-            if(x >= cool.position.x && x<=cool.position.x+cool.width && y>=cool.position.y && y<=cool.position.y + cool.height){
-                cool.width = cool.bigWidth
-                cool.height = cool.bigHeight
-                if((!cool.image.src.includes('_.png')) && cool.talk){
-                    cool.image.src = cool.image.src.replace('.png', '_.png')
+        Object.keys(cools).some(cool=>{
+            if(!cools[cool].enlarge) return
+            if(x >= cools[cool].position.x && x<=cools[cool].position.x+cools[cool].width && y>=cools[cool].position.y && y<=cools[cool].position.y + cools[cool].height){
+                cools[cool].width = cools[cool].bigWidth
+                cools[cool].height = cools[cool].bigHeight
+                if((!cools[cool].image.src.includes('_.png')) && cools[cool].talk){
+                    cools[cool].image.src = cools[cool].image.src.replace('.png', '_.png')
                 }
                 
                 return canvas.style.cursor = "pointer"
                 
             }
-            cool.width = cool.oldWidth
-            cool.height = cool.oldHeight
+            cools[cool].width = cools[cool].oldWidth
+            cools[cool].height = cools[cool].oldHeight
             canvas.style.cursor = "default"
-            if(cool.image.src.includes('_.png')){
-                cool.image.src = cool.image.src.replace('_.png', '.png')
+            if(cools[cool].image.src.includes('_.png')){
+                cools[cool].image.src = cools[cool].image.src.replace('_.png', '.png')
             }
         })
     }
     if(roomOpen.occupy && isRoomOpen){
-        occupys.some(occupy=>{
-            if(!occupy.enlarge) return
-            if(x >= occupy.position.x && x<=occupy.position.x+occupy.width && y>=occupy.position.y && y<=occupy.position.y + occupy.height){
-                occupy.width = occupy.bigWidth
-                occupy.height = occupy.bigHeight
-                if((!occupy.image.src.includes('_.png')) && occupy.talk){
-                    occupy.image.src = occupy.image.src.replace('.png', '_.png')
+        Object.keys(occupys).some(occupy=>{
+            if(!occupys[occupy].enlarge) return
+            if(x >= occupys[occupy].position.x && x<=occupys[occupy].position.x+occupys[occupy].width && y>=occupys[occupy].position.y && y<=occupys[occupy].position.y + occupys[occupy].height){
+                occupys[occupy].width = occupys[occupy].bigWidth
+                occupys[occupy].height = occupys[occupy].bigHeight
+                if((!occupys[occupy].image.src.includes('_.png')) && occupys[occupy].talk){
+                    occupys[occupy].image.src = occupys[occupy].image.src.replace('.png', '_.png')
                 }
                 
                 return canvas.style.cursor = "pointer"
                 
             }
-            occupy.width = occupy.oldWidth
-            occupy.height = occupy.oldHeight
+            occupys[occupy].width = occupys[occupy].oldWidth
+            occupys[occupy].height = occupys[occupy].oldHeight
             canvas.style.cursor = "default"
-            if(occupy.image.src.includes('_.png')){
-                occupy.image.src = occupy.image.src.replace('_.png', '.png')
+            if(occupys[occupy].image.src.includes('_.png')){
+                occupys[occupy].image.src = occupys[occupy].image.src.replace('_.png', '.png')
             }
         })
     }
     if(roomOpen.hoard && isRoomOpen){
-        hoards.some(hoard=>{
-            if(!hoard.enlarge) return
-            if(x >= hoard.position.x && x<=hoard.position.x+hoard.width && y>=hoard.position.y && y<=hoard.position.y + hoard.height){
-                hoard.width = hoard.bigWidth
-                hoard.height = hoard.bigHeight
-                if((!hoard.image.src.includes('_.png')) && hoard.talk){
-                    hoard.image.src = hoard.image.src.replace('.png', '_.png')
+        Object.keys(hoards).some(hoard=>{
+            if(!hoards[hoard].enlarge) return
+            if(x >= hoards[hoard].position.x && x<=hoards[hoard].position.x+hoards[hoard].width && y>=hoards[hoard].position.y && y<=hoards[hoard].position.y + hoards[hoard].height){
+                hoards[hoard].width = hoards[hoard].bigWidth
+                hoards[hoard].height = hoards[hoard].bigHeight
+                if((!hoards[hoard].image.src.includes('_.png')) && hoards[hoard].talk){
+                    hoards[hoard].image.src = hoards[hoard].image.src.replace('.png', '_.png')
                 }
-
                 return canvas.style.cursor = "pointer"
             }
-            hoard.width = hoard.oldWidth
-            hoard.height = hoard.oldHeight
+            hoards[hoard].width = hoards[hoard].oldWidth
+            hoards[hoard].height = hoards[hoard].oldHeight
             canvas.style.cursor = "default"
-            if(hoard.image.src.includes('_.png')){
-                hoard.image.src = hoard.image.src.replace('_.png', '.png')
+            if(hoards[hoard].image.src.includes('_.png')){
+                hoards[hoard].image.src = hoards[hoard].image.src.replace('_.png', '.png')
             }
         })
     }
     if(roomOpen.network && isRoomOpen){
-        networks.some(net=>{
-            if(!net.enlarge) return
-            if(x >= net.position.x && x<=net.position.x+net.width && y>=net.position.y && y<=net.position.y + net.height){
-                net.width = net.bigWidth
-                net.height = net.bigHeight
-                if((!net.image.src.includes('_.png')) && net.talk){
-                    net.image.src = net.image.src.replace('.png', '_.png')
+        Object.keys(networks).some(net=>{
+            if(!networks[net].enlarge) return
+            if(x >= networks[net].position.x && x<=networks[net].position.x+networks[net].width && y>=networks[net].position.y && y<=networks[net].position.y + networks[net].height){
+                networks[net].width = networks[net].bigWidth
+                networks[net].height = networks[net].bigHeight
+                if((!networks[net].image.src.includes('_.png')) && networks[net].talk){
+                    networks[net].image.src = networks[net].image.src.replace('.png', '_.png')
                 }
                 return canvas.style.cursor = "pointer"
             }
-            net.width = net.oldWidth
-            net.height = net.oldHeight
+            networks[net].width = networks[net].oldWidth
+            networks[net].height = networks[net].oldHeight
             canvas.style.cursor = "default"
-            if(net.image.src.includes('_.png')){
-                net.image.src = net.image.src.replace('_.png', '.png')
+            if(networks[net].image.src.includes('_.png')){
+                networks[net].image.src = networks[net].image.src.replace('_.png', '.png')
             }
         })
     }
     if(roomOpen.noisy && isRoomOpen){
-        noisys.some(noisy=>{
-            if(!noisy.enlarge) return
-            if(x >= noisy.position.x && x<=noisy.position.x+noisy.width && y>=noisy.position.y && y<=noisy.position.y + noisy.height){
-                noisy.width = noisy.bigWidth
-                noisy.height = noisy.bigHeight
-                if((!noisy.image.src.includes('_.png')) && noisy.talk){
-                    noisy.image.src = noisy.image.src.replace('.png', '_.png')
+        Object.keys(noisys).some(noisy=>{
+            if(!noisys[noisy].enlarge) return
+            if(x >= noisys[noisy].position.x && x<=noisys[noisy].position.x+noisys[noisy].width && y>=noisys[noisy].position.y && y<=noisys[noisy].position.y + noisys[noisy].height){
+                noisys[noisy].width = noisys[noisy].bigWidth
+                noisys[noisy].height = noisys[noisy].bigHeight
+                if((!noisys[noisy].image.src.includes('_.png')) && noisys[noisy].talk){
+                    noisys[noisy].image.src = noisys[noisy].image.src.replace('.png', '_.png')
                 }
                 return canvas.style.cursor = "pointer"
             }
-            noisy.width = noisy.oldWidth
-            noisy.height = noisy.oldHeight
+            noisys[noisy].width = noisys[noisy].oldWidth
+            noisys[noisy].height = noisys[noisy].oldHeight
             canvas.style.cursor = "default"
-            if(noisy.image.src.includes('_.png')){
-                noisy.image.src = noisy.image.src.replace('_.png', '.png')
+            if(noisys[noisy].image.src.includes('_.png')){
+                noisys[noisy].image.src = noisys[noisy].image.src.replace('_.png', '.png')
             }
         })
     }
     if(roomOpen.delay && isRoomOpen){
-        delays.some(delay=>{
-            if(!delay.enlarge) return
-            if(x >= delay.position.x && x<=delay.position.x+delay.width && y>=delay.position.y && y<=delay.position.y + delay.height){
-                delay.width = delay.bigWidth
-                delay.height = delay.bigHeight
-                if((!delay.image.src.includes('_.png')) && delay.talk){
-                    delay.image.src = delay.image.src.replace('.png', '_.png')
+        Object.keys(delays).some(delay=>{
+            if(!delays[delay].enlarge) return
+            if(x >= delays[delay].position.x && x<=delays[delay].position.x+delays[delay].width && y>=delays[delay].position.y && y<=delays[delay].position.y + delays[delay].height){
+                delays[delay].width = delays[delay].bigWidth
+                delays[delay].height = delays[delay].bigHeight
+                if((!delays[delay].image.src.includes('_.png')) && delays[delay].talk){
+                    delays[delay].image.src = delays[delay].image.src.replace('.png', '_.png')
                 }
                 return canvas.style.cursor = "pointer"
             }
-            delay.width = delay.oldWidth
-            delay.height = delay.oldHeight
+            delays[delay].width = delays[delay].oldWidth
+            delays[delay].height = delays[delay].oldHeight
             canvas.style.cursor = "default"
-            if(delay.image.src.includes('_.png')){
-                delay.image.src = delay.image.src.replace('_.png', '.png')
+            if(delays[delay].image.src.includes('_.png')){
+                delays[delay].image.src = delays[delay].image.src.replace('_.png', '.png')
             }
         })
     }
@@ -280,395 +280,390 @@ canvas.addEventListener('mousemove', (e)=>{
 
 //霸位
 const occupyObject = {
-    sitdown: occupys.filter(occupy=> occupy.name === 'sitdown')[0],
+    sitdown: occupys.sitdown,
     sitdownChk: true,
-    people: occupys.filter(occupy=>occupy.name === 'people')[0],
-    talk1: occupys.filter(occupy=>occupy.name == '1')[0],
+    people: occupys.people,
+    talk1: occupys.talk1,
     talk1Chk: false,
-    response2: occupys.filter(occupy=>occupy.name == '2')[0],
-    talk3A: occupys.filter(occupy=>occupy.name == '3A')[0],
-    talk3B: occupys.filter(occupy=>occupy.name == '3B')[0],
+    response2: occupys.response2,
+    talk3A: occupys.talk3A,
+    talk3B: occupys.talk3B,
     talk3Chk: false,
-    response4: occupys.filter(occupy=>occupy.name == '4')[0], 
+    response4: occupys.response4,
     
-    talk5A: occupys.filter(occupy=>occupy.name == '5A')[0],
-    talk5B: occupys.filter(occupy=>occupy.name == '5B')[0],
+    talk5A: occupys.talk5A,
+    talk5B: occupys.talk5B,
     talk5Chk: false,
-    response6A: occupys.filter(occupy=>occupy.name == '6A')[0], 
-    response6B: occupys.filter(occupy=>occupy.name == '6B')[0], 
+    response6A: occupys.response6A,
+    response6B: occupys.response6B,
     
-    talk7: occupys.filter(occupy=>occupy.name == '7')[0],
+    talk7: occupys.talk7,
     talk7Chk: false,
-    response8: occupys.filter(occupy=>occupy.name == '8')[0], 
+    response8: occupys.response8,
     
-    response9: occupys.filter(occupy=>occupy.name == '9')[0], 
-    chk: occupys.filter(occupy=>occupy.name == 'chk')[0], 
+    response9: occupys.response9,
+    chk: occupys.chk,
     
-    talk10A: occupys.filter(occupy=>occupy.name == '10A')[0],
-    talk10B: occupys.filter(occupy=>occupy.name == '10B')[0],
-    talk10C: occupys.filter(occupy=>occupy.name == '10C')[0],
+    talk10A: occupys.talk10A,
+    talk10B: occupys.talk10B,
+    talk10C: occupys.talk10C,
     talk10Chk: false,
 
-    end: occupys.filter(occupy=>occupy.name === 'end')[0],
+    end: occupys.end,
 }
 //納涼
 const coolObject = {
-    people: cools.filter(cool=>cool.name === 'people')[0],
-    talk1: cools.filter(cool=> cool.name === '1')[0],
-    talk001: cools.filter(cool=> cool.name === '001')[0],
+    people: cools.people,
+    talk1: cools.talk1,
+    talk001: cools.talk001,
     talk1Chk: true,
 
-    talk1001: cools.filter(cool=> cool.name === '1001')[0],
-    talk002: cools.filter(cool=> cool.name === '002')[0],
-    chk: cools.filter(cool=> cool.name === 'chk')[0],
+    talk1001: cools.talk1001,
+    talk002: cools.talk002,
+    chk: cools.chk,
     talk2Chk: false,
 
-    talk3: cools.filter(cool=> cool.name === '3')[0],
+    talk3: cools.talk3,
     talk3Chk: false,
 
-    talk4A: cools.filter(cool=> cool.name === '4A')[0],
-    talk4B: cools.filter(cool=> cool.name === '4B')[0],
-    talk003: cools.filter(cool=> cool.name === '003')[0],
+    talk4A: cools.talk4A,
+    talk4B: cools.talk4B,
+    talk003: cools.talk003,
     talk4Chk: false,
 
-    talkPeople: cools.filter(cool=> cool.name === 'talkPeople')[0],
-    response5A: cools.filter(cool=> cool.name === '5A')[0],
-    response5B: cools.filter(cool=> cool.name === '5B')[0],
-    talk004: cools.filter(cool=> cool.name === '004')[0],
+    talkPeople: cools.talkPeople,
+    response5A: cools.response5A,
+    response5B: cools.response5B,
+    talk004: cools.talk004,
 
-    talk6: cools.filter(cool=> cool.name === '6')[0],
+    talk6: cools.talk6,
     talk6Chk: false,
 
-    response7: cools.filter(cool=> cool.name === '7')[0],
+    response7: cools.response7,
 
-    talk8: cools.filter(cool=> cool.name === '8')[0],
+    talk8: cools.talk8,
     talk8Chk: false,
 
-    response9: cools.filter(cool=> cool.name === '9')[0],
+    response9: cools.response9,
 
-    talk10A: cools.filter(cool=> cool.name === '10A')[0],
-    talk10B: cools.filter(cool=> cool.name === '10B')[0],
+    talk10A: cools.talk10A,
+    talk10B: cools.talk10B,
     talk10Chk: false,
 
-    response11A: cools.filter(cool=> cool.name === '11A')[0],
-    response11B: cools.filter(cool=> cool.name === '11B')[0],
+    response11A: cools.response11A,
+    response11B: cools.response11B,
 
 
-    cup:cools.filter(cool=> cool.name==='cup')[0],
+    cup:cools.cup,
     cupChk:false,
 
-    end:cools.filter(cool=> cool.name === 'end')[0],
+    end:cools.end,
 
-    talk005: cools.filter(cool=>cool.name === '005')[0],
+    talk005: cools.talk005,
     talk005Chk: false,
-    talk006: cools.filter(cool=>cool.name === '006')[0],
+    talk006: cools.talk006,
     talk006Chk: false,
 
-    talk06: cools.filter(cool=>cool.name === '06')[0],
+    talk06: cools.talk06,
     talk06Chk: false,
-
-   
-    
 }
 const hoardObject = {
-    inter1: hoards.filter(hoard=>hoard.name === 'inter1')[0],
-    inter2: hoards.filter(hoard=>hoard.name === 'inter2')[0],
-    inter3: hoards.filter(hoard=>hoard.name === 'inter3')[0],
-    inter4: hoards.filter(hoard=>hoard.name === 'inter4')[0],
-    inter5: hoards.filter(hoard=>hoard.name === 'inter5')[0],
-    inter6: hoards.filter(hoard=>hoard.name === 'inter6')[0],
-    inter7: hoards.filter(hoard=>hoard.name === 'inter7')[0],
-    inter8: hoards.filter(hoard=>hoard.name === 'inter8')[0],
+    inter1: hoards.inter1,
+    inter2: hoards.inter2,
+    inter3: hoards.inter3,
+    inter4: hoards.inter4,
+    inter5: hoards.inter5,
+    inter6: hoards.inter6,
+    inter7: hoards.inter7,
+    inter8: hoards.inter8,
 
-    inter1Ok: hoards.filter(hoard=>hoard.name === 'ok-inter1')[0],
-    inter2Ok: hoards.filter(hoard=>hoard.name === 'ok-inter2')[0],
-    inter3Ok: hoards.filter(hoard=>hoard.name === 'ok-inter3')[0],
-    inter4Ok: hoards.filter(hoard=>hoard.name === 'ok-inter4')[0],
-    inter5Ok: hoards.filter(hoard=>hoard.name === 'ok-inter5')[0],
-    inter6Ok: hoards.filter(hoard=>hoard.name === 'ok-inter6')[0],
-    inter7Ok: hoards.filter(hoard=>hoard.name === 'ok-inter7')[0],
-    inter8Ok: hoards.filter(hoard=>hoard.name === 'ok-inter8')[0],
+    inter1Ok: hoards.inter1Ok,
+    inter2Ok: hoards.inter2Ok,
+    inter3Ok: hoards.inter3Ok,
+    inter4Ok: hoards.inter4Ok,
+    inter5Ok: hoards.inter5Ok,
+    inter6Ok: hoards.inter6Ok,
+    inter7Ok: hoards.inter7Ok,
+    inter8Ok: hoards.inter8Ok,
 
     interOkNum: 0,
 
-    talk1: hoards.filter(hoard=>hoard.name === '1')[0],
+    talk1: hoards.talk1,
     talk1Chk: true,
-    talk2: hoards.filter(hoard=>hoard.name === '2')[0],
+    talk2: hoards.talk2,
     talk2Chk: false,
-    s1: hoards.filter(hoard=>hoard.name === 's1')[0],
-    a1: hoards.filter(hoard=>hoard.name === 'a1')[0],
-    b1: hoards.filter(hoard=>hoard.name === 'b1')[0],
-    c1: hoards.filter(hoard=>hoard.name === 'c1')[0],
-    d1: hoards.filter(hoard=>hoard.name === 'd1')[0],
-    e1: hoards.filter(hoard=>hoard.name === 'e1')[0],
-    f1: hoards.filter(hoard=>hoard.name === 'f1')[0],
-    g1: hoards.filter(hoard=>hoard.name === 'g1')[0],
-    h1: hoards.filter(hoard=>hoard.name === 'h1')[0],
+    s1: hoards.s1,
+    a1: hoards.a1,
+    b1: hoards.b1,
+    c1: hoards.c1,
+    d1: hoards.d1,
+    e1: hoards.e1,
+    f1: hoards.f1,
+    g1: hoards.g1,
+    h1: hoards.h1,
 
     removeInterObj: false,
 
-    hold: hoards.filter(hoard=>hoard.name === 'hold')[0],
-    smallPeople: hoards.filter(hoard=>hoard.name === 'smallPeople')[0],
-    people: hoards.filter(hoard=>hoard.name === 'people')[0],
-    response3: hoards.filter(hoard=>hoard.name === '3')[0],
-    talk4: hoards.filter(hoard=>hoard.name === '4')[0],
+    hold: hoards.hold,
+    smallPeople: hoards.smallPeople,
+    people: hoards.people,
+    response3: hoards.response3,
+    talk4: hoards.talk4,
     talk4Chk: false,
-    response5: hoards.filter(hoard=>hoard.name === '5')[0],
+    response5: hoards.response5,
 
-    talk6A: hoards.filter(hoard=>hoard.name === '6A')[0],
-    talk6B: hoards.filter(hoard=>hoard.name === '6B')[0],
+    talk6A: hoards.talk6A,
+    talk6B: hoards.talk6B,
     talk6Chk: false,
-    response7: hoards.filter(hoard=>hoard.name === '7')[0],
+    response7: hoards.response7,
 
-    talk8: hoards.filter(hoard=>hoard.name === '8')[0],
+    talk8: hoards.talk8,
     talk8Chk: false,
 
-    response9: hoards.filter(hoard=>hoard.name === '9')[0],
+    response9: hoards.response9,
 
-    talk10A:hoards.filter(hoard=>hoard.name === '10A')[0],
-    talk10B:hoards.filter(hoard=>hoard.name === '10B')[0],
+    talk10A:hoards.talk10A,
+    talk10B:hoards.talk10B,
     talk10Chk: false,
-    response11: hoards.filter(hoard=>hoard.name === '11')[0],
+    response11: hoards.response11,
 
-    talk12:hoards.filter(hoard=>hoard.name === '12')[0],
+    talk12:hoards.talk12,
     talk12Chk: false,
-    response13: hoards.filter(hoard=>hoard.name === '13')[0],
+    response13: hoards.response13,
     
-    talk14: hoards.filter(hoard=>hoard.name === '14')[0],
+    talk14: hoards.talk14,
     talk14Chk: false,
 
 
     startInter: false,
     interNum: 0,
 
-    finish: hoards.filter(hoard=>hoard.name === 'finish')[0],
+    finish: hoards.finish,
     finishChk: false,
 
-    talk16A: hoards.filter(hoard=>hoard.name === '16A')[0],
-    talk16B: hoards.filter(hoard=>hoard.name === '16B')[0],
-    talk16C: hoards.filter(hoard=>hoard.name === '16C')[0],
+    talk16A: hoards.talk16A,
+    talk16B: hoards.talk16B,
+    talk16C: hoards.talk16C,
     talk16Chk: false,
-    response15: hoards.filter(hoard=>hoard.name === '15')[0],
-    chk: hoards.filter(hoard=>hoard.name === 'chk')[0],
-    chk2: hoards.filter(hoard=>hoard.name === 'chk2')[0],
-    end: hoards.filter(hoard=>hoard.name === 'end')[0],
+    response15: hoards.response15,
+    chk: hoards.chk,
+    chk2: hoards.chk2,
+    end: hoards.end,
 }
 //網路
 const netObject = {
-    computer: networks.filter(net=>net.name === 'computer')[0],
+    computer: networks.computer,
 
-    smallPeople: networks.filter(net=>net.name === 'smallPeople')[0],
-    people: networks.filter(net=>net.name === 'people')[0],
+    smallPeople: networks.smallPeople,
+    people: networks.people,
     startChk:true,
-    response1: networks.filter(net=>net.name === '1')[0],
+    response1: networks.response1,
 
-    talk2: networks.filter(net=>net.name === '2')[0],
+    talk2: networks.talk2,
     talk2Chk: false,
-    response3: networks.filter(net=>net.name === '3')[0],
+    response3: networks.response3,
 
-    talk4: networks.filter(net=>net.name === '4')[0],
+    talk4: networks.talk4,
     talk4Chk: false,
-    response5: networks.filter(net=>net.name === '5')[0],
+    response5: networks.response5,
 
-    talk6: networks.filter(net=>net.name === '6')[0],
+    talk6: networks.talk6,
     talk6Chk: false,
-    response7: networks.filter(net=>net.name === '7')[0],
+    response7: networks.response7,
 
-    talk8A: networks.filter(net=>net.name === '8A')[0],
-    talk8B: networks.filter(net=>net.name === '8B')[0],
+    talk8A: networks.talk8A,
+    talk8B: networks.talk8B,
     talk8Chk: false,
-    response9A: networks.filter(net=>net.name === '9A')[0],
-    response9B: networks.filter(net=>net.name === '9B')[0],
+    response9A: networks.response9A,
+    response9B: networks.response9B,
 
-    talk10: networks.filter(net=>net.name === '10')[0],
+    talk10: networks.talk10,
     talk10Chk: false,
 
-    talk11A: networks.filter(net=>net.name === '11A')[0],
-    talk11B: networks.filter(net=>net.name === '11B')[0],
+    talk11A: networks.talk11A,
+    talk11B: networks.talk11B,
     talk11Chk: false,
-    response12: networks.filter(net=>net.name === '12')[0],
+    response12: networks.response12,
 
-    talk13A: networks.filter(net=>net.name === '13A')[0],
-    talk13B: networks.filter(net=>net.name === '13B')[0],
+    talk13A: networks.talk13A,
+    talk13B: networks.talk13B,
     talk13Chk: false,
-    response14: networks.filter(net=>net.name === '14')[0],
+    response14: networks.response14,
 
-    talk15: networks.filter(net=>net.name === '15')[0],
+    talk15: networks.talk15,
     talk15Chk: false,
 
     webShow:false,
-    web: networks.filter(cool=>cool.name === 'web')[0],
-    left: networks.filter(cool=>cool.name === 'left')[0],
-    right: networks.filter(cool=>cool.name === 'right')[0],
+    web: networks.web,
+    left: networks.left,
+    right: networks.right,
     webNum: 1,
-    web2btn1: networks.filter(cool=>cool.name === 'web2btn1')[0],
-    web2btn2: networks.filter(cool=>cool.name === 'web2btn2')[0],
-    web2btn3: networks.filter(cool=>cool.name === 'web2btn3')[0],
-    web3btn: networks.filter(cool=>cool.name === 'web3btn')[0],
-    web4btn: networks.filter(cool=>cool.name === 'web4btn')[0],
-    web5btn: networks.filter(cool=>cool.name === 'web5btn')[0],
-    web6btn: networks.filter(cool=>cool.name === 'web6btn')[0],
+    web2btn1: networks.web2btn1,
+    web2btn2: networks.web2btn2,
+    web2btn3: networks.web2btn3,
+    web3btn: networks.web3btn,
+    web4btn: networks.web4btn,
+    web5btn: networks.web5btn,
+    web6btn: networks.web6btn,
 
     is404: false,
-    goback: networks.filter(cool=>cool.name === 'goback')[0],
-    chk: networks.filter(net=>net.name === 'chk')[0],
+    goback: networks.goback,
+    chk: networks.chk,
     
-    end: networks.filter(net=>net.name === 'end')[0],
+    end: networks.end,
 }
 const noisyObject = {
-    wall1: noisys.filter(noisy=>noisy.name === 'wall1')[0],
-    wall2: noisys.filter(noisy=>noisy.name === 'wall2')[0],
-    wall3: noisys.filter(noisy=>noisy.name === 'wall3')[0],
-    wall4: noisys.filter(noisy=>noisy.name === 'wall4')[0],
-    wall5: noisys.filter(noisy=>noisy.name === 'wall5')[0],
-    wall6: noisys.filter(noisy=>noisy.name === 'wall6')[0],
-    wall7: noisys.filter(noisy=>noisy.name === 'wall7')[0],
+    wall1: noisys.wall1,
+    wall2: noisys.wall2,
+    wall3: noisys.wall3,
+    wall4: noisys.wall4,
+    wall5: noisys.wall5,
+    wall6: noisys.wall6,
+    wall7: noisys.wall7,
 
-    walltalk1: noisys.filter(noisy=>noisy.name === 'walltalk1')[0],
-    walltalk2: noisys.filter(noisy=>noisy.name === 'walltalk2')[0],
-    walltalk3: noisys.filter(noisy=>noisy.name === 'walltalk3')[0],
-    walltalk4: noisys.filter(noisy=>noisy.name === 'walltalk4')[0],
-    walltalk5: noisys.filter(noisy=>noisy.name === 'walltalk5')[0],
-    walltalk6: noisys.filter(noisy=>noisy.name === 'walltalk6')[0],
-    walltalk7: noisys.filter(noisy=>noisy.name === 'walltalk7')[0],
+    walltalk1: noisys.walltalk1,
+    walltalk2: noisys.walltalk2,
+    walltalk3: noisys.walltalk3,
+    walltalk4: noisys.walltalk4,
+    walltalk5: noisys.walltalk5,
+    walltalk6: noisys.walltalk6,
+    walltalk7: noisys.walltalk7,
 
-    walltalk1chk: noisys.filter(noisy=>noisy.name === 'walltalk1chk')[0],
-    walltalk2chk: noisys.filter(noisy=>noisy.name === 'walltalk2chk')[0],
-    walltalk3chk: noisys.filter(noisy=>noisy.name === 'walltalk3chk')[0],
-    walltalk4chk: noisys.filter(noisy=>noisy.name === 'walltalk4chk')[0],
-    walltalk5chk: noisys.filter(noisy=>noisy.name === 'walltalk5chk')[0],
-    walltalk6chk: noisys.filter(noisy=>noisy.name === 'walltalk6chk')[0],
-    walltalk7chk: noisys.filter(noisy=>noisy.name === 'walltalk7chk')[0],
+    walltalk1chk: noisys.walltalk1chk,
+    walltalk2chk: noisys.walltalk2chk,
+    walltalk3chk: noisys.walltalk3chk,
+    walltalk4chk: noisys.walltalk4chk,
+    walltalk5chk: noisys.walltalk5chk,
+    walltalk6chk: noisys.walltalk6chk,
+    walltalk7chk: noisys.walltalk7chk,
 
-    walltalk1cancel: noisys.filter(noisy=>noisy.name === 'walltalk1cancel')[0],
-    walltalk2cancel: noisys.filter(noisy=>noisy.name === 'walltalk2cancel')[0],
-    walltalk3cancel: noisys.filter(noisy=>noisy.name === 'walltalk3cancel')[0],
-    walltalk4cancel: noisys.filter(noisy=>noisy.name === 'walltalk4cancel')[0],
-    walltalk5cancel: noisys.filter(noisy=>noisy.name === 'walltalk5cancel')[0],
-    walltalk6cancel: noisys.filter(noisy=>noisy.name === 'walltalk6cancel')[0],
-    walltalk7cancel: noisys.filter(noisy=>noisy.name === 'walltalk7cancel')[0],
+    walltalk1cancel: noisys.walltalk1cancel,
+    walltalk2cancel: noisys.walltalk2cancel,
+    walltalk3cancel: noisys.walltalk3cancel,
+    walltalk4cancel: noisys.walltalk4cancel,
+    walltalk5cancel: noisys.walltalk5cancel,
+    walltalk6cancel: noisys.walltalk6cancel,
+    walltalk7cancel: noisys.walltalk7cancel,
 
 
-    smallPeople: noisys.filter(noisy=>noisy.name === 'smallPeople')[0],
-    people: noisys.filter(noisy=>noisy.name === 'people')[0],
+    smallPeople: noisys.smallPeople,
+    people: noisys.people,
     startChk: true,
 
-    talk1A: noisys.filter(noisy=>noisy.name === '1A')[0],
-    talk1B: noisys.filter(noisy=>noisy.name === '1B')[0],
+    talk1A: noisys.talk1A,
+    talk1B: noisys.talk1B,
     talk1Chk: false,
-    response2A: noisys.filter(noisy=>noisy.name === '2A')[0],
-    response2B: noisys.filter(noisy=>noisy.name === '2B')[0],
+    response2A: noisys.response2A,
+    response2B: noisys.response2B,
 
-    talk3: noisys.filter(noisy=>noisy.name === '3')[0],
+    talk3: noisys.talk3,
     talk3Chk: false,
 
-    talk4A: noisys.filter(noisy=>noisy.name === '4A')[0],
-    talk4B: noisys.filter(noisy=>noisy.name === '4B')[0],
+    talk4A: noisys.talk4A,
+    talk4B: noisys.talk4B,
     talk4Chk: false,
 
-    response5A: noisys.filter(noisy=>noisy.name === '5A')[0],
-    response5B: noisys.filter(noisy=>noisy.name === '5B')[0],
+    response5A: noisys.response5A,
+    response5B: noisys.response5B,
 
-    talk6: noisys.filter(noisy=>noisy.name === '6')[0],
+    talk6: noisys.talk6,
     talk6Chk: false,
 
     wallChk: false,
     wallStop: false,
-    chk: noisys.filter(noisy=>noisy.name === 'chk')[0],
+    chk: noisys.chk,
 
     ans:[0,0,0,0,0,0,1],
     idx:0,
 
-    A: noisys.filter(noisy=>noisy.name === 'A')[0],
-    B: noisys.filter(noisy=>noisy.name === 'B')[0],
+    A: noisys.A,
+    B: noisys.B,
 
-    response7A: noisys.filter(noisy=>noisy.name === '7A')[0],
-    response7B: noisys.filter(noisy=>noisy.name === '7B')[0],
+    response7A: noisys.response7A,
+    response7B: noisys.response7B,
     
-    end: noisys.filter(noisy=>noisy.name === 'end')[0],
+    end: noisys.end,
 }
 const delayObject = {
-    people: delays.filter(delay=>delay.name === 'people')[0],
-    talk1: delays.filter(delay=>delay.name === '1')[0],
+    people: delays.fipeople,
+    talk1: delays.talk1,
     talk1Chk: true,
-    response2: delays.filter(delay=>delay.name === '2')[0],
-    response3: delays.filter(delay=>delay.name === '3')[0],
+    response2: delays.response2,
+    response3: delays.response3,
 
-    talk4: delays.filter(delay=>delay.name === '4')[0],
+    talk4: delays.talk4,
     talk4Chk: false,
-    response5: delays.filter(delay=>delay.name === '5')[0],
+    response5: delays.response5,
 
-    talk6: delays.filter(delay=>delay.name === '6')[0],
+    talk6: delays.talk6,
     talk6Chk: false,
-    response7: delays.filter(delay=>delay.name === '7')[0],
+    response7: delays.response7,
 
-    talk8A: delays.filter(delay=>delay.name === '8A')[0],
-    talk8B: delays.filter(delay=>delay.name === '8B')[0],
-    talk8C: delays.filter(delay=>delay.name === '8C')[0],
+    talk8A: delays.talk8A,
+    talk8B: delays.talk8B,
+    talk8C: delays.talk8C,
     talk8Chk: false,
 
-    talk9: delays.filter(delay=>delay.name === '9')[0],
+    talk9: delays.talk9,
     talk9Chk: false,
 
-    CG1: delays.filter(delay=>delay.name === 'CG1')[0],
-    CG2: delays.filter(delay=>delay.name === 'CG2')[0],
-    battery1: delays.filter(delay=>delay.name === 'battery1')[0],
-    battery2: delays.filter(delay=>delay.name === 'battery2')[0],
-    battery3: delays.filter(delay=>delay.name === 'battery3')[0],
-    battery4: delays.filter(delay=>delay.name === 'battery4')[0],
-    a1: delays.filter(delay=>delay.name === 'a1')[0],
-    b1: delays.filter(delay=>delay.name === 'b1')[0],
-    c1: delays.filter(delay=>delay.name === 'c1')[0],
-    d1: delays.filter(delay=>delay.name === 'd1')[0],
-    a2: delays.filter(delay=>delay.name === 'a2')[0],
-    b2: delays.filter(delay=>delay.name === 'b2')[0],
-    c2: delays.filter(delay=>delay.name === 'c2')[0],
-    d2: delays.filter(delay=>delay.name === 'd2')[0],
-    chk: delays.filter(delay=>delay.name === 'chk')[0],
-    count: delays.filter(delay=>delay.name === 'count')[0],
+    CG1: delays.CG1,
+    CG2: delays.CG2,
+    battery1: delays.battery1,
+    battery2: delays.battery2,
+    battery3: delays.battery3,
+    battery4: delays.battery4,
+    a1: delays.a1,
+    b1: delays.b1,
+    c1: delays.c1,
+    d1: delays.d1,
+    a2: delays.a2,
+    b2: delays.b2,
+    c2: delays.c2,
+    d2: delays.d2,
+    chk: delays.chk,
+    count: delays.count,
     startInter: false,
     batteryNum:0,
 
-    response10: delays.filter(delay=>delay.name === '10')[0],
-    talk11: delays.filter(delay=>delay.name === '11')[0],
+    response10: delays.response10,
+    talk11: delays.talk11,
     talk11Chk: false,
-    response12: delays.filter(delay=>delay.name === '12')[0],
-    talk13A: delays.filter(delay=>delay.name === '13A')[0],
-    talk13B: delays.filter(delay=>delay.name === '13B')[0],
+    response12: delays.response12,
+    talk13A: delays.talk13A,
+    talk13B: delays.talk13B,
     talk13Chk: false,
 
-    response14A: delays.filter(delay=>delay.name === '14A')[0],
-    response14B: delays.filter(delay=>delay.name === '14B')[0],
-    response15: delays.filter(delay=>delay.name === '15')[0],
+    response14A: delays.response14A,
+    response14B: delays.response14B,
+    response15: delays.response15,
 
-    talk16A: delays.filter(delay=>delay.name === '16A')[0],
-    talk16B: delays.filter(delay=>delay.name === '16B')[0],
+    talk16A: delays.talk16A,
+    talk16B: delays.talk16B,
     talk16Chk: false,
-    response17A: delays.filter(delay=>delay.name === '17A')[0],
-    response17B: delays.filter(delay=>delay.name === '17B')[0],
+    response17A: delays.response17A,
+    response17B: delays.response17B,
 
-    end: delays.filter(delay=>delay.name === 'end')[0],
-
+    end: delays.end,
 }
 
-
 const beginningObject = {
-    model: beginnings.filter(beginning=>beginning.name === 'model')[0],
+    model: beginnings.model,
     model1Chk: true,
-    chk1: beginnings.filter(beginning=>beginning.name === 'chk1')[0],
-    chk2: beginnings.filter(beginning=>beginning.name === 'chk2')[0],
+    chk1: beginnings.chk1,
+    chk2: beginnings.chk2,
     selectPeople:true,
     model2Chk: false,
-    people1: beginnings.filter(beginning=>beginning.name === 'people1')[0],
-    people2: beginnings.filter(beginning=>beginning.name === 'people2')[0],
+    people1: beginnings.people1,
+    people2: beginnings.people2,
     people1Selected: false,
     people2Selected: false,
 
 }
 canvas.addEventListener('click', (e)=>{
-    var rect = canvas.getBoundingClientRect();
-    var x = e.clientX - rect.left;
-    var y = e.clientY - rect.top;
+    let rect = canvas.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
     if(!bus.start && beginningBool){
         if(beginningObject.model1Chk && beginningObject.chk1.show){
             if(!beginningObject.model1Chk) return
@@ -755,7 +750,7 @@ canvas.addEventListener('click', (e)=>{
                 console.log(startNav);
                 console.log(isTeaching);
                 setTimeout(()=>{
-                    starts.filter(start=>start.name === 'start07')[0].show = true
+                    starts.start07.show = true
                 },10)
             }
             if(roomOpen.cool){
@@ -1143,7 +1138,7 @@ canvas.addEventListener('click', (e)=>{
             }
             buttons.close.enlarge = true
             globalClick = false
-            starts.filter(start=>start.name === 'start05')[0].show = false
+            starts.start05 = false
 
             setTimeout(()=>{
                 if(!isRoomOpen) return
@@ -1331,11 +1326,11 @@ canvas.addEventListener('click', (e)=>{
                 occupyObject.chk.enlarge = false
                 occupyObject.people.show = false
 
-                occupys.forEach(occupy=>{
-                    if(occupy.name === null){
+                Object.keys(occupys).forEach(occupy=>{
+                    if(occupys[occupy].name === null){
                         clickVedioPlay('obj')
-                        occupy.dragging = true
-                        occupy.enlarge = true
+                        occupys[occupy].dragging = true
+                        occupys[occupy].enlarge = true
                     }
                 })
 
@@ -3432,7 +3427,7 @@ canvas.addEventListener('click', (e)=>{
             player.move = true
             if(!isTeaching){
                 buttons.close.enlarge = true
-                cools.filter(cool=> cool.name === '001')[0].show = false
+                cools.talk001 = false
             }else{
                 buttons.close.enlarge = false
             }
@@ -3478,93 +3473,93 @@ canvas.addEventListener('click', (e)=>{
         
     })
     if(startNav){
-        starts.forEach(start=>{
-            let bool = x >= start.position.x && x <= start.position.x + start.width && y>=start.position.y && y<=start.position.y + start.height
+        Object.keys(starts).forEach(start=>{
+            let bool = (x >= starts[start].position.x && x <= starts[start].position.x + starts[start].width && y>=starts[start].position.y && y<=starts[start].position.y + starts[start].height)
             if(!bool) return
-            if(!start.show) return
-            if(!start.enlarge) return
-            if(start.name === 'start01Btn'){
+            if(!starts[start].show) return
+            if(!starts[start].enlarge) return
+            if(starts[start].name === 'start01Btn'){
                 getOff = true;
-                starts.filter(start=> start.name === 'start01' )[0].show = false
-                starts.filter(start=> start.name === 'start01Btn' )[0].show = false
-                starts.filter(start=> start.name === 'start02' )[0].show = true
+                starts.start01.show = false
+                starts.start01Btn.show = false
+                starts.start02.show = true
                 clickVedioPlay('btn')
                 setTimeout(()=>{
                     globalClick = true
-                    starts.filter(start=> start.name === 'chk2' )[0].show = true
-                    starts.filter(start=> start.name === 'chk2' )[0].enlarge = true
-                    starts.filter(start=> start.name === 'skip' )[0].show = true
-                    starts.filter(start=> start.name === 'skip' )[0].enlarge = true
+                    starts.chk2.show = true
+                    starts.chk2.enlarge = true
+                    starts.skip.show = true
+                    starts.skip.enlarge = true
                 }, 100)
             }
         
         })
     }
     if(startNav){
-        if(startNav && globalClick && starts.filter(start=> start.name === 'start02' )[0].show ){
-            let chk = starts.filter(start=> start.name === 'chk2' )[0]
+        if(startNav && globalClick && starts.start02.show ){
+            let chk = starts.chk2
             let bool = x >= chk.position.x && x <= chk.position.x + chk.width && y>=chk.position.y && y<=chk.position.y + chk.height
             if(bool){
                 clickVedioPlay('btn')
                 globalClick = false
-                starts.filter(start=> start.name === 'start02' )[0].show = false
-                starts.filter(start=> start.name === 'skip' )[0].show = false
-                starts.filter(start=> start.name === 'skip' )[0].enlarge = false
+                starts.start02.show = false
+                starts.skip.show = false
+                starts.skip.enlarge = false
 
-                starts.filter(start=> start.name === 'chk2' )[0].show = false
-                starts.filter(start=> start.name === 'chk2' )[0].enlarge = false
+                starts.chk2.show = false
+                starts.chk2.enlarge = false
 
-                starts.filter(start=> start.name === 'start03' )[0].show = true
+                starts.start03.show = true
                 setTimeout(()=>{
                     globalClick = true
                 }, 100)
             }
             
         }
-        if(startNav && globalClick && starts.filter(start=> start.name === 'start03' )[0].show ){
+        if(startNav && globalClick && starts.start03.show ){
             clickVedioPlay('btn')
             globalClick = false
-            starts.filter(start=> start.name === 'start03' )[0].show = false
-            starts.filter(start=> start.name === 'start04' )[0].show = true
+            starts.start03.show = false
+            starts.start04.show = true
             setTimeout(()=>{
                 globalClick = true
             }, 100)
         }
-        if(startNav && globalClick && starts.filter(start=> start.name === 'start04' )[0].show ){
+        if(startNav && globalClick && starts.start04.show ){
             clickVedioPlay('btn')
             globalClick = false
-            starts.filter(start=> start.name === 'start04' )[0].show = false
-            starts.filter(start=> start.name === 'start05' )[0].show = true
+            starts.start04.show = false
+            starts.start05.show = true
             interactions.filter(interaction=>interaction.name === 'cool')[0].show = true
             interactions.filter(interaction=>interaction.name === 'cool')[0].enlarge = true
         }
-        if(startNav && globalClick && starts.filter(start=> start.name === 'start07' )[0].show){
+        if(startNav && globalClick && starts.start07.show){
             clickVedioPlay('btn')
-            starts.filter(start=> start.name === 'start07' )[0].show = false
+            starts.start07.show = false
     
             setTimeout(()=>{
-                starts.filter(start=> start.name === 'start08' )[0].show = true
+                starts.start08.show = true
             }, 10)
         }
-        if(startNav && globalClick && starts.filter(start=> start.name === 'start08' )[0].show){
+        if(startNav && globalClick && starts.start08.show){
             clickVedioPlay('btn')
-            starts.filter(start=> start.name === 'start08' )[0].show = false
+            starts.start08.show = false
     
             setTimeout(()=>{
-                starts.filter(start=> start.name === 'start09' )[0].show = true
+                starts.start09.show = true
             }, 10)
         }
-        if(startNav && globalClick && starts.filter(start=> start.name === 'start09' )[0].show){
+        if(startNav && globalClick && starts.start09.show){
             clickVedioPlay('btn')
-            starts.filter(start=> start.name === 'start09' )[0].show = false
+            starts.start09.show = false
     
             setTimeout(()=>{
-                starts.filter(start=> start.name === 'start10' )[0].show = true
+                starts.start10.show = true
             }, 10)
         }
-        if(startNav && globalClick && starts.filter(start=> start.name === 'start10' )[0].show){
+        if(startNav && globalClick && starts.start10.show){
             clickVedioPlay('btn')
-            starts.filter(start=> start.name === 'start10' )[0].show = false
+            starts.start10.show = false
             setTimeout(()=>{
                 startNav = false
                 globalClick = false
@@ -3578,15 +3573,15 @@ canvas.addEventListener('click', (e)=>{
         }
         
     }
-    if(isTeaching && starts.filter(start=> start.name === 'skip' )[0].show && starts.filter(start=> start.name === 'skip' )[0].enlarge){
+    if(isTeaching && starts.skip.show && starts.skip.enlarge){
     
-        let skip = starts.filter(start=> start.name === 'skip' )[0]
+        let skip = starts.skip
         let bool = x >= skip.position.x && x <= skip.position.x + skip.width && y>=skip.position.y && y<=skip.position.y + skip.height
         if(bool){
             clickVedioPlay('btn')
-            starts.forEach(start=>{
-                start.show = false
-                start.enlarge = false
+            Object.keys(starts).forEach(start=>{
+                starts[start].show = false
+                starts[start].enlarge = false
             })
             Object.keys(interactions).forEach(interaction=>{
                 interactions[interaction].show = true
@@ -3607,16 +3602,16 @@ canvas.addEventListener('mousedown', (e)=>{
     e.preventDefault();
     let x = parseInt(e.offsetX)
     let y = parseInt(e.offsetY)
-    occupys.forEach((occupy,key)=>{
-        if(!occupy.dragging) return
-        if(x > occupy.position.x && x < occupy.position.x + occupy.width && y > occupy.position.y && y < occupy.position.y + occupy.height){
-            if(!occupy.image.src.includes('1-1.png')){
-                occupy.image.src = occupy.image.src.replace('1.png', '1-1.png')
+    Object.keys(occupys).forEach((occupy,key)=>{
+        if(!occupys[occupy].dragging) return
+        if(x > occupys[occupy].position.x && x < occupys[occupy].position.x + occupys[occupy].width && y > occupys[occupy].position.y && y < occupys[occupy].position.y + occupys[occupy].height){
+            if(!occupys[occupy].image.src.includes('1-1.png')){
+                occupys[occupy].image.src = occupys[occupy].image.src.replace('1.png', '1-1.png')
             }
-            mousedownIdx = key
+            mousedownIdx = occupy
             isDragging = true
-            differX = occupy.position.x - x
-            differY = occupy.position.y - y
+            differX = occupys[occupy].position.x - x
+            differY = occupys[occupy].position.y - y
         }
     })
 })
@@ -3668,25 +3663,25 @@ function initCoolRoom(){
     coolObject.talk006Chk = false
     coolObject.talk06Chk = false
     
-    cools.forEach(cool=>{
-        if(cool.name === 'cup' || cool.name === 'people' || cool.name === '1'){
-            cool.show = true
+    Object.keys(cools).forEach(cool=>{
+        if(cools[cool].name === 'cup' || cools[cool].name === 'people' || cools[cool].name === '1'){
+            cools[cool].show = true
         }else{
-            cool.show = false
+            cools[cool].show = false
         }
 
-        if(cool.name === '1'){
-            cool.enlarge = true
+        if(cools[cool].name === '1'){
+            cools[cool].enlarge = true
         }else{
-            cool.enlarge = false
+            cools[cool].enlarge = false
         }
-        if(cool.talk){
-            cool.isTypewriter = true
-            if(cool.image.src.includes('_.png')){
-                cool.image.src = cool.image.src.replace('_.png', '.png')
+        if(cools[cool].talk){
+            cools[cool].isTypewriter = true
+            if(cools[cool].image.src.includes('_.png')){
+                cools[cool].image.src = cools[cool].image.src.replace('_.png', '.png')
             }
         }
-        cool.num = 0;cool.step = 0;cool.twoStep = 25;cool.threeStep = 50
+        cools[cool].num = 0;cools[cool].step = 0;cools[cool].twoStep = 25;cools[cool].threeStep = 50
     })
 
     CG.cool.isPeace = true
@@ -3709,45 +3704,44 @@ function initOccupyRoom(){
 
     occupyMoveNum = 0
 
-    occupys.forEach(occupy=>{
+    Object.keys(occupys).forEach(occupy=>{
         
-        if(occupy.name === 'sitdown'){
-            occupy.show = true
-            occupy.enlarge = true
+        if(occupys[occupy].name === 'sitdown'){
+            occupys[occupy].show = true
+            occupys[occupy].enlarge = true
         }else{
-            occupy.dragging = false
-            occupy.enlarge = false
-            if(occupy.name === null){
-                occupy.show = true
-                occupy.position.x = occupy.oldPosition.x
-                occupy.position.y = occupy.oldPosition.y
-                occupy.width = occupy.oldWidth
-                occupy.height = occupy.oldHeight
-                if(occupy.image.src.includes('1-1.png')){
-                    occupy.image.src = occupy.image.src.replace('1-1.png', '1.png')
+            occupys[occupy].dragging = false
+            occupys[occupy].enlarge = false
+            if(occupys[occupy].name === null){
+                occupys[occupy].show = true
+                occupys[occupy].position.x = occupys[occupy].oldPosition.x
+                occupys[occupy].position.y = occupys[occupy].oldPosition.y
+                occupys[occupy].width = occupys[occupy].oldWidth
+                occupys[occupy].height = occupys[occupy].oldHeight
+                if(occupys[occupy].image.src.includes('1-1.png')){
+                    occupys[occupy].image.src = occupys[occupy].image.src.replace('1-1.png', '1.png')
                 }
             }else{
-                occupy.show = false
+                occupys[occupy].show = false
             }
         }
 
-        if(occupy.talk){
-            occupy.isTypewriter = true
-            if(occupy.image.src.includes('_.png')){
-                occupy.image.src = occupy.image.src.replace('_.png', '.png')
+        if(occupys[occupy].talk){
+            occupys[occupy].isTypewriter = true
+            if(occupys[occupy].image.src.includes('_.png')){
+                occupys[occupy].image.src = occupys[occupy].image.src.replace('_.png', '.png')
             }
         }
-        occupy.num = 0;occupy.step = 0;occupy.twoStep = 25;occupy.threeStep = 50
+        occupys[occupy].num = 0;occupys[occupy].step = 0;occupys[occupy].twoStep = 25;occupys[occupy].threeStep = 50
 
     })
-    CG.occupy.isPeace = true
+    CG.occupys.isPeace = true
     if(occupyObject.people.image.src.includes('people2')){
         occupyObject.people.image.src = occupyObject.people.image.src.replace('people2', 'people1')
     }
     if(occupyObject.end.image.src.includes('bad')){
         occupyObject.end.image.src = occupyObject.end.image.src.replace('bad', 'good')
     }
-    console.log(getCG);
 }
 function initHoardRoom(){
     hoardObject.talk1Chk = true
@@ -3769,42 +3763,42 @@ function initHoardRoom(){
         hoard.image.src = hoard.image.src.replace('-.png', '.png')
     }
     
-    hoards.forEach(hoard=>{
-        hoard.enlarge = false
-        if( hoard.name === 'inter1' ||
-            hoard.name === 'inter2' ||
-            hoard.name === 'inter3' ||
-            hoard.name === 'inter4' || 
-            hoard.name === 'inter5' || 
-            hoard.name === 'inter6' || 
-            hoard.name === 'inter7' || 
-            hoard.name === 'inter8' ||
-            hoard.name === 'hold' ||
-            hoard.name === 's1' ||
-            hoard.name === 'a1' ||
-            hoard.name === 'b1' ||
-            hoard.name === 'c1' ||
-            hoard.name === 'd1' ||
-            hoard.name === 'e1' ||
-            hoard.name === 'f1' ||
-            hoard.name === 'g1' ||
-            hoard.name === 'h1' ||
-            hoard.name === '1' ){
-                hoard.show = true
+    Object.keys(hoards).forEach(hoard=>{
+        hoards[hoard].enlarge = false
+        if( hoards[hoard].name === 'inter1' ||
+            hoards[hoard].name === 'inter2' ||
+            hoards[hoard].name === 'inter3' ||
+            hoards[hoard].name === 'inter4' || 
+            hoards[hoard].name === 'inter5' || 
+            hoards[hoard].name === 'inter6' || 
+            hoards[hoard].name === 'inter7' || 
+            hoards[hoard].name === 'inter8' ||
+            hoards[hoard].name === 'hold' ||
+            hoards[hoard].name === 's1' ||
+            hoards[hoard].name === 'a1' ||
+            hoards[hoard].name === 'b1' ||
+            hoards[hoard].name === 'c1' ||
+            hoards[hoard].name === 'd1' ||
+            hoards[hoard].name === 'e1' ||
+            hoards[hoard].name === 'f1' ||
+            hoards[hoard].name === 'g1' ||
+            hoards[hoard].name === 'h1' ||
+            hoards[hoard].name === '1' ){
+                hoards[hoard].show = true
             }else{
-                hoard.show = false
+                hoards[hoard].show = false
             }
-        if(hoard.name === '1'){
-            hoard.enlarge = true
+        if(hoards[hoard].name === '1'){
+            hoards[hoard].enlarge = true
         }
 
-        if(hoard.talk){
-            hoard.isTypewriter = true
-            if(hoard.image.src.includes('_.png')){
-                hoard.image.src = hoard.image.src.replace('_.png', '.png')
+        if(hoards[hoard].talk){
+            hoards[hoard].isTypewriter = true
+            if(hoards[hoard].image.src.includes('_.png')){
+                hoards[hoard].image.src = hoards[hoard].image.src.replace('_.png', '.png')
             }
         }
-        hoard.num = 0;hoard.step = 0;hoard.twoStep = 25;hoard.threeStep = 50
+        hoards[hoard].num = 0;hoards[hoard].step = 0;hoards[hoard].twoStep = 25;hoards[hoard].threeStep = 50
 
     })
     CG.hoard.isPeace = true
@@ -3833,26 +3827,26 @@ function initNetworkRoom(){
 
     netObject.webNum = 1
 
-    networks.forEach(net=>{
-        if(net.name === 'smallPeople'){
-            net.show = true
-            net.enlarge = true
-        }else if(net.name === 'computer'){
-            net.show = true
+    Object.keys(networks).forEach(net=>{
+        if(networks[net].name === 'smallPeople'){
+            networks[net].show = true
+            networks[net].enlarge = true
+        }else if(networks[net].name === 'computer'){
+            networks[net].show = true
         }
         else{
-            net.show = false
-            net.enlarge = false
-            if(net.talk){
-                net.isTypewriter = true
-                if(net.image.src.includes('_.png')){
-                    net.image.src = net.image.src.replace('_.png', '.png')
+            networks[net].show = false
+            networks[net].enlarge = false
+            if(networks[net].talk){
+                networks[net].isTypewriter = true
+                if(networks[net].image.src.includes('_.png')){
+                    networks[net].image.src = networks[net].image.src.replace('_.png', '.png')
                 }
             }
-            if(net.name === 'web'){
-                net.image.src = './images/network/web/web1.png'
+            if(networks[net].name === 'web'){
+                networks[net].image.src = './images/network/web/web1.png'
             }
-            net.num = 0;net.step = 0;net.twoStep = 25;net.threeStep = 50
+            networks[net].num = 0;networks[net].step = 0;networks[net].twoStep = 25;networks[net].threeStep = 50
         }
     })
 
@@ -3872,29 +3866,29 @@ function initNoisyRoom(){
     noisyObject.wallChk = false
     noisyObject.wallStop = false
     
-    noisys.forEach(noisy=>{
-        if(noisy.name === 'smallPeople'){
-            noisy.show = true
-            noisy.enlarge = true
-        }else if(noisy.name === 'wall1' || noisy.name === 'wall2' || noisy.name === 'wall3' || noisy.name === 'wall4' || noisy.name === 'wall5' || noisy.name === 'wall6' || noisy.name === 'wall7'){
-            noisy.show = true
-            noisy.enlarge = false
+    Object.keys(noisys).forEach(noisy=>{
+        if(noisys[noisy].name === 'smallPeople'){
+            noisys[noisy].show = true
+            noisys[noisy].enlarge = true
+        }else if(noisys[noisy].name === 'wall1' || noisys[noisy].name === 'wall2' || noisys[noisy].name === 'wall3' || noisys[noisy].name === 'wall4' || noisys[noisy].name === 'wall5' || noisys[noisy].name === 'wall6' || noisys[noisy].name === 'wall7'){
+            noisys[noisy].show = true
+            noisys[noisy].enlarge = false
         }
         else{
-            noisy.show = false
-            noisy.enlarge = false
-            if(noisy.talk){
-                noisy.isTypewriter = true
-                if(noisy.image.src.includes('_.png')){
-                    noisy.image.src = noisy.image.src.replace('_.png', '.png')
+            noisys[noisy].show = false
+            noisys[noisy].enlarge = false
+            if(noisys[noisy].talk){
+                noisys[noisy].isTypewriter = true
+                if(noisys[noisy].image.src.includes('_.png')){
+                    noisys[noisy].image.src = noisys[noisy].image.src.replace('_.png', '.png')
                 }
             }
             
-            noisy.num = 0;noisy.step = 0;noisy.twoStep = 25;noisy.threeStep = 50
+            noisys[noisy].num = 0;noisys[noisy].step = 0;noisys[noisy].twoStep = 25;noisys[noisy].threeStep = 50
         }
     })
 
-    CG.noisy.isPeace = true
+    CG.noisys.isPeace = true
 
     if(noisyObject.end.image.src.includes('bad')){
         noisyObject.end.image.src = noisyObject.end.image.src.replace('bad', 'good')
@@ -3914,26 +3908,26 @@ function initDelayRoom(){
 
     delayObject.batteryNum = 0
 
-    delays.forEach(delay=>{
-        if(delay.name === '1'){
-            delay.show = true
-            delay.enlarge = true
+    Object.keys(delays).forEach(delay=>{
+        if(delays[delay].name === '1'){
+            delays[delay].show = true
+            delays[delay].enlarge = true
         }
         else{
-            delay.show = false
-            delay.enlarge = false
-            if(delay.talk){
-                delay.isTypewriter = true
-                if(delay.image.src.includes('_.png')){
-                    delay.image.src = delay.image.src.replace('_.png', '.png')
+            delays[delay].show = false
+            delays[delay].enlarge = false
+            if(delays[delay].talk){
+                delays[delay].isTypewriter = true
+                if(delays[delay].image.src.includes('_.png')){
+                    delays[delay].image.src = delays[delay].image.src.replace('_.png', '.png')
                 }
             }
-            if(delay.name === 'count'){
-                delay.image.src = './images/delays/talk/0-4.png'
+            if(delays[delay].name === 'count'){
+                delays[delay].image.src = './images/delays[delays]/talk/0-4.png'
             }
-            delay.num = 0;delay.step = 0;delay.twoStep = 25;delay.threeStep = 50
+            delays[delay].num = 0;delays[delay].step = 0;delays[delay].twoStep = 25;delays[delay].threeStep = 50
         }
-        CG.delay.isPeace = true
+        CG.delays.isPeace = true
 
         if(delayObject.end.image.src.includes('bad')){
             delayObject.end.image.src = delayObject.end.image.src.replace('bad', 'good')
