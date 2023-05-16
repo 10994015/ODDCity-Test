@@ -393,9 +393,9 @@ const delays = {
 
 
     response2: new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'2', isShow:false, text:"我馬上就到了！等我一下！", isTypewriter:true }),
-    talk3: new Shared({x:canvas.width/2 - (2412/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:2412/4.5, h:484/4.5, image: createImage('./images/delays/talk/3.png'), isTalk:true, isEnlarge:false, multiple:1, name:'3', isShow:false,}),
+    response3: new Shared({x:canvas.width/2 - (2412/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:2412/4.5, h:484/4.5, image: createImage('./images/delays/talk/3.png'), isTalk:true, isEnlarge:false, multiple:1, name:'3', isShow:false,}),
     response5: new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'5', isShow:false, text:"抱歉阿，今天路上剛好塞車。", isTypewriter:true }),
-    talk7: new Shared({x:canvas.width/2 - (2412/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:2412/4.5, h:484/4.5, image: createImage('./images/delays/talk/7.png'), isTalk:true, isEnlarge:false, multiple:1, name:'7', isShow:false,  }),
+    response7: new Shared({x:canvas.width/2 - (2412/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:2412/4.5, h:484/4.5, image: createImage('./images/delays/talk/7.png'), isTalk:true, isEnlarge:false, multiple:1, name:'7', isShow:false,  }),
     response10: new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'10', isShow:false, text:"啊！你怎麼在這？", isTypewriter:true }),
     response12: new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'12', isShow:false, text:"喔...", isTypewriter:true }),
     response14A: new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'14A', isShow:false, text:"對不起！我怕你覺得我不守時，就撒了謊...", isTypewriter:true }),
@@ -438,11 +438,12 @@ let busRun = false;
 let openAnim = null
 let busSpeed = 10
 let beginningBool = true
-setTimeout(()=>{
+
+function loaded(){
     beginnings.loading.show = false
     beginnings.chk1.show = true
     beginnings.chk1.enlarge = true
-}, 1000)
+}
 const beginnings = {
     model: new Shared({x:canvas.width/2 - (2078/5)/2, y:canvas.height/2 - (2121/5)/2, w:2078/5, h:2121/5, image: createImage('./images/beginning/model1.png'), isTalk:true, isEnlarge:false, multiple:1, name:'model', isShow:true ,}),
     loading: new Shared({x:canvas.width/2 - (414/1.2)/2, y:canvas.height/2 + 80, w:414/1.2, h:232/1.2, image: createImage('./images/loading.gif'), isEnlarge:false, multiple:1.05, name:'loading', isShow:true ,}),

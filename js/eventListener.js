@@ -128,6 +128,7 @@ canvas.addEventListener('mousemove', (e)=>{
             canvas.style.cursor = "default"
         }
     })
+    
     Object.keys(starts).some(start=>{
         if(!(starts[start].show && starts[start].enlarge)) return 
         if(startNav && x > starts[start].position.x && x < (starts[start].position.x + starts[start].width) && y > starts[start].position.y && y < (starts[start].position.y + starts[start].height)){
@@ -140,7 +141,6 @@ canvas.addEventListener('mousemove', (e)=>{
             canvas.style.cursor = "default"
         }
     })
-    
     if(isRoomOpen){
         let close = buttons.close;
         if(x >= close.position.x && x<=close.position.x+close.width && y>=close.position.y && y<=close.position.y + close.height && close.enlarge){
@@ -585,7 +585,7 @@ const noisyObject = {
     end: noisys.end,
 }
 const delayObject = {
-    people: delays.fipeople,
+    people: delays.people,
     talk1: delays.talk1,
     talk1Chk: true,
     response2: delays.response2,
@@ -3735,7 +3735,7 @@ function initOccupyRoom(){
         occupys[occupy].num = 0;occupys[occupy].step = 0;occupys[occupy].twoStep = 25;occupys[occupy].threeStep = 50
 
     })
-    CG.occupys.isPeace = true
+    CG.occupy.isPeace = true
     if(occupyObject.people.image.src.includes('people2')){
         occupyObject.people.image.src = occupyObject.people.image.src.replace('people2', 'people1')
     }
@@ -3888,7 +3888,7 @@ function initNoisyRoom(){
         }
     })
 
-    CG.noisys.isPeace = true
+    CG.noisy.isPeace = true
 
     if(noisyObject.end.image.src.includes('bad')){
         noisyObject.end.image.src = noisyObject.end.image.src.replace('bad', 'good')
@@ -3923,11 +3923,11 @@ function initDelayRoom(){
                 }
             }
             if(delays[delay].name === 'count'){
-                delays[delay].image.src = './images/delays[delays]/talk/0-4.png'
+                delays[delay].image.src = './images/delays/talk/0-4.png'
             }
             delays[delay].num = 0;delays[delay].step = 0;delays[delay].twoStep = 25;delays[delay].threeStep = 50
         }
-        CG.delays.isPeace = true
+        CG.delay.isPeace = true
 
         if(delayObject.end.image.src.includes('bad')){
             delayObject.end.image.src = delayObject.end.image.src.replace('bad', 'good')
