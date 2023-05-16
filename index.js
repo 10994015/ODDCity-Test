@@ -369,7 +369,7 @@ const delays = [
     new Shared({x:500, y:591,  w:97/1.8, h:34/1.8, image: createImage('./images/delays/battery2.png'), name:'battery2', multiple:1.2, isEnlarge:false, isShow:false}),
     new Shared({x:815, y:620,  w:97/1.8, h:36/1.8, image: createImage('./images/delays/battery3.png'), name:'battery3', multiple:1.2, isEnlarge:false, isShow:false}),
     new Shared({x:1135, y:635,  w:77/1.8, h:29/1.8, image: createImage('./images/delays/battery4.png'), name:'battery4', multiple:1.2, isEnlarge:false, isShow:false}),
-    new Shared({x:400, y:560,  w:529/1.8, h:176/1.8, image: createImage('./images/delays/a1.png'), name:'a1', multiple:1.05, isEnlarge:false, isShow:false}),
+    new Shared({x:420, y:560,  w:529/2, h:176/2, image: createImage('./images/delays/a1.png'), name:'a1', multiple:1.05, isEnlarge:false, isShow:false}),
     new Shared({x:795, y:585,  w:149/1.8, h:112/1.8, image: createImage('./images/delays/b1.png'), name:'b1', multiple:1.05, isEnlarge:false, isShow:false}),
     new Shared({x:1172, y:578,  w:152/1.8, h:138/1.8, image: createImage('./images/delays/c1.png'), name:'c1', multiple:1.05, isEnlarge:false, isShow:false}),
     new Shared({x:795, y:522,  w:146/1.8, h:114/1.8, image: createImage('./images/delays/d1.png'), name:'d1', multiple:1.05, isEnlarge:false, isShow:false}),
@@ -397,9 +397,9 @@ const delays = [
 
 
     new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'2', isShow:false, text:"我馬上就到了！等我一下！", isTypewriter:true }),
-    new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'3', isShow:false, text:"(又過了五分鐘)", isTypewriter:true }),
+    new Shared({x:canvas.width/2 - (2412/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:2412/4.5, h:484/4.5, image: createImage('./images/delays/talk/3.png'), isTalk:true, isEnlarge:false, multiple:1, name:'3', isShow:false,}),
     new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'5', isShow:false, text:"抱歉阿，今天路上剛好塞車。", isTypewriter:true }),
-    new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'7', isShow:false, text:"(又過了一下子)", isTypewriter:true }),
+    new Shared({x:canvas.width/2 - (2412/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:2412/4.5, h:484/4.5, image: createImage('./images/delays/talk/7.png'), isTalk:true, isEnlarge:false, multiple:1, name:'7', isShow:false,  }),
     new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'10', isShow:false, text:"啊！你怎麼在這？", isTypewriter:true }),
     new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'12', isShow:false, text:"喔...", isTypewriter:true }),
     new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'14A', isShow:false, text:"對不起！我怕你覺得我不守時，就撒了謊...", isTypewriter:true }),
@@ -449,7 +449,8 @@ let busSpeed = 10
 let beginningBool = true
 const beginnings = [
     new Shared({x:canvas.width/2 - (2078/5)/2, y:canvas.height/2 - (2121/5)/2, w:2078/5, h:2121/5, image: createImage('./images/beginning/model1.png'), isTalk:true, isEnlarge:false, multiple:1, name:'model', isShow:true ,}),
-    new Shared({x:canvas.width/2 - (112/2)/2, y:canvas.height/2 + 150, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:true, multiple:1.05, name:'chk1', isShow:true ,}),
+    new Shared({x:canvas.width/2 - (414/1.2)/2, y:canvas.height/2 + 80, w:414/1.2, h:232/1.2, image: createImage('./images/loading.gif'), isEnlarge:false, multiple:1.05, name:'loading', isShow:true ,}),
+    new Shared({x:canvas.width/2 - (112/2)/2, y:canvas.height/2 + 150, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1.05, name:'chk1', isShow:false ,}),
     new Shared({x:canvas.width/2 - (112/2)/2, y:canvas.height/2 + 150, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1.05, name:'chk2', isShow:false ,}),
     new Shared({x:350, y:280, w:624/2.8, h:1603/2.8, image: createImage('./images/beginning/people2.png'), isPeople:true, name:'people2', isShow:false, multiple:1.1}),
     new Shared({x:860, y:280, w:669/2.8, h:1567/2.8, image: createImage('./images/beginning/people1.png'), isPeople:true, name:'people1', isShow:false, multiple:1.1}),

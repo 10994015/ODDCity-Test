@@ -3041,10 +3041,11 @@ canvas.addEventListener('click', (e)=>{
                     delayObject.response3.show = true
                     setTimeout(() => {
                         if(!isRoomOpen) return
+                        delayObject.response3.show = false
                         delayObject.talk4Chk = true
                         delayObject.talk4.show = true
                         delayObject.talk4.enlarge = true
-                    }, 1500);
+                    }, 2000);
                 }, delayObject.response2.text.split('').length*10 + 1000)
             }
         }
@@ -3077,6 +3078,7 @@ canvas.addEventListener('click', (e)=>{
                 delayObject.response7.show = true
                 setTimeout(() => {
                     if(!isRoomOpen) return
+                    delayObject.response7.show = false
                     delayObject.talk6.show = false
                     delayObject.talk8Chk = true
                     delayObject.talk8A.show = true
@@ -3085,7 +3087,7 @@ canvas.addEventListener('click', (e)=>{
                     delayObject.talk8B.enlarge = true
                     delayObject.talk8C.show = true
                     delayObject.talk8C.enlarge = true
-                }, 1500);
+                }, 2000);
             }
         }
         if(delayObject.talk8A.show && delayObject.talk8B.show && delayObject.talk8C.show && delayObject.talk8Chk){
