@@ -1,6 +1,11 @@
 
 const imgarr = [
     './images/bg.png'
+    ,'./images/beginning/Loading.png'
+    , './images/beginning/model1.png'
+    , './images/beginning/model2.png'
+    , './images/beginning/people1.png'
+    , './images/beginning/people2.png'
     , './images/bus3.png'
     , './images/cool.png'
     , './images/delay.png'
@@ -13,12 +18,6 @@ const imgarr = [
     , './images/noisy.png'
     , './images/occupy.png'
     , './images/res.png'
-
-    , './images/beginning/Loading.png'
-    , './images/beginning/model1.png'
-    , './images/beginning/model2.png'
-    , './images/beginning/people1.png'
-    , './images/beginning/people2.png'
     , './images/buttons/cancel.png'
     , './images/buttons/chk.png'
     , './images/buttons/close.png'
