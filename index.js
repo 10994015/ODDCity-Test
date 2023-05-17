@@ -25,6 +25,9 @@ const CG = {
     delay:{
         isPeace:true
     },
+    road:{
+        isPeace:true
+    },
 }
 //好:1 壞:0
 const getCG = {
@@ -34,6 +37,7 @@ const getCG = {
     network:[],
     noisy:[],
     delay:[],
+    road:[],
 }
 let occupyInteractiveBtn = false
 
@@ -41,7 +45,7 @@ let scrollOffset =-2400
 let isStart = false
 
 const player = new Player()
-
+let lastKey;
 const createImage = (imgSrc)=>{
     const image = new Image();
     image.src = imgSrc
@@ -62,6 +66,7 @@ const interactions = [
     new Interaction({x:4170, y:200, w:455, h:225, name:'network', isShow:false}),
     new Interaction({x:4895, y:200, w:455, h:225, name:'noisy', isShow:false}),
     new Interaction({x:4895, y:500, w:455, h:225, name:'delay', isShow:false}),
+    new Interaction({x:6430, y:490, w:310, h:225, name:'road', isShow:false}),
 
 ]
 const talks = [
@@ -78,6 +83,7 @@ const hoard = new Room({image:createImage('./images/hoard.png')})
 const network = new Room({image:createImage('./images/network.png')})
 const noisy = new Room({image:createImage('./images/noisy.png')})
 const delay = new Room({image:createImage('./images/delay.png')})
+const road = new Room({image:createImage('./images/road.png')})
 
 let playerTalkX = canvas.width-(canvas.width-canvas.height*0.8*1.844)/2
 let playerTalkXY= canvas.height-(canvas.height-canvas.height*0.8)/2
@@ -408,6 +414,49 @@ const delays = {
 
     end: new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
 }
+const roads = {
+    a1: new Shared({x:716, y:190, w:28, h:74, image: createImage('./images/roads/a1.png'),name:'a1', isEnlarge:true, multiple:1.05, isShow:true}),
+    b1: new Shared({x:675, y:340, w:110, h:77, image: createImage('./images/roads/b1.png'),name:'b1', isEnlarge:true, multiple:1.05, isShow:true}),
+    c1: new Shared({x:675, y:660, w:61/1, h:50/1, image: createImage('./images/roads/c1.png'),name:'c1', isEnlarge:true, multiple:1.05, isShow:true}),
+    d1: new Shared({x:890, y:308, w:100/1, h:34/1, image: createImage('./images/roads/d1.png'),name:'d1', isEnlarge:true, multiple:1.05, isShow:true}),
+    e1: new Shared({x:615, y:421, w:56/1, h:55/1, image: createImage('./images/roads/e1.png'),name:'e1', isEnlarge:true, multiple:1.05, isShow:true}),
+    f1: new Shared({x:728, y:655, w:72/1, h:69/1, image: createImage('./images/roads/f1.png'),name:'f1', isEnlarge:true, multiple:1.05, isShow:true}),
+    g1: new Shared({x:1010, y:288, w:61/1, h:63/1, image: createImage('./images/roads/g1.png'),name:'g1', isEnlarge:true, multiple:1.05, isShow:true}),
+    h1: new Shared({x:1216, y:392, w:70/1, h:72/1, image: createImage('./images/roads/h1.png'),name:'h1', isEnlarge:true, multiple:1.05, isShow:true}),
+    i1: new Shared({x:736, y:567, w:34/1, h:75/1, image: createImage('./images/roads/i1.png'),name:'i1', isEnlarge:true, multiple:1.05, isShow:true}),
+    j1: new Shared({x:865, y:427, w:59/1, h:17/1, image: createImage('./images/roads/j1.png'),name:'j1', isEnlarge:true, multiple:1.05, isShow:true}),
+    k1: new Shared({x:1240, y:480, w:24/1, h:75/1, image: createImage('./images/roads/k1.png'),name:'k1', isEnlarge:true, multiple:1.05, isShow:true}),
+    l1: new Shared({x:832, y:580, w:172/1, h:73/1, image: createImage('./images/roads/l1.png'),name:'l1', isEnlarge:true, multiple:1.05, isShow:true}),
+    
+    a1talk: new Shared({x:716 + 28 - (1978/4.5), y:190 + 74 + 10, w:1978/4.5, h:518/4.5, image: createImage('./images/roads/talk/a1talk.png'),name:'a1talk', isEnlarge:false, multiple:1.05, isShow:false}),
+    a1talkChk: new Shared({x:716 + 28 - 112/1.6 - 100  , y:190 + 74 + 10 + 518/4.5 - 68/1.6 -15 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'a1talkChk', multiple:1.02, isEnlarge:true, isShow:false}),
+    a1talkCancel: new Shared({x:716 + 28 - 100 +10, y:190 + 74 + 10 + 518/4.5 - 68/1.6 -15, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'a1talkCancel', multiple:1.02, isEnlarge:true, isShow:false}),
+    
+    b1talk: new Shared({x:675 + 110 - (1683/4.5) - 80, y:340 -518/4.5, w:1683/4.5, h:518/4.5, image: createImage('./images/roads/talk/b1talk.png'),name:'b1talk', isEnlarge:false, multiple:1.05, isShow:false}),
+    b1talkChk: new Shared({x:675 + 110  - 80 -112/1.6- 100 , y:340 -518/4.5 + 22 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'b1talkChk', multiple:1.02, isEnlarge:true, isShow:false}),
+    b1talkCancel: new Shared({x:675 + 110  - 80 - 100 + 10, y:340 -518/4.5 + 22, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'b1talkCancel', multiple:1.02, isEnlarge:true, isShow:false}),
+
+    
+    
+    b2talk: new Shared({x:675  + 80, y:340 -518/4.5, w:1683/4.5, h:518/4.5, image: createImage('./images/roads/talk/b2talk.png'),name:'b2talk', isEnlarge:false, multiple:1.05, isShow:true}),
+    b2talkChk: new Shared({x:675  + 80  +(1683/4.5) -112/1.6- 100 , y:340 -518/4.5 + 22 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'b2talkChk', multiple:1.02, isEnlarge:true, isShow:true}),
+    b2talkCancel: new Shared({x:675  + 80  +(1683/4.5)- 100 + 10, y:340 -518/4.5 + 22, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'b2talkCancel', multiple:1.02, isEnlarge:true, isShow:true}),
+
+    people: new Shared({x:0, y:250, w:279/1.1, h:871/1.1, image: createImage('./images/roads/people1.png'), isPeople:true, name:'people', isShow:true}),
+
+    talk2A: new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/roads/talk/2A.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'2A', isShow:false,}),
+    talk2B: new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5*2-15, w:2378/4.5, h:630/4.5, image: createImage('./images/roads/talk/2B.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'2B', isShow:false}),
+    talk5: new Shared({x:canvas.width/2 - (3149/4.5)/2, y:canvas.height/2 - (484/4.5)/2, w:3149/4.5, h:484/4.5, image: createImage('./images/roads/talk/5.png'), isTalk:true, isEnlarge:false, multiple:1, name:'5', isShow:false ,}),
+
+
+    response1: new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'1', isShow:false, text:"(看後照鏡)麻雀雖小勒！繞了幾百年都找不到停車位！", isTypewriter:true }),
+    response3: new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'3', isShow:false, text:"欸！那邊還有個車位！", isTypewriter:true }),
+    response4: new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'4', isShow:false, text:"喵的咧!被搶先了啦!都你害我們沒停車位!算了!看拎周罵怎麼搶過來!(準備拿出球棒下)", isTypewriter:true }),
+    
+    
+    chk: new Shared({x:canvas.width/2 - (112/2)/2 + 300, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
+
+}
 const buttons = {
     close: new Button({x:(canvas.width - ( canvas.height*0.8*1.844 ))/2 + canvas.height*0.8*1.844 - 10,y:(canvas.height - canvas.height *0.8)/2 - 50, w:418/9, h:418/9, image: createImage('./images/buttons/close.png'), name:"close", multiple:1.05}),
     // in2f:  new Button({x: 3750, y:450, w:60, h:60, name:'in2f', isMove:true, image: createImage('./images/buttons/in2f.png'),}),
@@ -498,7 +547,7 @@ function startFn(){
                 bus.divisor = 15
             }
         }
-    }, 0)
+    }, 20)
 }
 
 let busPos = 1.5
@@ -553,6 +602,7 @@ function animate(){
             }
         }
     }
+    
 
     interactions.forEach(interaction=>{
         if(interaction.show===false) return
@@ -663,6 +713,17 @@ function animate(){
             }
         })
     }
+    if(roomOpen.road && isRoomOpen){
+        c.fillStyle = 'rgba(255,255,255,.5)'
+        c.fillRect(0,0,canvas.width, canvas.height)
+        road.draw()
+        buttons.close.draw()
+        Object.keys(roads).forEach(road=>{
+            if(roads[road].show){
+                roads[road].draw()
+            }
+        })
+    }
 
     if(!bus.start){
         c.fillStyle = 'rgba(255,255,255,.5)'
@@ -673,7 +734,24 @@ function animate(){
             }
         })
     }
-    
+    if(keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.run.right){
+        player.frames = 1
+        player.currentSprite = player.sprites.run.right
+        player.currentCropWidth = player.sprites.run.cropWidth
+        player.width = player.sprites.run.width
+    }else if(keys.left.pressed && lastKey === 'left'  && player.currentSprite !== player.sprites.run.left){
+        player.currentSprite = player.sprites.run.left
+        player.currentCropWidth = player.sprites.run.cropWidth
+        player.width = player.sprites.run.width
+    }else if(!keys.left.pressed && lastKey === 'left'  && player.currentSprite !== player.sprites.stand.left){
+        player.currentSprite = player.sprites.stand.left
+        player.currentCropWidth = player.sprites.stand.cropWidth
+        player.width = player.sprites.stand.width
+    }else if(!keys.right.pressed && lastKey === 'right'  && player.currentSprite !== player.sprites.stand.right){
+        player.currentSprite = player.sprites.stand.right
+        player.currentCropWidth = player.sprites.stand.cropWidth
+        player.width = player.sprites.stand.width
+    }
 }
 
 animate()

@@ -17,6 +17,7 @@ window.addEventListener("keydown", ({keyCode})=>{
         case 68:
             if(!isRoomOpen){
                 keys.right.pressed = true
+                lastKey = 'right'
                 audioRunning.loop = true
                 audioRunning.play()
             }
@@ -24,6 +25,7 @@ window.addEventListener("keydown", ({keyCode})=>{
         case 65:
             if(!isRoomOpen){
                 keys.left.pressed = true
+                lastKey = 'left'
                 audioRunning.loop = true
                 audioRunning.play()
             }
@@ -271,13 +273,43 @@ canvas.addEventListener('mousemove', (e)=>{
             }
         })
     }
-    
+    if(roomOpen.road && isRoomOpen){
+        Object.keys(roads).some(road=>{
+            if(!roads[road].enlarge) return
+            if(x >= roads[road].position.x && x<=roads[road].position.x+roads[road].width && y>=roads[road].position.y && y<=roads[road].position.y + roads[road].height){
+                roads[road].width = roads[road].bigWidth
+                roads[road].height = roads[road].bigHeight
+                if((!roads[road].image.src.includes('_.png')) && roads[road].talk){
+                    roads[road].image.src = roads[road].image.src.replace('.png', '_.png')
+                }
+                return canvas.style.cursor = "pointer"
+            }
+            roads[road].width = roads[road].oldWidth
+            roads[road].height = roads[road].oldHeight
+            canvas.style.cursor = "default"
+            if(roads[road].image.src.includes('_.png')){
+                roads[road].image.src = roads[road].image.src.replace('_.png', '.png')
+            }
+        })
+    }
     if(isDragging && roomOpen.occupy && isRoomOpen){
         occupys[mousedownIdx].position.x = e.offsetX + differX
         occupys[mousedownIdx].position.y = e.offsetY + differY
     }
 })
+const beginningObject = {
+    model: beginnings.model,
+    model1Chk: true,
+    chk1: beginnings.chk1,
+    chk2: beginnings.chk2,
+    selectPeople:true,
+    model2Chk: false,
+    people1: beginnings.people1,
+    people2: beginnings.people2,
+    people1Selected: false,
+    people2Selected: false,
 
+}
 //霸位
 const occupyObject = {
     sitdown: occupys.sitdown,
@@ -647,17 +679,18 @@ const delayObject = {
     end: delays.end,
 }
 
-const beginningObject = {
-    model: beginnings.model,
-    model1Chk: true,
-    chk1: beginnings.chk1,
-    chk2: beginnings.chk2,
-    selectPeople:true,
-    model2Chk: false,
-    people1: beginnings.people1,
-    people2: beginnings.people2,
-    people1Selected: false,
-    people2Selected: false,
+
+const roadObject = {
+    people: roads.people,
+    response1: roads.response1,
+    talk2A: roads.talk2A,
+    talk2B: roads.talk2B,
+    talk2Chk: false,
+    response3: roads.response3,
+    response4: roads.response4,
+    talk5: roads.talk5,
+    talk5Chk: false,
+    chk: roads.chk,
 
 }
 canvas.addEventListener('click', (e)=>{
@@ -736,7 +769,6 @@ canvas.addEventListener('click', (e)=>{
         }
     }
     if(!isStart) return
-    
     
     if(isRoomOpen){
         let close = buttons.close;
@@ -3411,6 +3443,63 @@ canvas.addEventListener('click', (e)=>{
             }
         }
     }
+    if(roomOpen.road && isRoomOpen){
+        if(roadObject.talk2A.show && roadObject.talk2B.show && roadObject.talk2Chk){
+            if(x>=roadObject.talk2A.position.x && x<=roadObject.talk2A.position.x + roadObject.talk2A.width && y>=roadObject.talk2A.position.y && y<=roadObject.talk2A.position.y+roadObject.talk2A.height){
+                clickVedioPlay('talk')
+                roadObject.talk2Chk = false
+                roadObject.response1.show = false
+                roadObject.talk2A.enlarge = false
+                roadObject.talk2B.enlarge = false
+                roadObject.response3.show = true
+
+                setTimeout(()=>{
+                    roadObject.response3.show = false
+                    roadObject.talk2A.show = false
+                    roadObject.talk2B.show = false
+                    roadObject.response4.show = true
+                }, roadObject.response3.text.split('').length*10 + 1500)
+                setTimeout(()=>{
+                    roadObject.response4.show = false
+                    roadObject.talk5.show = true
+                    roadObject.chk.show = true
+                    roadObject.chk.enlarge = true
+                    roadObject.talk5Chk = true
+                }, roadObject.response3.text.split('').length*10 + 3500)
+            }
+            if(x>=roadObject.talk2B.position.x && x<=roadObject.talk2B.position.x + roadObject.talk2B.width && y>=roadObject.talk2B.position.y && y<=roadObject.talk2B.position.y+roadObject.talk2B.height){
+                clickVedioPlay('talk')
+                roadObject.talk2Chk = false
+                roadObject.response1.show = false
+                roadObject.talk2A.enlarge = false
+                roadObject.talk2B.enlarge = false
+                roadObject.response3.show = true
+                CG.road.isPeace = false
+                setTimeout(()=>{
+                    roadObject.response3.show = false
+                    roadObject.talk2A.show = false
+                    roadObject.talk2B.show = false
+                    roadObject.response4.show = true
+                }, roadObject.response3.text.split('').length*10 + 1500)
+                setTimeout(()=>{
+                    roadObject.response4.show = false
+                    roadObject.talk5.show = true
+                    roadObject.chk.show = true
+                    roadObject.chk.enlarge = true
+                    roadObject.talk5Chk = true
+                }, roadObject.response3.text.split('').length*10 + 3500)
+            }
+        }
+        if(roadObject.talk5.show && roadObject.talk5Chk){
+            if(x>=roadObject.talk5.position.x && x<=roadObject.talk5.position.x + roadObject.talk5.width && y>=roadObject.talk5.position.y && y<=roadObject.talk5.position.y+roadObject.talk5.height){
+                roadObject.talk5Chk = false
+                roadObject.talk5.show = false
+                roadObject.chk.show = false
+                roadObject.chk.enlarge = false
+            }
+        }
+        
+    }
     interactions.forEach(interaction=>{
         let bool = x >= interaction.position.x && x <= interaction.position.x + interaction.width && y>=interaction.position.y && y<=interaction.position.y + interaction.height
         if(!bool) return
@@ -3469,6 +3558,18 @@ canvas.addEventListener('click', (e)=>{
             clickVedioPlay('inRoom')
             roomOpen.delay = true
             isRoomOpen = true
+        }else if(interaction.name === 'road'){
+            if(isRoomOpen) return
+            clickVedioPlay('inRoom')
+            roomOpen.road = true
+            isRoomOpen = true
+            setTimeout(()=>{
+                roadObject.talk2A.show = true
+                roadObject.talk2A.enlarge = true
+                roadObject.talk2B.show = true
+                roadObject.talk2B.enlarge = true
+                roadObject.talk2Chk = true
+            }, 1500)
         }
         
     })
@@ -3949,8 +4050,8 @@ function clickVedioPlay(name){
 }
 
 function playBgm(){
-    // bgmAudio.loop = true
-    // bgmAudio.play();
+    bgmAudio.loop = true
+    bgmAudio.play();
     
 }
 function stopBgm(){

@@ -41,7 +41,7 @@ class Interaction {
     }
     draw(){
         if(this.image === null){
-            c.fillStyle = 'rgba(0,0,255,.5)'
+            c.fillStyle = 'rgba(255,255,255,0)'
             c.fillRect(this.position.x, this.position.y, this.width, this.height)
         }else{
             if(!this.loaded) return
