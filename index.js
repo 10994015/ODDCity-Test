@@ -62,15 +62,24 @@ const phone = new Interaction({x:1320, y:50, w:308/4.5, h:492/4.5, name:'phone',
 const interactions = [
     new Interaction({x:2973, y:481, w:147, h:218, name:'cool', isShow:false}),
     new Interaction({x:3750, y:450, w:60, h:60, name:'occupy', image: createImage('./images/buttons/in2f.png'), multiple:1.05, isShow:false, }),
-    new Interaction({x:4170, y:500, w:455, h:225, name:'hoard', isShow:false}),
-    new Interaction({x:4170, y:200, w:455, h:225, name:'network', isShow:false}),
-    new Interaction({x:4895, y:200, w:455, h:225, name:'noisy', isShow:false}),
-    new Interaction({x:4895, y:500, w:455, h:225, name:'delay', isShow:false}),
+    new Interaction({x:4370, y:530, w:200, h:200, name:'hoard', isShow:false}),
+    new Interaction({x:4825, y:520, w:60, h:60, name:'network',image: createImage('./images/buttons/in2f.png'), multiple:1.05, isShow:false}),
+    new Interaction({x:4825, y:590, w:60, h:60, name:'noisy',image: createImage('./images/buttons/in2f.png'),  isShow:false}),
+    new Interaction({x:4955, y:530, w:175, h:195, name:'delay', isShow:false}),
     new Interaction({x:6430, y:490, w:310, h:225, name:'road', isShow:false}),
-
 ]
 const talks = [
-    new Talk({x:3780 -3318/15, y:350, w:3318/15, h:1604/15, name:'occupy', image: createImage('./images/talks/enter2f_.png'),isShow:false, direction:1650}),
+    new Talk({x:3780 -3318/15, y:350, w:3318/15, h:1640/15, name:'occupy', image: createImage('./images/talks/enter2f_.png'),isShow:false, direction:1650}),
+    new Talk({x:2973 + 60, y:400, w:3318/15, h:1640/15, name:'cool', image: createImage('./images/talks/entercool_.png'),isShow:false, direction:400000}),
+    new Talk({x:4370 - 3318/15 + 100, y:530, w:3318/15, h:1640/15, name:'hoard', image: createImage('./images/talks/enterhoard_.png'),isShow:false, direction:400000}),
+    new Talk({x:4825 - 3693/15 + 30, y:430, w:3693/15, h:1640/15, name:'network', image: createImage('./images/talks/enternetwork_.png'),isShow:false, direction:400000}),
+    new Talk({x:4825 + 30, y:490, w:3693/15, h:1640/15, name:'noisy', image: createImage('./images/talks/enternoisy_.png'),isShow:false, direction:400000}),
+    new Talk({x:4955 + 100, y:530, w:3317/15, h:1640/15, name:'delay', image: createImage('./images/talks/enterdelay_.png'),isShow:false, direction:400000}),
+    new Talk({x:6430 + 100, y:380, w:3317/15, h:1640/15, name:'road', image: createImage('./images/talks/enterroad_.png'),isShow:false, direction:400000}),
+]
+const outSideItems = [
+    new Interaction({x:6380 , y:460, w:279/3, h:871/3, name:'roadpeople',image: createImage('./images/roads/people1.png'), isEnlarge:false, isShow:true}),
+
 ]
 const dynamics = [
     
@@ -142,7 +151,7 @@ const cools = {
     
     talk004: new Shared({x:mesterTalkX - 30, y:mesterTalkY-630/4.5 , w:2378/4.8, h:639/4.8, image: createImage('./images/cool/talk/004.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'004', isShow:false,}),
 
-    end: new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
+    end: new Shared({x:canvas.width/2 - (2079/5)/2 , y:canvas.height/2 - (2123/5)/2  , w:2079/5, h:2123/5, image: createImage('./images/cool/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
 
     talk005: new Shared({x:canvas.width/2 - (3149/4.5)/2, y:canvas.height/2 - (484/4.5) - 100, w:2378/4.8, h:639/4.8, image: createImage('./images/cool/talk/005.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'005', isShow:false,}),
     talk006: new Shared({x:canvas.width/2 - (3149/4.5)/2 , y:canvas.height/2 - (484/4.5) - 100, w:2378/4.8, h:639/4.8, image: createImage('./images/cool/talk/006.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'006', isShow:false,}),
@@ -182,7 +191,7 @@ const occupys = {
     chk: new Shared({x:canvas.width/2 - (112/2)/2 + 300, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
 
 
-    end: new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
+    end: new Shared({x:canvas.width/2 - (2079/5)/2 , y:canvas.height/2 - (2123/5)/2  , w:398/1, h:232/1, image: createImage('./images/occupys/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
 
 }
 
@@ -253,7 +262,7 @@ const hoards = {
     chk: new Shared({x:canvas.width/2 - (112/2)/2 + 300, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
     chk2: new Shared({x:canvas.width/2 - (112/2)/2 + 110, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk2', isShow:false ,}),
 
-    end: new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
+    end: new Shared({x:canvas.width/2 - (2079/5)/2 , y:canvas.height/2 - (2123/5)/2  , w:398/1, h:232/1, image: createImage('./images/hoards/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
 }
 const networks = {
     computer: new Shared({x:940, y:108, w:751/4.2, h:418/4.2, image: createImage('./images/network/computer.png'), name:'computer', isShow:true, isEnlarge:false, multiple:1}),
@@ -299,7 +308,7 @@ const networks = {
 
     chk: new Shared({x:canvas.width/2 - (112/2)/2 + 300, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
 
-    end: new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
+    end: new Shared({x:canvas.width/2 - (2079/5)/2 , y:canvas.height/2 - (2123/5)/2  , w:398/1, h:232/1, image: createImage('./images/network/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
 
 }
 const noisys = {
@@ -361,7 +370,7 @@ const noisys = {
     // new Shared({x:playerTalkX-(2378/4.5)-25, y:playerTalkXY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/2.png'), isTalk:true, isEnlarge:false, multiple:1.02, name:'2', isShow:false,}),
     A: new Shared({x:canvas.width/2 - (1485/4)/2 , y:canvas.height/2 - (484/4)/2  , w:1485/4, h:484/4, image: createImage('./images/noisy/talk/A.png'), isEnlarge:false, multiple:1, name:'A', isShow:false,}),
     B: new Shared({x:canvas.width/2 - (1485/4)/2 , y:canvas.height/2 - (484/4)/2  , w:1485/4, h:484/4, image: createImage('./images/noisy/talk/B.png'), isEnlarge:false, multiple:1, name:'B', isShow:false,}),
-    end: new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
+    end: new Shared({x:canvas.width/2 - (2079/5)/2 , y:canvas.height/2 - (2123/5)/2  , w:398/1, h:232/1, image: createImage('./images/noisy/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
 }
 const delays = {
     count: new Shared({x:150, y:670, w:300/3.5, h:137/3.5, image: createImage('./images/delays/talk/0-4.png'), name:'count', multiple:1, isEnlarge:false, isShow:false}),
@@ -412,7 +421,7 @@ const delays = {
 
     chk: new Shared({x:canvas.width/2 - (112/2)/2 + 300, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
 
-    end: new Shared({x:canvas.width/2 - (398/1)/2 , y:canvas.height/2 - (232/1)/2  , w:398/1, h:232/1, image: createImage('./images/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
+    end: new Shared({x:canvas.width/2 - (2079/5)/2 , y:canvas.height/2 - (2123/5)/2  , w:398/1, h:232/1, image: createImage('./images/delays/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
 }
 const roads = {
     a1: new Shared({x:716, y:190, w:28, h:74, image: createImage('./images/roads/a1.png'),name:'a1', isEnlarge:true, multiple:1.05, isShow:true}),
@@ -436,11 +445,49 @@ const roads = {
     b1talkChk: new Shared({x:675 + 110  - 80 -112/1.6- 100 , y:340 -518/4.5 + 22 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'b1talkChk', multiple:1.02, isEnlarge:true, isShow:false}),
     b1talkCancel: new Shared({x:675 + 110  - 80 - 100 + 10, y:340 -518/4.5 + 22, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'b1talkCancel', multiple:1.02, isEnlarge:true, isShow:false}),
 
+    b2talk: new Shared({x:675  + 80, y:340 -518/4.5, w:1683/4.5, h:518/4.5, image: createImage('./images/roads/talk/b2talk.png'),name:'b2talk', isEnlarge:false, multiple:1.05, isShow:false}),
+    b2talkChk: new Shared({x:675  + 80  +(1683/4.5) -112/1.6- 100 , y:340 -518/4.5 + 22 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'b2talkChk', multiple:1.02, isEnlarge:true, isShow:false}),
+    b2talkCancel: new Shared({x:675  + 80  +(1683/4.5)- 100 + 10, y:340 -518/4.5 + 22, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'b2talkCancel', multiple:1.02, isEnlarge:true, isShow:false}),
+
+    c1talk: new Shared({x:675 + 110 - (1683/4.5) - 80, y:660 -518/4.5, w:1683/4.5, h:518/4.5, image: createImage('./images/roads/talk/c1talk.png'),name:'c1talk', isEnlarge:false, multiple:1.05, isShow:false}),
+    c1talkChk: new Shared({x:675 + 110  - 80 -112/1.6- 100 , y:660 -518/4.5 + 22 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'c1talkChk', multiple:1.02, isEnlarge:true, isShow:false}),
+    c1talkCancel: new Shared({x:675 + 110  - 80 - 100 + 10, y:660 -518/4.5 + 22, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'c1talkCancel', multiple:1.02, isEnlarge:true, isShow:false}),
+
+    d1talk: new Shared({x:890 + 28 - (1978/4.5) + 30, y:308 +20, w:1978/4.5, h:518/4.5, image: createImage('./images/roads/talk/d1talk.png'),name:'d1talk', isEnlarge:false, multiple:1.05, isShow:false}),
+    d1talkChk: new Shared({x:890 + 28 - 112/1.6 - 100 + 30  , y:308+20  + 518/4.5 - 68/1.6 -15 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'d1talkChk', multiple:1.02, isEnlarge:true, isShow:false}),
+    d1talkCancel: new Shared({x:890 + 28 - 100 +10 +30, y:308 +20 + 518/4.5 - 68/1.6 -15, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'d1talkCancel', multiple:1.02, isEnlarge:true, isShow:false}),
     
+    e1talk: new Shared({x:615  , y:421 -518/4.5, w:2068/4.5, h:518/4.5, image: createImage('./images/roads/talk/e1talk.png'),name:'e1talk', isEnlarge:false, multiple:1.05, isShow:false}),
+    e1talkChk: new Shared({x:615  +(2068/4.5) -112/1.6- 100 , y:421 -518/4.5 + 22 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'e1talkChk', multiple:1.02, isEnlarge:true, isShow:false}),
+    e1talkCancel: new Shared({x:615 +(2068/4.5)- 100 + 10, y:421 -518/4.5 + 22, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'e1talkCancel', multiple:1.02, isEnlarge:true, isShow:false}),
+
+    f1talk: new Shared({x:728  , y:655 -518/4.5, w:2068/4.5, h:518/4.5, image: createImage('./images/roads/talk/f1talk.png'),name:'f1talk', isEnlarge:false, multiple:1.05, isShow:false}),
+    f1talkChk: new Shared({x:728  +(2068/4.5) -112/1.6- 100 , y:655 -518/4.5 + 22 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'f1talkChk', multiple:1.02, isEnlarge:true, isShow:false}),
+    f1talkCancel: new Shared({x:728 +(2068/4.5)- 100 + 10, y:655 -518/4.5 + 22, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'f1talkCancel', multiple:1.02, isEnlarge:true, isShow:false}),
     
-    b2talk: new Shared({x:675  + 80, y:340 -518/4.5, w:1683/4.5, h:518/4.5, image: createImage('./images/roads/talk/b2talk.png'),name:'b2talk', isEnlarge:false, multiple:1.05, isShow:true}),
-    b2talkChk: new Shared({x:675  + 80  +(1683/4.5) -112/1.6- 100 , y:340 -518/4.5 + 22 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'b2talkChk', multiple:1.02, isEnlarge:true, isShow:true}),
-    b2talkCancel: new Shared({x:675  + 80  +(1683/4.5)- 100 + 10, y:340 -518/4.5 + 22, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'b2talkCancel', multiple:1.02, isEnlarge:true, isShow:true}),
+    g1talk: new Shared({x:1010 + 28 - (1978/4.5) + 30, y:288 +50, w:1978/4.5, h:518/4.5, image: createImage('./images/roads/talk/g1talk.png'),name:'g1talk', isEnlarge:false, multiple:1.05, isShow:false}),
+    g1talkChk: new Shared({x:1010 + 28 - 112/1.6 - 100 + 30  , y:288+50  + 518/4.5 - 68/1.6 -15 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'g1talkChk', multiple:1.02, isEnlarge:true, isShow:false}),
+    g1talkCancel: new Shared({x:1010 + 28 - 100 +10 +30, y:288 +50 + 518/4.5 - 68/1.6 -15, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'g1talkCancel', multiple:1.02, isEnlarge:true, isShow:false}),
+
+    h1talk: new Shared({x:1216 + 28 - (1449/4.5) + 30, y:392 +50, w:1449/4.5, h:518/4.5, image: createImage('./images/roads/talk/h1talk.png'),name:'h1talk', isEnlarge:false, multiple:1.05, isShow:false}),
+    h1talkChk: new Shared({x:1216 + 28 - 112/1.6 - 100 + 30  , y:392+50  + 518/4.5 - 68/1.6 -15 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'h1talkChk', multiple:1.02, isEnlarge:true, isShow:false}),
+    h1talkCancel: new Shared({x:1216 + 28 - 100 +10 +30, y:392 +50 + 518/4.5 - 68/1.6 -15, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'h1talkCancel', multiple:1.02, isEnlarge:true, isShow:false}),
+
+    i1talk: new Shared({x:736  , y:567 -518/4.5, w:2068/4.5, h:518/4.5, image: createImage('./images/roads/talk/i1talk.png'),name:'i1talk', isEnlarge:false, multiple:1.05, isShow:false}),
+    i1talkChk: new Shared({x:736  +(2068/4.5) -112/1.6- 100 , y:567 -518/4.5 + 22 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'i1talkChk', multiple:1.02, isEnlarge:true, isShow:false}),
+    i1talkCancel: new Shared({x:736 +(2068/4.5)- 100 + 10, y:567 -518/4.5 + 22, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'i1talkCancel', multiple:1.02, isEnlarge:true, isShow:false}),
+    
+    j1talk: new Shared({x:865 + 28 - (2044/4.5) +30, y:427 +20, w:2044/4.5, h:518/4.5, image: createImage('./images/roads/talk/j1talk.png'),name:'j1talk', isEnlarge:false, multiple:1.05, isShow:false}),
+    j1talkChk: new Shared({x:865 + 28 - 112/1.6 - 100 +30  , y:427+20  + 518/4.5 - 68/1.6 -15 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'j1talkChk', multiple:1.02, isEnlarge:true, isShow:false}),
+    j1talkCancel: new Shared({x:865 + 28 - 100 +10+30, y:427 +20 + 518/4.5 - 68/1.6 -15, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'j1talkCancel', multiple:1.02, isEnlarge:true, isShow:false}),
+
+    k1talk: new Shared({x:1240 + 28 - (1978/4.5) + 10, y:480 +50, w:1978/4.5, h:518/4.5, image: createImage('./images/roads/talk/k1talk.png'),name:'k1talk', isEnlarge:false, multiple:1.05, isShow:false}),
+    k1talkChk: new Shared({x:1240 + 28 - 112/1.6 - 100 + 10  , y:480+50  + 518/4.5 - 68/1.6 -15 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'k1talkChk', multiple:1.02, isEnlarge:true, isShow:false}),
+    k1talkCancel: new Shared({x:1240 + 28 - 100 +10 + 10, y:480 +50 + 518/4.5 - 68/1.6 -15, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'k1talkCancel', multiple:1.02, isEnlarge:true, isShow:false}),
+
+    l1talk: new Shared({x:832 + 110 - (1683/4.5) - 80 + 30, y:580 -518/4.5 + 30, w:1683/4.5, h:518/4.5, image: createImage('./images/roads/talk/l1talk.png'),name:'l1talk', isEnlarge:false, multiple:1.05, isShow:false}),
+    l1talkChk: new Shared({x:832 + 110  - 80 -112/1.6- 100 + 30 , y:580 -518/4.5 + 22 + 30 , w:112/1.6, h:68/1.6, image: createImage('./images/buttons/chk.png'), name:'l1talkChk', multiple:1.02, isEnlarge:true, isShow:false}),
+    l1talkCancel: new Shared({x:832 + 110  - 80 - 100 + 10 + 30, y:580 -518/4.5 + 22 + 30, w:112/1.6, h:68/1.6, image: createImage('./images/buttons/cancel.png'), name:'l1talkCancel', multiple:1.02, isEnlarge:true, isShow:false}),
 
     people: new Shared({x:0, y:250, w:279/1.1, h:871/1.1, image: createImage('./images/roads/people1.png'), isPeople:true, name:'people', isShow:true}),
 
@@ -519,6 +566,9 @@ function startFn(){
         interactions.forEach(item=>{
             item.position.x -= busSpeed
         })
+        outSideItems.forEach(item=>{
+            item.position.x -= busSpeed
+        })
         talks.forEach(talk=>{
             talk.position.x -= busSpeed
         })
@@ -547,7 +597,7 @@ function startFn(){
                 bus.divisor = 15
             }
         }
-    }, 20)
+    }, 0)
 }
 
 let busPos = 1.5
@@ -572,6 +622,9 @@ function animate(){
             interactions.forEach(item=>{
                 item.position.x -= player.speed *0.66
             })
+            outSideItems.forEach(item=>{
+                item.position.x -= player.speed *0.66
+            })
             talks.forEach(talk=>{
                 talk.position.x -= player.speed *0.66
             })
@@ -588,6 +641,9 @@ function animate(){
                 backgruond.position.x += player.speed *0.66
                 bus.position.x += player.speed *0.66
                 interactions.forEach(item=>{
+                    item.position.x += player.speed *0.66
+                })
+                outSideItems.forEach(item=>{
                     item.position.x += player.speed *0.66
                 })
                 talks.forEach(talk=>{
@@ -607,6 +663,10 @@ function animate(){
     interactions.forEach(interaction=>{
         if(interaction.show===false) return
         interaction.draw()
+    })
+    outSideItems.forEach(item=>{
+        if(item.show===false) return
+        item.draw()
     })
     talks.forEach(talk=>{
         if(talk.show) talk.draw()

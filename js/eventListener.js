@@ -16,6 +16,7 @@ window.addEventListener("keydown", ({keyCode})=>{
             break;
         case 68:
             if(!isRoomOpen){
+                console.log(scrollOffset);
                 keys.right.pressed = true
                 lastKey = 'right'
                 audioRunning.loop = true
@@ -24,6 +25,7 @@ window.addEventListener("keydown", ({keyCode})=>{
             break;
         case 65:
             if(!isRoomOpen){
+                console.log(scrollOffset);
                 keys.left.pressed = true
                 lastKey = 'left'
                 audioRunning.loop = true
@@ -100,7 +102,7 @@ canvas.addEventListener('mousemove', (e)=>{
         if(!isRoomOpen && x > interaction.position.x && x < (interaction.position.x + interaction.width) && y > interaction.position.y && y < (interaction.position.y + interaction.height)){
             let talk = talks.filter(talk=> talk.name === interaction.name)[0]
             if(interaction.show===false) return
-            if(interaction.enlarge===false) return
+            if(interaction.enlarg===false) return 
             if(talk) {
                 if(talk.direction!==0){
                     if(scrollOffset <= talk.direction){
