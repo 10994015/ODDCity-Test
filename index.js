@@ -615,7 +615,7 @@ function startFn(){
                 bus.divisor = 15
             }
         }
-    }, 0)
+    }, 20)
 }
 
 let busPos = 1.5
