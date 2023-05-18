@@ -6,7 +6,7 @@ let audioBadend = new Audio('./vedios/badend.mp3')
 let audioWalk = new Audio('./vedios/walk.mp3')
 let audioObj = new Audio('./vedios/obj.mp3')
 let busAudio = new Audio('./vedios/bus.mp3')
-let bgmAudio = new Audio('./vedios/bgm.mp3')
+let bgmAudio = new Audio('./vedios/BGM.mp3')
 let audioInCoolRoom = new Audio('./vedios/inCoolRoom.mp3')
 let audioWhistle = new Audio('./vedios/whistle.mp3')
 
