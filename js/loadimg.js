@@ -363,6 +363,7 @@ const imgarr = [
     , './images/talks/enternoisy_.png'
     , './images/talks/enterroad.png'
     , './images/talks/enterroad_.png'
+    , './images/phone/badgeBtn.png'
 ]
 let imgDownloadNum = 0
 let isLoaded = false
