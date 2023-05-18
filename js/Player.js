@@ -5,7 +5,7 @@ const createPlayer = (imgSrc)=>{
 }
 class Player{
     constructor(){
-        this.speed = 12
+        this.speed = 8
         this.position = {
             x:2800,
             y:500,
@@ -21,8 +21,8 @@ class Player{
         }
         this.image = createPlayer('./images/player/spriteStandRight.png');
         this.move = false
-        this.width = 66*1.2
-        this.height = 150*1.2
+        this.width = 66*1
+        this.height = 250*1
         this.sides = {
             bottom: this.position.y + this.height
         }
@@ -32,18 +32,20 @@ class Player{
             stand:{
                 right:createPlayer('./images/player/spriteStandRight.png'),
                 left:createPlayer('./images/player/spriteStandLeft.png'),
-                cropWidth:177,
-                width:66*1.2
+                cropWidth:100,
+                width:66*1
             },
             run:{
                 right:createPlayer('./images/player/spriteRunRight.png'),
                 left:createPlayer('./images/player/spriteRunLeft.png'),
-                cropWidth:341,
-                width:127.875*1.2
+                cropWidth:225,
+                width:127.875*1
             }
         }
         this.currentSprite = this.sprites.stand.right
-        this.currentCropWidth = 177
+        this.currentCropWidth = 100
+
+        this.idx = 0
     }
 
     draw(){
@@ -54,10 +56,14 @@ class Player{
     }
     update(){
         this.draw();
-        this.frames++;
-        if(this.frames>59 && (this.currentSprite === this.sprites.stand.right || this.currentSprite === this.sprites.stand.left)) {
+        this.idx ++ 
+        if(this.idx%12 === 0){
+            this.frames++;
+        }
+        
+        if(this.frames>0 && (this.currentSprite === this.sprites.stand.right || this.currentSprite === this.sprites.stand.left)) {
             this.frames=0
-        }else if(this.frames>29 && (this.currentSprite === this.sprites.run.right || this.currentSprite === this.sprites.run.left)){
+        }else if(this.frames>15 && (this.currentSprite === this.sprites.run.right || this.currentSprite === this.sprites.run.left)){
             this.frames=0
         }
         this.position.x += this.velocity.x

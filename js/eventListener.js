@@ -751,13 +751,14 @@ canvas.addEventListener('click', (e)=>{
                     beginningObject.people1.show = true
                     beginningObject.people1.enlarge = true
                     beginningObject.people2.show = true
-                    beginningObject.people2.enlarge = true
+                    beginningObject.people2.enlarge = false
                 }, 100)
             }
         }
         if(beginningObject.selectPeople){
             if(!beginningObject.selectPeople) return
             if(x>=beginningObject.people1.position.x && x<=beginningObject.people1.position.x + beginningObject.people1.width && y>=beginningObject.people1.position.y && y<=beginningObject.people1.position.y+beginningObject.people1.height){
+                if(!beginningObject.people1.enlarge) return
                 clickVedioPlay('btn')
                 beginningObject.people1Selected = !beginningObject.people1Selected
                 if(beginningObject.people1Selected){
@@ -775,6 +776,7 @@ canvas.addEventListener('click', (e)=>{
                 }
             }
             if(x>=beginningObject.people2.position.x && x<=beginningObject.people2.position.x + beginningObject.people2.width && y>=beginningObject.people2.position.y && y<=beginningObject.people2.position.y+beginningObject.people2.height){
+                if(!beginningObject.people2.enlarge) return
                 clickVedioPlay('btn')
                 beginningObject.people2Selected = !beginningObject.people2Selected
                 if(beginningObject.people2Selected){
@@ -2026,7 +2028,6 @@ canvas.addEventListener('click', (e)=>{
             }
         }
     }
-    
     if(roomOpen.network && isRoomOpen){
         if(netObject.smallPeople.show && netObject.startChk){
             if(!netObject.startChk) return
@@ -2415,7 +2416,6 @@ canvas.addEventListener('click', (e)=>{
             }
         }
     }
-
     if(roomOpen.noisy && isRoomOpen){
         if(noisyObject.smallPeople.show && noisyObject.startChk){
             if(!noisyObject.startChk) return
@@ -3686,7 +3686,7 @@ canvas.addEventListener('click', (e)=>{
             clickVedioPlay('inRoom')
             roomOpen.delay = true
             isRoomOpen = true
-        }else if(interaction.name === 'road'){
+        }else if(interaction.name === 'road1'){
             if(isRoomOpen) return
             clickVedioPlay('inRoom')
             roomOpen.road = true

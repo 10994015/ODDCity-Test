@@ -364,6 +364,10 @@ const imgarr = [
     , './images/talks/enterroad.png'
     , './images/talks/enterroad_.png'
     , './images/phone/badgeBtn.png'
+    , './images/player/spriteRunLeft.png'
+    , './images/player/spriteRunRight.png'
+    , './images/player/spriteStandRight.png'
+    , './images/player/spriteStandLeft.png'
 ]
 let imgDownloadNum = 0
 let isLoaded = false

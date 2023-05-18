@@ -58,7 +58,7 @@ const backgruond = new Backgruond({
     },
     image :createImage('./images/bg.png'),
 })
-const phone = new Interaction({x:1320, y:50, w:308/4.5, h:492/4.5, name:'phone',image: createImage('./images/buttons/phone.png'), multiple:1.05, isShow:true, isEnlarge:false})
+const phone = new Interaction({x:50, y:25, w:308/4.5, h:492/4.5, name:'phone',image: createImage('./images/buttons/phone.png'), multiple:1.05, isShow:true, isEnlarge:false})
 let openPhone = false
 const interactions = [
     new Interaction({x:2973, y:481, w:147, h:218, name:'cool', isShow:false}),
@@ -82,7 +82,7 @@ const talks = [
     new Talk({x:6430 + 100, y:380, w:3317/15, h:1640/15, name:'road', image: createImage('./images/talks/enterroad_.png'),isShow:false, direction:400000}),
 ]
 const outSideItems = [
-    new Interaction({x:6380 , y:460, w:279/3, h:871/3, name:'roadpeople',image: createImage('./images/roads/people1.png'), isEnlarge:false, isShow:true}),
+    new Interaction({x:6380 , y:460, w:279/3.5, h:871/3.5, name:'roadpeople',image: createImage('./images/roads/people1.png'), isEnlarge:false, isShow:true}),
 ]
 const dynamics = [
     
@@ -615,7 +615,7 @@ function startFn(){
                 bus.divisor = 15
             }
         }
-    }, 20)
+    }, 0)
 }
 
 let busPos = 1.5
