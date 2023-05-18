@@ -59,6 +59,7 @@ const backgruond = new Backgruond({
     image :createImage('./images/bg.png'),
 })
 const phone = new Interaction({x:1320, y:50, w:308/4.5, h:492/4.5, name:'phone',image: createImage('./images/buttons/phone.png'), multiple:1.05, isShow:true, isEnlarge:false})
+let openPhone = false
 const interactions = [
     new Interaction({x:2973, y:481, w:147, h:218, name:'cool', isShow:false}),
     new Interaction({x:3750, y:450, w:60, h:60, name:'occupy', image: createImage('./images/buttons/in2f.png'), multiple:1.05, isShow:false, }),
@@ -67,6 +68,9 @@ const interactions = [
     new Interaction({x:4825, y:590, w:60, h:60, name:'noisy',image: createImage('./images/buttons/in2f.png'),  isShow:false}),
     new Interaction({x:4955, y:530, w:175, h:195, name:'delay', isShow:false}),
     new Interaction({x:6430, y:490, w:310, h:225, name:'road', isShow:false}),
+
+
+    // new Interaction({x:1320, y:50, w:308/4.5, h:492/4.5, name:'phone',image: createImage('./images/buttons/phone.png'), multiple:1.05, isShow:true, isEnlarge:false, isScroll:false})
 ]
 const talks = [
     new Talk({x:3780 -3318/15, y:350, w:3318/15, h:1640/15, name:'occupy', image: createImage('./images/talks/enter2f_.png'),isShow:false, direction:1650}),
@@ -79,7 +83,6 @@ const talks = [
 ]
 const outSideItems = [
     new Interaction({x:6380 , y:460, w:279/3, h:871/3, name:'roadpeople',image: createImage('./images/roads/people1.png'), isEnlarge:false, isShow:true}),
-
 ]
 const dynamics = [
     
@@ -93,7 +96,7 @@ const network = new Room({image:createImage('./images/network.png')})
 const noisy = new Room({image:createImage('./images/noisy.png')})
 const delay = new Room({image:createImage('./images/delay.png')})
 const road = new Room({image:createImage('./images/road.png')})
-
+const phoneui = new Room({image:createImage('./images/phone/bg.png'), w:855/2, h:1489/2})
 let playerTalkX = canvas.width-(canvas.width-canvas.height*0.8*1.844)/2
 let playerTalkXY= canvas.height-(canvas.height-canvas.height*0.8)/2
 let mesterTalkX = (canvas.width-canvas.height*0.8*1.844)/2 + 100
@@ -374,8 +377,8 @@ const noisys = {
 }
 const delays = {
     count: new Shared({x:150, y:670, w:300/3.5, h:137/3.5, image: createImage('./images/delays/talk/0-4.png'), name:'count', multiple:1, isEnlarge:false, isShow:false}),
-    CG1: new Shared({x:155, y:100, w:147/1.9, h:182/1.9, image: createImage('./images/delays/CG1.png'), name:'CG1', multiple:1.2, isEnlarge:false, isShow:false}),
-    CG2: new Shared({x:830, y:140, w:164/1.9, h:207/1.9, image: createImage('./images/delays/CG2.png'), name:'CG2', multiple:1.2, isEnlarge:false, isShow:false}),
+    CG1: new Shared({x:155, y:100, w:147/1.9, h:182/1.9, image: createImage('./images/delays/CG1.png'), name:'CG1', multiple:1.05, isEnlarge:false, isShow:false}),
+    CG2: new Shared({x:830, y:140, w:164/1.9, h:207/1.9, image: createImage('./images/delays/CG2.png'), name:'CG2', multiple:1.05, isEnlarge:false, isShow:false}),
     battery1: new Shared({x:170, y:549, w:70/1.8, h:26/1.8, image: createImage('./images/delays/battery1.png'), name:'battery1', multiple:1.2, isEnlarge:false, isShow:false}),
     battery2: new Shared({x:500, y:591,  w:97/1.8, h:34/1.8, image: createImage('./images/delays/battery2.png'), name:'battery2', multiple:1.2, isEnlarge:false, isShow:false}),
     battery3: new Shared({x:815, y:620,  w:97/1.8, h:36/1.8, image: createImage('./images/delays/battery3.png'), name:'battery3', multiple:1.2, isEnlarge:false, isShow:false}),
@@ -419,9 +422,14 @@ const delays = {
     response17A: new Shared({x:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'17A', isShow:false, text:"我會的！非常抱歉！", isTypewriter:true }),
     response17B: new Shared({xresponse:mesterTalkX+5, y:mesterTalkY-630/4.5, w:2378/4.5, h:630/4.5, image: createImage('./images/network/talk/res.png'), isTalk:true, isEnlarge:false, multiple:1, name:'17B', isShow:false, text:"(聳肩)真小氣...", isTypewriter:true }),
 
+
+
     chk: new Shared({x:canvas.width/2 - (112/2)/2 + 300, y:canvas.height/2 - (68/2)/2 + 20, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
 
-    end: new Shared({x:canvas.width/2 - (2079/5)/2 , y:canvas.height/2 - (2123/5)/2  , w:398/1, h:232/1, image: createImage('./images/delays/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
+    getCG1: new Shared({x:canvas.width/2 - (2079/5)/2 , y:canvas.height/2 - (2123/5)/2  , w:2079/5, h:(2123/5), image: createImage('./images/delays/getCG1.png'), isEnlarge:false, multiple:1, name:'getCG1', isShow:false,}),
+    getCG2: new Shared({x:canvas.width/2 - (2079/5)/2 , y:canvas.height/2 - (2123/5)/2  , w:2079/5, h:(2123/5), image: createImage('./images/delays/getCG2.png'), isEnlarge:false, multiple:1, name:'getCG2', isShow:false,}),
+    chkCG: new Shared({x:canvas.width/2 - (112/2)/2, y:canvas.height/2 + 150, w:112/2, h:68/2, image: createImage('./images/buttons/chk.png'), isEnlarge:false, multiple:1, name:'chk', isShow:false ,}),
+    end: new Shared({x:canvas.width/2 - (2079/5)/2 , y:canvas.height/2 - (2123/5)/2  , w:2079/5, h:(2123/5), image: createImage('./images/delays/goodend.png'), isEnlarge:false, multiple:1, name:'end', isShow:false,}),
 }
 const roads = {
     a1: new Shared({x:716, y:190, w:28, h:74, image: createImage('./images/roads/a1.png'),name:'a1', isEnlarge:true, multiple:1.05, isShow:true}),
@@ -507,8 +515,13 @@ const roads = {
 const buttons = {
     close: new Button({x:(canvas.width - ( canvas.height*0.8*1.844 ))/2 + canvas.height*0.8*1.844 - 10,y:(canvas.height - canvas.height *0.8)/2 - 50, w:418/9, h:418/9, image: createImage('./images/buttons/close.png'), name:"close", multiple:1.05}),
     // in2f:  new Button({x: 3750, y:450, w:60, h:60, name:'in2f', isMove:true, image: createImage('./images/buttons/in2f.png'),}),
+    closePhone: new Button({x:(canvas.width - ( canvas.height*0.8*1.844 ))/2 + canvas.height*0.8*1.844/1.4 - 10,y:(canvas.height - canvas.height *0.8)/2 - 50, w:418/9, h:418/9, image: createImage('./images/buttons/close.png'), name:"closePhone", multiple:1.05}),
 }
 
+const phones = {
+    badgeBtn: new Shared({x:535, y:615,  w:743/2, h:255/2, image: createImage('./images/phone/badgeBtn.png'), name:'badgeBtn', multiple:1.01, isEnlarge:true, isShow:true}),
+
+}
 let isRoomOpen = false;
 const roomOpen = {
     cool:false,
@@ -517,6 +530,8 @@ const roomOpen = {
     network:false,
     noisy:false,
     delay:false,
+
+    phone:false,
 }
 
 const keys = {
@@ -564,7 +579,10 @@ function startFn(){
         
         player.position.x -= busSpeed
         interactions.forEach(item=>{
-            item.position.x -= busSpeed
+            if(item.scroll){
+                item.position.x -= busSpeed
+            }
+            
         })
         outSideItems.forEach(item=>{
             item.position.x -= busSpeed
@@ -620,7 +638,10 @@ function animate(){
             bus.position.x -= player.speed *0.66
             backgruond.position.x -= player.speed *0.66
             interactions.forEach(item=>{
-                item.position.x -= player.speed *0.66
+                if(item.scroll){
+                    item.position.x -= player.speed *0.66
+                }
+                
             })
             outSideItems.forEach(item=>{
                 item.position.x -= player.speed *0.66
@@ -641,7 +662,9 @@ function animate(){
                 backgruond.position.x += player.speed *0.66
                 bus.position.x += player.speed *0.66
                 interactions.forEach(item=>{
-                    item.position.x += player.speed *0.66
+                    if(item.scroll){
+                        item.position.x += player.speed *0.66
+                    }
                 })
                 outSideItems.forEach(item=>{
                     item.position.x += player.speed *0.66
@@ -700,7 +723,17 @@ function animate(){
     if(getOff){
         phone.draw() 
     }
-
+    if(openPhone){
+        c.fillStyle = 'rgba(255,255,255,.5)'
+        c.fillRect(0,0,canvas.width, canvas.height)
+        phoneui.draw()
+        buttons.closePhone.draw()
+        Object.keys(phones).forEach(phone=>{
+            if(phones[phone].show){
+                phones[phone].draw()
+            }
+        })
+    }
     if(roomOpen.cool && isRoomOpen){
         c.fillStyle = 'rgba(255,255,255,.5)'
         c.fillRect(0,0,canvas.width, canvas.height)

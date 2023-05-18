@@ -18,7 +18,7 @@ class Backgruond{
 }
 
 class Interaction {
-    constructor({x, y, w, h, name, image=null, multiple=1, isShow=true, isEnlarge=false}){
+    constructor({x, y, w, h, name, image=null, multiple=1, isShow=true, isEnlarge=false, isScroll=true}){
         this.position = {
            x, y
         }
@@ -33,6 +33,7 @@ class Interaction {
         this.loaded = false
         this.show = isShow
         this.enlarge = isEnlarge
+        this.scroll = isScroll
         if(this.image !== null){
             this.image.onload = ()=>{
                 this.loaded = true
@@ -52,9 +53,9 @@ class Interaction {
 
 
 class Room{
-    constructor({image}){
-        this.width = canvas.height *0.8 * 1.844
-        this.height = canvas.height *0.8
+    constructor({w=canvas.height *0.8 * 1.844,h=canvas.height *0.8,image}){
+        this.width = w
+        this.height = h
         this.position = {
            x: (canvas.width -this.width) / 2 ,
            y: (canvas.height -this.height) / 2

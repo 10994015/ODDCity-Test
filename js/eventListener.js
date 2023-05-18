@@ -86,6 +86,38 @@ canvas.addEventListener('mousemove', (e)=>{
     }
     
     if(!isStart) return
+    if(openPhone)  {
+        let close = buttons.closePhone;
+        if(x >= close.position.x && x<=close.position.x+close.width && y>=close.position.y && y<=close.position.y + close.height && close.enlarge){
+            close.width = close.bigWidth
+            close.height = close.bigHeight
+            return canvas.style.cursor = "pointer"
+        }else{
+            close.width = close.oldWidth
+            close.height = close.oldHeight
+            canvas.style.cursor = "default"
+        }
+        Object.keys(phones).some(phone=>{
+            if(!phones[phone].enlarge) return
+            if(x >= phones[phone].position.x && x<=phones[phone].position.x+phones[phone].width && y>=phones[phone].position.y && y<=phones[phone].position.y + phones[phone].height){
+                phones[phone].width = phones[phone].bigWidth
+                phones[phone].height = phones[phone].bigHeight
+                if((!phones[phone].image.src.includes('_.png')) && phones[phone].talk){
+                    phones[phone].image.src = phones[phone].image.src.replace('.png', '_.png')
+                }
+                
+                return canvas.style.cursor = "pointer"
+                
+            }
+            phones[phone].width = phones[phone].oldWidth
+            phones[phone].height = phones[phone].oldHeight
+            canvas.style.cursor = "default"
+            if(phones[phone].image.src.includes('_.png')){
+                phones[phone].image.src = phones[phone].image.src.replace('_.png', '.png')
+            }
+        })
+        return
+    }
 
     if(phone.show && phone.enlarge && !isRoomOpen){
         if( x > phone.position.x && x < (phone.position.x + phone.width) && y > phone.position.y && y < (phone.position.y + phone.height)){
@@ -678,6 +710,12 @@ const delayObject = {
     response17A: delays.response17A,
     response17B: delays.response17B,
 
+    isGetCG1: false,
+    isGetCG2: false,
+    getCG1: delays.getCG1,
+    getCG2: delays.getCG2,
+    chkCG:delays.chkCG,
+    chkCGchk: false,
     end: delays.end,
 }
 
@@ -771,7 +809,12 @@ canvas.addEventListener('click', (e)=>{
         }
     }
     if(!isStart) return
-    
+    if(openPhone) {
+        if(x>=buttons.closePhone.position.x && x<=buttons.closePhone.position.x + buttons.closePhone.width && y>=buttons.closePhone.position.y && y<=buttons.closePhone.position.y+buttons.closePhone.height){
+            openPhone = false
+        }
+        return
+    }
     if(isRoomOpen){
         let close = buttons.close;
         if(x >= close.position.x && x<=close.position.x+close.width && y>=close.position.y && y<=close.position.y + close.height && close.enlarge){
@@ -3205,10 +3248,14 @@ canvas.addEventListener('click', (e)=>{
                 delayObject.b1.show = true
                 delayObject.c1.show = true
                 delayObject.d1.show = true
+                delayObject.CG1.show = true
+                delayObject.CG2.show = true
                 delayObject.a1.enlarge = true
                 delayObject.c1.enlarge = true
                 delayObject.d1.enlarge = true
                 delayObject.count.show = true
+                delayObject.CG1.enlarge = true
+                delayObject.CG2.enlarge = true
                 setTimeout(()=>{
                     delayObject.startInter = true
                 }, 100)
@@ -3411,6 +3458,76 @@ canvas.addEventListener('click', (e)=>{
                 }
                 
             }
+            if(delayObject.CG1.enlarge && !delayObject.isGetCG1){
+                if(x>=delayObject.CG1.position.x && x<=delayObject.CG1.position.x + delayObject.CG1.width && y>=delayObject.CG1.position.y && y<=delayObject.CG1.position.y+delayObject.CG1.height){
+                    clickVedioPlay('obj')
+                    audioGoodend.play()
+                    getCG.delay.push(3)
+                    delayObject.isGetCG1 = true
+                    delayObject.CG1.enlarge = false
+                    delayObject.getCG1.show = true
+                    delayObject.chkCG.show = true
+                    delayObject.chkCG.enlarge = true
+                    
+                    delayObject.a1.enlarge = false
+                    delayObject.b1.enlarge = false
+                    delayObject.c1.enlarge = false
+                    delayObject.d1.enlarge = false
+                    delayObject.CG1.enlarge = false
+                    delayObject.CG2.enlarge = false
+                    setTimeout(()=>{
+                        delayObject.chkCGchk = true
+                    },100)
+                }
+            }
+            if(delayObject.CG2.enlarge && !delayObject.isGetCG2){
+                if(x>=delayObject.CG2.position.x && x<=delayObject.CG2.position.x + delayObject.CG2.width && y>=delayObject.CG2.position.y && y<=delayObject.CG2.position.y+delayObject.CG2.height){
+                    clickVedioPlay('obj')
+                    getCG.delay.push(4)
+                    audioGoodend.play()
+                    delayObject.isGetCG2 = true
+                    delayObject.CG2.enlarge = false
+                    delayObject.getCG2.show = true
+                    delayObject.chkCG.show = true
+                    delayObject.chkCG.enlarge = true
+
+                    delayObject.a1.enlarge = false
+                    delayObject.b1.enlarge = false
+                    delayObject.c1.enlarge = false
+                    delayObject.d1.enlarge = false
+                    delayObject.CG1.enlarge = false
+                    delayObject.CG2.enlarge = false
+                    setTimeout(()=>{
+                        delayObject.chkCGchk = true
+                    },100)
+                }
+            }
+            if(delayObject.chkCGchk){
+                clickVedioPlay('btn')
+                delayObject.chkCGchk = false
+                delayObject.getCG1.show = false
+                delayObject.getCG2.show = false
+                delayObject.chkCG.show = false
+                delayObject.chkCG.enlarge = false
+                if(!delayObject.isGetCG1){
+                    delayObject.CG1.enlarge = true
+                }
+                if(!delayObject.isGetCG2){
+                    delayObject.CG2.enlarge = true
+                }
+                if(delayObject.a1.show){
+                    delayObject.a1.enlarge = true
+                }
+                if(delayObject.b1.show){
+                    delayObject.b1.enlarge = true
+                }
+                if(delayObject.c1.show){
+                    delayObject.c1.enlarge = true
+                }
+                if(delayObject.d1.show){
+                    delayObject.d1.enlarge = true
+                }
+            }
             if(delayObject.batteryNum === 1){
                 delayObject.count.image.src = "./images/delays/talk/1-4.png"
             }else if(delayObject.batteryNum === 2){
@@ -3431,6 +3548,8 @@ canvas.addEventListener('click', (e)=>{
                 delayObject.b2.show = false
                 delayObject.c2.show = false
                 delayObject.d2.show = false
+                delayObject.CG1.show = false
+                delayObject.CG2.show = false
                 delay.image.src = delay.image.src.replace('3.png', '4.png')
                 if(!isRoomOpen) return
                 delayObject.response10.show = true
@@ -3501,6 +3620,13 @@ canvas.addEventListener('click', (e)=>{
             }
         }
         
+    }
+    if(!openPhone){
+        if(x>=phone.position.x && x<=phone.position.x + phone.width && y>=phone.position.y && y<=phone.position.y+phone.height){
+            console.log('ok');
+            openPhone = true
+            buttons.closePhone.enlarge = true
+        }
     }
     interactions.forEach(interaction=>{
         let bool = x >= interaction.position.x && x <= interaction.position.x + interaction.width && y>=interaction.position.y && y<=interaction.position.y + interaction.height
@@ -4008,7 +4134,9 @@ function initDelayRoom(){
     delayObject.talk11Chk = false
     delayObject.talk13Chk = false
     delayObject.talk16Chk = false
-
+    delayObject.isGetCG1 = false
+    delayObject.isGetCG2 = false
+    delayObject.chkCGchk = false
     delayObject.batteryNum = 0
 
     Object.keys(delays).forEach(delay=>{
